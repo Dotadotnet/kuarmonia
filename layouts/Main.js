@@ -1,13 +1,19 @@
 import Footer from "@/components/shared/footer/Footer";
 import Navbar from "@/components/shared/navbar/Navbar";
 import React from "react";
+<<<<<<< HEAD
 import { FaWhatsapp } from "react-icons/fa";
 import LoadingIndicator from "@/components/shared/loading/LoadingIndicator";
+=======
+import LoadingIndicator from "@/components/shared/loading/LoadingIndicator";
+import ToolBar from "@/components/shared/navbar/mobileMenu/ToolBar";
+>>>>>>> origin/master
 
 const Main = ({ children }) => {
   return (
     <>
       <LoadingIndicator />
+<<<<<<< HEAD
 <div className=""></div>
       <Navbar />
       {children}
@@ -22,6 +28,12 @@ const Main = ({ children }) => {
         <FaWhatsapp className="fab fa-whatsapp" />
       </a>
 
+=======
+      <Navbar />
+      {children}
+
+<ToolBar />
+>>>>>>> origin/master
       <Footer />
     </>
   );

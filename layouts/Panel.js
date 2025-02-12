@@ -19,6 +19,10 @@ import { FiUsers } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import { GrGallery } from "react-icons/gr";
 import { RxVideo } from "react-icons/rx";
+<<<<<<< HEAD
+=======
+import { BsBuildings } from "react-icons/bs";
+>>>>>>> origin/master
 
 const Panel = ({ children }) => {
   const router = useRouter();
@@ -74,6 +78,14 @@ const Panel = ({ children }) => {
       icon: <GrGallery className="w-5 h-5" />,
     },
     {
+<<<<<<< HEAD
+=======
+      name: "ملک",
+      path: "/dashboard/properties",
+      icon: <BsBuildings className="w-5 h-5" />,
+    },
+    {
+>>>>>>> origin/master
       name: "سفارشات",
       path: "/dashboard/view-cart",
       icon: <BsCartCheck className="w-5 h-5" />,
