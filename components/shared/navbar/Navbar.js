@@ -24,7 +24,7 @@ const Navbar = () => {
     <header>
       <Container>
         <ProgressBar />
-        <nav className="fixed top-0 m-4 md:m-8 left-0 flex flex-row justify-between right-0 shadow-lg lg:grid lg:grid-cols-12 items-center z-[9999] p-4 bg-white dark:bg-gray-900 rounded-xl dark:text-gray-100">
+        <nav className="fixed top-0 m-4  left-0 flex flex-row justify-between right-0 shadow-lg lg:grid lg:grid-cols-12 items-center z-[9999] p-2 bg-white dark:bg-gray-900 rounded-xl dark:text-gray-100">
           
           {isMobile ? <>
           <MobileMenu /> 

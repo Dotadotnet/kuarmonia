@@ -8,7 +8,7 @@ const Hero = () => {
  
 
   return (
-    <section className="bg-no-repeat h-auto  bg-white dark:bg-gray-900 pt-24 md:pt-32">
+    <section className="bg-no-repeat h-auto  bg-white dark:bg-gray-900 pt-24">
       <Container className=" px-1 lg:px-primary">
        <Banner1 />
         <KeyServices />

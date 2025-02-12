@@ -1,19 +1,15 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import Link from "next/link";
-import Image from "next/image";
 import MobileNav from "./MobileNav";
-
 
 const MobileMenu = () => {
   const [isOpenMobileNav, setIsOpenMobileNav] = useState(false);
 
-
   return (
     <div className="relative">
-           <motion.div
+      <motion.div
         className="flex md:hidden w-full p-0 items-center justify-between"
         initial={{ opacity: 0, x: 200 }}
         animate={{ opacity: 1, x: 0 }}
@@ -22,10 +18,10 @@ const MobileMenu = () => {
         {isOpenMobileNav ? (
           <MobileNav isOpen={isOpenMobileNav} setIsOpen={setIsOpenMobileNav} />
         ) : (
-          <div className=" flex items-center justify-between w-full">
+          <div className="flex items-center justify-between w-full">
             <motion.div
               whileTap={{ scale: 0.9 }}
-              className=" flex items-center justify-center"
+              className="flex items-center justify-center"
               onClick={() => setIsOpenMobileNav(!isOpenMobileNav)}
             >
               <HiOutlineMenuAlt2 className="text-headingColor text-4xl" />
@@ -34,10 +30,8 @@ const MobileMenu = () => {
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 className="flex items-center gap-2 cursor-pointer"
-              >
-                  </motion.div>
+              />
             </Link>
-            
           </div>
         )}
       </motion.div>
