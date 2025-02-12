@@ -26,7 +26,7 @@ const PropertyCard = () => {
         <div className="flex p-4 border-t border-gray-300 text-gray-700">
           <div className="flex-1 inline-flex items-center">
             <svg
-              class="h-6 w-6 text-gray-600 fill-current ml-3"
+              className="h-6 w-6 text-gray-600 fill-current ml-3"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
             >
@@ -38,7 +38,7 @@ const PropertyCard = () => {
           </div>
           <div className="flex-1 inline-flex items-center">
             <svg
-              class="h-6 w-6 text-gray-600 fill-current ml-3"
+              className="h-6 w-6 text-gray-600 fill-current ml-3"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
             >

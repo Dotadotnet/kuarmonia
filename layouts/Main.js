@@ -1,8 +1,8 @@
 import Footer from "@/components/shared/footer/Footer";
 import Navbar from "@/components/shared/navbar/Navbar";
 import React from "react";
-import { FaWhatsapp } from "react-icons/fa";
 import LoadingIndicator from "@/components/shared/loading/LoadingIndicator";
+import ToolBar from "@/components/shared/navbar/mobileMenu/ToolBar";
 
 const Main = ({ children }) => {
   return (
@@ -11,7 +11,7 @@ const Main = ({ children }) => {
       <Navbar />
       {children}
 
-
+<ToolBar />
       <Footer />
     </>
   );

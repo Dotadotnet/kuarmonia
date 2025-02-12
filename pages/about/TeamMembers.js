@@ -173,10 +173,10 @@ function TeamMembers() {
                       <p className="text-gray-500 text-sm text-justify leading-6 mb-7">
                         {member.description}
                       </p>
-                      <div class="flex items-center gap-4 justify-center lg:justify-start max-sm:bottom-0 relative">
-                        <p class="cursor-pointer  text-gray-900 dark:text-gray-900 hover:text-white group w-12 h-12 rounded-full flex justify-center items-center bg-gray-100 transition-all duration-500 hover:bg-indigo-600">
+                      <div className="flex items-center gap-4 justify-center lg:justify-start max-sm:bottom-0 relative">
+                        <p className="cursor-pointer  text-gray-900 dark:text-gray-900 hover:text-white group w-12 h-12 rounded-full flex justify-center items-center bg-gray-100 transition-all duration-500 hover:bg-indigo-600">
                           <svg
-                            class="w-5 h-5"
+                            className="w-5 h-5"
                             width="32"
                             height="32"
                             viewBox="0 0 32 32"
@@ -189,9 +189,9 @@ function TeamMembers() {
                             />
                           </svg>
                         </p>
-                        <p class="cursor-pointer  text-gray-900 dark:text-gray-900 hover:text-white group w-12 h-12 rounded-full flex justify-center items-center bg-gray-100 transition-all duration-500 hover:bg-indigo-600">
+                        <p className="cursor-pointer  text-gray-900 dark:text-gray-900 hover:text-white group w-12 h-12 rounded-full flex justify-center items-center bg-gray-100 transition-all duration-500 hover:bg-indigo-600">
                           <svg
-                            class="w-5 h-5"
+                            className="w-5 h-5"
                             viewBox="0 0 24 24"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
@@ -202,9 +202,9 @@ function TeamMembers() {
                             />
                           </svg>
                         </p>
-                        <p class="cursor-pointer  dark:text-gray-900 text-gray-900 hover:text-white group w-12 h-12 rounded-full flex justify-center items-center bg-gray-100 transition-all duration-500 hover:bg-indigo-600">
+                        <p className="cursor-pointer  dark:text-gray-900 text-gray-900 hover:text-white group w-12 h-12 rounded-full flex justify-center items-center bg-gray-100 transition-all duration-500 hover:bg-indigo-600">
                           <svg
-                            class="w-5 h-5"
+                            className="w-5 h-5"
                             viewBox="0 0 20 19"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"

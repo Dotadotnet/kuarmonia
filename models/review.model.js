@@ -5,6 +5,27 @@ import like from "./like.model"; // اضافه کردن مدل LikeDislike
 
 connectDB();
 
+// تعریف اسکیمای ریپلای‌ها به صورت جداگانه
+const replySchema = new Schema(
+  {
+    reviewer: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    comment: {
+      type: String,
+      required: [true, "لطفاً جواب خود را وارد کنید"],
+      maxLength: [500, "جواب نباید بیشتر از 500 کاراکتر باشد"],
+    },
+    rating: {
+      type: Number,
+      required: [true, "لطفاً امتیاز خود را برای جواب وارد کنید"],
+    },
+    ...baseSchema.obj, // اضافه کردن فیلدهای عمومی
+  },
+  { timestamps: true } // ✅ timestamps را اینجا تنظیم می‌کنیم
+);
+
 const reviewSchema = new Schema(
   {
     reviewer: {
@@ -23,26 +44,8 @@ const reviewSchema = new Schema(
       required: [true, "لطفاً امتیاز خود را وارد کنید"],
     },
 
-    // ریپلای‌ها
-    replies: [
-      {
-        reviewer: {
-          type: Schema.Types.ObjectId,
-          ref: "User",
-        },
-        comment: {
-          type: String,
-          required: [true, "لطفاً جواب خود را وارد کنید"],
-          maxLength: [500, "جواب نباید بیشتر از 500 کاراکتر باشد"],
-        },
-        rating: {
-          type: Number,
-          required: [true, "لطفاً امتیاز خود را برای جواب وارد کنید"],
-        },
-        ...baseSchema.obj,
-        timestamps: true,
-      },
-    ],
+    // ریپلای‌ها با استفاده از اسکیمای جداگانه
+    replies: [replySchema],
 
     ...baseSchema.obj,
   },

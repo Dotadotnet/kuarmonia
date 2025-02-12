@@ -119,7 +119,7 @@ const HeaderSection = () => {
             navigation={false}
             pagination={{
               renderBullet: (index, className) => {
-                return `<span class="${className} custom-pagination-dot"></span>`;
+                return `<span className="${className} custom-pagination-dot"></span>`;
               }
             }}
             modules={[Keyboard, Scrollbar, Navigation, Pagination, Autoplay]}

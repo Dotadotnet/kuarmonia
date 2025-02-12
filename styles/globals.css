@@ -394,3 +394,28 @@ focus {
   .swiper-initialized{
     height: 100%;
   }
+
+
+
+  
+  @media only screen and (max-width: 980px) {
+    #tidio-chat-iframe {
+      bottom: 25px !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+    }
+  
+    #tidio-chat-iframe .moveFromRight-enter-done {
+      position:fixed !important;
+      top: 50% !important; /* تنظیم وسط شدن فریم در حالت موبایل */
+      right: 650px !important;
+      transform: translate(-50%, -50%) !important; /* وسط کردن عمودی و افقی */
+      width: 100% !important;
+      max-width: 100% !important; /* حداکثر عرض در حالت موبایل */
+      height: auto !important;
+    }
+   
+  
+  }
+
+ 
