@@ -1,0 +1,15 @@
+node_modules
+
+
+.next
+
+/.next
+
+.next/
+
+.env
+
+public/uploads
+
+
+.codegpt
