@@ -22,6 +22,10 @@ import { RxVideo } from "react-icons/rx";
 import { LiaToolsSolid } from "react-icons/lia";
 
 import JWT from "@/utils/jwt.util";
+<<<<<<< HEAD
+=======
+import { BsBuildings } from "react-icons/bs";
+>>>>>>> origin/master
 
 const Panel = ({ children }) => {
   const router = useRouter();

@@ -1,5 +1,3 @@
-
-
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -19,7 +17,9 @@ const Sidebar = ({ routes }) => {
     }
   });
   const isActive = (href) => {
-    return router.pathname === href ? "bg-primary dark:bg-blue-500 text-white" : "";
+    return router.pathname === href
+      ? "bg-primary dark:bg-blue-500 text-white"
+      : "";
   };
 
   return (
@@ -49,13 +49,13 @@ const Sidebar = ({ routes }) => {
             window.open("/", "_self");
           }}
         >
-         <Image
-  src={user?.avatar?.url || "/placeholder.png"} 
-  alt={user?.avatar?.public_id || "User Avatar"}
-  height={100}
-  width={100}
-  className="rounded-full object-cover w-[35px] h-[35px]"
-/>
+          <Image
+            src={user?.avatar?.url || "/placeholder.png"}
+            alt={user?.avatar?.public_id || "User Avatar"}
+            height={100}
+            width={100}
+            className="rounded-full object-cover w-[35px] h-[35px]"
+          />
           <article className="flex flex-col gap-y-0.5">
             <h2 className="line-clamp-1 text-base">{user?.name}</h2>
             <span className="text-xs">خروج</span>

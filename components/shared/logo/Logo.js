@@ -8,7 +8,7 @@ const Logo = () => {
   return (
     <>
       <div
-        className="flex justify-end  items-center cursor-pointer"
+        className="flex justify-end col-span-2  items-center cursor-pointer"
         onClick={() => router.push("/")}
       >
         <span className="text-green-500 dark:text-blue-500 font-bold text-2xl">
