@@ -397,13 +397,7 @@ focus {
   height: 100%;
 }
 
-@media only screen and (max-width: 980px) {
-  #tidio-chat-iframe {
-    bottom: 23px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-  }
-}
+
 
 .swiper {
   width: 100%;
