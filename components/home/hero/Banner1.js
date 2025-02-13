@@ -3,13 +3,17 @@ import Image from "next/image";
 import { AiTwotoneFire } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/free-mode";
+import { Pagination, FreeMode } from "swiper/modules";
 const Banner1 = () => {
   const router = useRouter();
 
   return (
-    <div className="grid md:grid-cols-3   justify-center grid-cols-1 md:gap-4">
-      <div className="col-span-2 h-full flex flex-col gap-y-4 ">
+    <div className="grid md:grid-cols-3 h-fit  justify-center grid-cols-1 gap-y-2 md:gap-4">
+      <div className="col-span-2 h-full flex flex-col  ">
         {" "}
         <div
           className="w-full  md:mt-5 h-full rounded-primary relative flex flex-col gap-y-8 lg:px-22 lg:py-[40px] md:pt-4 pb-0"
@@ -89,8 +93,8 @@ const Banner1 = () => {
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.4 }}
               >
-                 برای <span className="text-white">آینده‌ای روشن</span>{" "}
-                و <span className="text-white">سرمایه‌گذاری موفق</span>
+                برای <span className="text-white">آینده‌ای روشن</span> و{" "}
+                <span className="text-white">سرمایه‌گذاری موفق</span>
               </motion.h1>
 
               <motion.p
@@ -120,7 +124,92 @@ const Banner1 = () => {
       </div>
 
       {/* Animated Right Component */}
-      <div className="flex flex-col w-full pt-4 gap-4"></div>
+      <div className="col-span-1 h-full w-full flex flex-col ">
+        <div
+          className="w-full relative h-full rounded-lg md:rounded-primary mt-6 flex flex-col "
+          style={{
+            backgroundImage:
+              "url(/assets/home-page/banner/dots.svg), linear-gradient(to bottom right, #2DD4BF, #2563EB)",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            overflow: "hidden"
+          }}
+        >
+          <div className="flex flex-col h-full gap-y-2 md:gap-x-2 ">
+            {/* Swiper برای اسلاید کردن محتوا */}
+            <Swiper
+              spaceBetween={10} // فاصله بین اسلایدها
+              freeMode={true}
+              pagination={{ clickable: true }} // فعال‌سازی Pagination
+
+              modules={[Pagination, FreeMode]}
+              className="w-full h-full "
+            >
+              <SwiperSlide>
+                <div className="flex flex-col gap-y-8 justify-center items-center p-4 text-right  md:text-center">
+
+                <motion.h1
+                  className="md:text-3xl font-nozha text-4xl w-full"
+                  initial={{ x: -200, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <span className="text-white">فرصت طلایی</span> برای خرید ملک در ترکیه!
+                </motion.h1>
+                <motion.h1
+                  className="md:text-3xl font-nozha text-4xl w-full "
+                  initial={{ x: -200, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <span className="text-white">اقامت، سرمایه‌گذاری، آینده‌ای مطمئن</span>
+                </motion.h1>
+                </div>
+
+                <div className=" absolute -bottom-8 -left-2 md:righ-0   md:flex ">
+              <motion.div
+                className="   "
+                animate={{
+                  y: ["0px", "20px", "0px"] // حرکت بالا و پایین
+                }}
+                transition={{
+                  // نوع انیمیشن
+                  repeat: Infinity, // تکرار انیمیشن حرکت بالا و پایین
+                  repeatType: "loop", // نوع تکرار: حلقه‌ای
+                  duration: 3 // مدت زمان یک سیکل حرکت بالا و پایین
+                }}
+              >
+                <Image
+                  src="/assets/home-page/banner/building1.png"
+                  height={872}
+                  width={500}
+                  className="md:w-44 w-20 ml-4 block md:mr-auto"
+                />
+              </motion.div>
+            </div>
+              </SwiperSlide>
+              <SwiperSlide>
+                <motion.h1
+                  className="md:text-3xl font-nozha text-4xl w-full text-right"
+                  initial={{ x: -200, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <span className="text-white">محتوای جدید</span> با ویژگی‌های عالی!
+                </motion.h1>
+                <motion.h1
+                  className="md:text-3xl font-nozha text-4xl w-full text-right"
+                  initial={{ x: -200, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.4 }}
+                >
+                  <span className="text-white">ویژگی‌های خاص برای سرمایه‌گذاری</span>
+                </motion.h1>
+              </SwiperSlide>
+            </Swiper>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
