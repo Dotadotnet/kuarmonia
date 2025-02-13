@@ -44,7 +44,7 @@ const LargeMenu = () => {
                 "text-sm text-black w-44 text-center h-10 flex flex-row items-center gap-x-1 px-8 py-2 justify-center rounded-secondary border border-transparent" +
                 " " +
                 (selectedNiche === link.label
-                  ? "bg-primary text-white"
+                  ? "bg-black text-white"
                   : "")
               }
               onClick={(e) => {

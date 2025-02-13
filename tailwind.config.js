@@ -17,6 +17,9 @@ module.exports = {
         '20': 'repeat(20, minmax(0, 1fr))',
         '24': 'repeat(24, minmax(0, 1fr))', 
       },
+      fontFamily: {
+        nozha: ['Nozha'],
+      },
       colors: {
         light: '#edf2f9',
         dark: '#152e4d',
