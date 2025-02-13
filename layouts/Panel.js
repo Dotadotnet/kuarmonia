@@ -11,7 +11,7 @@ import {
 } from "react-icons/md";
 import { AiOutlineUserSwitch } from "react-icons/ai";
 import { TbUserEdit, TbUserShare } from "react-icons/tb";
-import { BsCartCheck ,BsPostcardHeart } from "react-icons/bs";
+import { BsCartCheck, BsPostcardHeart } from "react-icons/bs";
 import { FaBlog, FaListUl } from "react-icons/fa";
 import { BsTags } from "react-icons/bs";
 import { PiCreditCardLight, PiCubeTransparent } from "react-icons/pi";
@@ -19,6 +19,9 @@ import { FiUsers } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import { GrGallery } from "react-icons/gr";
 import { RxVideo } from "react-icons/rx";
+import { LiaToolsSolid } from "react-icons/lia";
+
+import JWT from "@/utils/jwt.util";
 
 const Panel = ({ children }) => {
   const router = useRouter();
@@ -27,9 +30,9 @@ const Panel = ({ children }) => {
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken");
-    if (!accessToken) {
-      window.open("/auth/signin", "_self");
-    }
+    const jwt = new JWT();
+    const res = jwt.moddlewareNumber(1);
+    const decoded = jwt.decodeAccessToken(accessToken);
   }, [user]);
 
   const routes = [
@@ -37,66 +40,86 @@ const Panel = ({ children }) => {
       name: "پروفایل من",
       path: "/dashboard/my-profile",
       icon: <TbUserEdit className="w-5 h-5" />,
+      Access : 1
     },
     {
       name: "دسته بندی ها",
       path: "/dashboard/categories",
       icon: <FaListUl className="w-5 h-5" />,
+      Access : 2
     },
     {
       name: "تگ ها",
       path: "/dashboard/tags",
       icon: <BsTags className="w-5 h-5" />,
+      Access : 2
     },
     {
       name: "رسانه",
       path: "/dashboard/media",
       icon: <RxVideo className="w-5 h-5" />,
+      Access : 2
     },
     {
       name: "پست",
       path: "/dashboard/posts",
       icon: <BsPostcardHeart className="w-5 h-5" />,
+      Access : 2
     },
     {
       name: "بلاگ",
       path: "/dashboard/blogs",
       icon: <FaBlog className="w-5 h-5" />,
+      Access : 2
     },
     {
       name: "اخبار",
       path: "/dashboard/news",
       icon: <PiCubeTransparent className="w-5 h-5" />,
+      Access : 2
     },
     {
       name: "گالری",
       path: "/dashboard/gallery",
       icon: <GrGallery className="w-5 h-5" />,
+      Access : 2
     },
     {
       name: "سفارشات",
       path: "/dashboard/view-cart",
       icon: <BsCartCheck className="w-5 h-5" />,
+      Access : 1
     },
     {
       name: "علاقه مندی ها",
       path: "/dashboard/view-favorites",
       icon: <MdFavoriteBorder className="w-5 h-5" />,
+      Access : 2
     },
+    
     {
       name: "سبد خرید",
       path: "/dashboard/view-purchases",
       icon: <PiCreditCardLight className="w-5 h-5" />,
+      Access : 1
+    },
+    {
+      name: "امکانات",
+      path: "/dashboard/tools",
+      icon: <LiaToolsSolid className="w-5 h-5" />,
+      Access : 2
     },
     {
       name: "خریداران",
       path: "/dashboard/list-buyers",
       icon: <AiOutlineUserSwitch className="w-5 h-5" />,
+      Access : 3
     },
     {
       name: "اپراتورها",
       path: "/dashboard/list-sellers",
       icon: <TbUserShare className="w-5 h-5" />,
+      Access : 3
     },
     {
       name: (
@@ -112,11 +135,13 @@ const Panel = ({ children }) => {
       ),
       path: "/dashboard/users",
       icon: <FiUsers className="w-5 h-5" />,
+      Access : 3
     },
     {
       name: "تنظیمات سایت",
       path: "/dashboard/setting",
       icon: <MdOutlineRateReview className="w-5 h-5" />,
+      Access : 3
     },
   ];
 

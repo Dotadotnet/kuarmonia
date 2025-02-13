@@ -4,7 +4,6 @@ import { useEffect } from 'react';  // وارد کردن useEffect از React
 export default function Document() {
   useEffect(() => {
     const images = document.querySelectorAll('img');
-    alert('dd')  // تمام تصاویر را انتخاب می‌کند
     images.forEach((img, index) => {
       if (!img.hasAttribute('alt') || img.alt.trim() === "") {  // بررسی می‌کند که alt وجود ندارد یا خالی است
         console.warn(`تصویر در ایندکس ${index} فاقد ویژگی "alt" است:`, img);

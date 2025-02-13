@@ -6,11 +6,18 @@ import React from "react";
 import { IoHomeOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import Image from "next/image";
+import JWT from "@/utils/jwt.util";
 
 const Sidebar = ({ routes }) => {
   const router = useRouter();
   const user = useSelector((state) => state?.auth);
-
+  const routes_result = [];
+  const jwt = new JWT();
+  routes.forEach(route => {
+    if(jwt.isAccessAllowedNumber(route.Access)){
+      routes_result.push(route)
+    }
+  });
   const isActive = (href) => {
     return router.pathname === href ? "bg-primary dark:bg-blue-500 text-white" : "";
   };
@@ -18,7 +25,7 @@ const Sidebar = ({ routes }) => {
   return (
     <div className="w-full h-full flex flex-col gap-y-2 ">
       <div className="flex flex-col gap-y-1 overflow-y-auto scrollbar-hide">
-        {routes.map((route, index) => (
+        {routes_result.map((route, index) => (
           <Link
             key={index}
             href={route.path}
