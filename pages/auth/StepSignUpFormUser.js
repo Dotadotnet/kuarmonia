@@ -120,6 +120,7 @@ const StepSignUpForm = () => {
             toast.success(response.data.message,{ duration: 5000 });
             clearErrors("verify")
             if (response.data.accessToken) {
+              
               localStorage.setItem("accessToken", response.data.accessToken);
               window.open("/dashboard", "_self");
             }
@@ -225,9 +226,7 @@ const StepSignUpForm = () => {
     };
 
     setInvalidSteps((prevInvalidSteps) => {
-      const newInvalidSteps = { ...prevInvalidSteps };
-      console.log(errors);
-      
+      const newInvalidSteps = { ...prevInvalidSteps };      
       Object.keys(errors).forEach((field) => {
         const step = fieldToStep[field];
         if (step) {
