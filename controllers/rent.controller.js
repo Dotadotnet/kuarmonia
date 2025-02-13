@@ -269,7 +269,7 @@ export async function getFilteredRents(req) {
 
     return {
       success: true,
-      message: "Successfully fetch filtered rents",
+      message: "املاک و فرصت ها با موفقیت دریافت شدند",
       data: rents || [],
     };
   } catch (error) {

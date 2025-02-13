@@ -1,5 +1,5 @@
-
 import { useEffect, useState } from "react";
+import countryNamesFa from "./countryNamesFa.json"; // ایمپورت ترجمه‌ها
 
 export default function useGetCountries() {
   const [countries, setCountries] = useState([]);
@@ -9,19 +9,21 @@ export default function useGetCountries() {
       .then((res) => res.json())
       .then((data) => {
         const countries = data.map((country) => {
+          const countryNameEn = country.name.common;
           return {
-            name: country.name.common,
-            flag: country.flags.svg,
-            latlng: country.latlng,
+            name: countryNamesFa[countryNameEn] || countryNameEn, // ترجمه یا نام اصلی
+            flag: country.flags.svg, // لینک پرچم
+            latlng: country.latlng, // مختصات جغرافیایی
           };
         });
 
         const sortedCountries = countries.sort((a, b) =>
-          a.name.localeCompare(b.name)
+          a.name.localeCompare(b.name, "fa")
         );
 
         setCountries(sortedCountries);
-      });
+      })
+      .catch((error) => console.error("خطا در دریافت کشورها:", error));
   }, []);
 
   return countries;
