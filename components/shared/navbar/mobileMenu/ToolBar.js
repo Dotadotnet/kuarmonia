@@ -6,15 +6,7 @@ import Search from "../searchTrio/Search";
 import Auth from "../auth/Auth";
 
 function ToolBar() {
-	const handleCrispOpen = () => {
-		let crispChat = document.querySelector("a.cc-1m2mf");
-		if (crispChat) {
-		  crispChat.style.display = "block"; // Crisp را نمایش بده
-		}
-		if (window.$crisp) {
-		  window.$crisp.push(["do", "chat:open"]); // Crisp را باز کن
-		}
-	  };
+
 	  
   return (
     <div className="px-6 sm:px-25 z-[9999] fixed w-full bottom-4">
@@ -26,7 +18,7 @@ function ToolBar() {
 
           <div className="flex flex-col items-center  hover:text-blue-400 ">
             <div className="absolute bottom-8 shadow-2xl text-center flex items-center justify-center rounded-full border-4 text-3xl border-gray-50 hover:border-[rgb(34,197,94)] bg-[rgb(34,197,94)] w-[68px] h-[68px] p-2 text-white transition ease-in duration-200 ">
-              <i className="fas fa-phone-alt"></i>
+           
               <span className="animate-ping  border-[rgb(34,197,94)] absolute inline-flex h-full w-full rounded-full border-4 opacity-50"></span>
             </div>
           </div>
