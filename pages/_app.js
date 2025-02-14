@@ -73,7 +73,7 @@ export default function App({ Component, pageProps }) {
       let interval = setInterval(() => {
         function_edite();
       }, 300);
-    }, 500)
+    }, 500);
   }, []);
 
   return (
