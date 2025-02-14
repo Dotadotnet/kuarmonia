@@ -7,7 +7,7 @@ import Modal from "../../modal/Modal";
 import SearchFilter from "./SearchFilter";
 import HighlightText from "../../highlightText/HighlightText";
 
-const Search = () => {
+const Search = ({forToolbar}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -20,15 +20,22 @@ const Search = () => {
 
   return (
     <>
-      <Tooltip text="جستجو" txtColor="text-white">
-        <button
-          className="p-1.5 border  rounded  border-primary/20 dark:border-gray-800"
-          onClick={openModal}
-        >
-          <BiSearch className="text-lg" />
-        </button>
-      </Tooltip>
 
+      {
+        forToolbar ?
+          <div onClick={openModal} className="flex flex-col items-center transition ease-in duration-200 hover:text-blue-400 ">
+            <BiSearch className="text-xl font-bold" />
+          </div>
+          :
+          <Tooltip text="جستجو" txtColor="text-white">
+            <button
+              className="p-1.5 border  rounded  border-primary/20 dark:border-gray-800"
+              onClick={openModal}
+            >
+              <BiSearch className="text-lg" />
+            </button>
+          </Tooltip>
+      }
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}

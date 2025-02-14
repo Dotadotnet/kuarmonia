@@ -3,8 +3,9 @@ import { motion } from "framer-motion";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import Link from "next/link";
 import MobileNav from "./MobileNav";
+import { CgClose } from "react-icons/cg";
 
-const MobileMenu = () => {
+const MobileMenu = ({ isOpen, setIsOpen }) => {
   const [isOpenMobileNav, setIsOpenMobileNav] = useState(false);
 
   return (
@@ -15,16 +16,15 @@ const MobileMenu = () => {
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 200 }}
       >
-        {isOpenMobileNav ? (
-          <MobileNav isOpen={isOpenMobileNav} setIsOpen={setIsOpenMobileNav} />
-        ) : (
           <div className="flex items-center justify-between w-full">
             <motion.div
               whileTap={{ scale: 0.9 }}
-              className="flex items-center justify-center"
-              onClick={() => setIsOpenMobileNav(!isOpenMobileNav)}
+              className="flex items-center justify-center cursor-pointer"
+              onClick={() => setIsOpen(!isOpen)}
             >
-              <HiOutlineMenuAlt2 className="text-headingColor text-4xl" />
+              { 
+                isOpen ? <CgClose className="text-headingColor text-4xl" /> : <HiOutlineMenuAlt2 className="text-headingColor text-4xl" />
+              }
             </motion.div>
             <Link href={"/"}>
               <motion.div
@@ -33,7 +33,7 @@ const MobileMenu = () => {
               />
             </Link>
           </div>
-        )}
+      
       </motion.div>
     </div>
   );

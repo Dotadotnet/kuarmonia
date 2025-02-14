@@ -16,7 +16,7 @@ import { toast } from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FiTrash } from "react-icons/fi";
 
-const Cart = () => {
+const Cart = ({ forToolbar }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const user = useSelector((state) => state?.auth);
 
@@ -57,20 +57,27 @@ const Cart = () => {
 
   return (
     <>
-      <Tooltip text="سبد خرید" txtColor="text-white">
-        <button
-          className="p-1.5 border  rounded  border-primary/20 dark:border-gray-800"
-          onClick={openModal}
-        >
-          <IoCartOutline className="text-lg" />
+      {
+        forToolbar ?
+          <div onClick={openModal} className="flex flex-col items-center transition ease-in duration-200 hover:text-blue-400 ">
+            <IoCartOutline className="text-xl font-bold" />
+          </div>
+          :
+          <Tooltip text="سبد خرید" txtColor="text-white">
+            <button
+              className="p-1.5 border  rounded  border-primary/20 dark:border-gray-800"
+              onClick={openModal}
+            >
+              <IoCartOutline className="text-lg" />
 
-          <span
-            className={`h-2 w-2 rounded-secondary absolute -top-1 -right-1 ${
-              user?.cart?.rents?.length > 0 && "bg-green-500"
-            }`}
-          ></span>
-        </button>
-      </Tooltip>
+              <span
+                className={`h-2 w-2 rounded-secondary absolute -top-1 -right-1 ${user?.cart?.rents?.length > 0 && "bg-green-500"
+                  }`}
+              ></span>
+            </button>
+          </Tooltip>
+      }
+
 
       <Modal
         isOpen={isModalOpen}

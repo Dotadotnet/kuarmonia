@@ -21,12 +21,7 @@ const Signup = () => {
 
         <StepSignUpForm
         />
-
-        <div className="text-xs flex flex-row justify-center items-center gap-x-2">
-          <Link href="/auth/signin">ورود</Link>
-        </div>
         <div className="flex justify-center">
-
         <ToggleThemeButton />
         </div>
       </div>

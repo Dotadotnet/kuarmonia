@@ -40,7 +40,7 @@ class Sms {
     }
 
     verifyCode(args) {
-        // this.send(args, this.phone, 295493)
+        this.send(args, this.phone, 295493)
     }
 
 

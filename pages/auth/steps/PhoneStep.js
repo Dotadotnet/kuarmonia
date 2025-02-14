@@ -80,7 +80,6 @@ const PhoneStep = ({ register, errors, getValues, setValue, setError, prevStep, 
       </label>
       <div className="flex sm:scale-100 scale-90 justify-between sm:mt-8 mt-6">
         <NavigationButton direction="next" onClick={nextCustomStrp} />
-        <NavigationButton direction="prev" onClick={prevStep} />
       </div>
     </>
   );

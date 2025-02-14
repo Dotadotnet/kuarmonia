@@ -148,7 +148,11 @@ const StepSignInForm = () => {
             register={register}
             errors={errors}
             prevStep={prevStep}
+            nextStep={nextStep}
+            setError={setError}
+            clearErrors={clearErrors}
             getValues={getValues}
+            setValue={setValue}
           />
         );
       default:

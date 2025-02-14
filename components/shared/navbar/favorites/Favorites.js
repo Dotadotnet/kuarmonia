@@ -15,7 +15,7 @@ import { FiTrash } from "react-icons/fi";
 import { toast } from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-const Favorites = () => {
+const Favorites = ({forToolbar}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const user = useSelector((state) => state?.auth);
 
@@ -62,20 +62,26 @@ const Favorites = () => {
 
   return (
     <>
-      <Tooltip text="علاقه مندی ها" txtColor="text-white">
-        <button
-          className="p-1.5 border  rounded  border-primary/20 dark:border-gray-800"
-          onClick={openModal}
-        >
-          <MdFavoriteBorder className="text-lg" />
+      {
+        forToolbar ?
+          <div onClick={openModal} className="flex flex-col items-center transition ease-in duration-200 hover:text-blue-400 ">
+            <MdFavoriteBorder className="text-xl font-bold" />
+          </div>
+          :
+          <Tooltip text="علاقه مندی ها" txtColor="text-white">
+            <button
+              className="p-1.5 border  rounded  border-primary/20 dark:border-gray-800"
+              onClick={openModal}
+            >
+              <MdFavoriteBorder className="text-lg" />
+              <span
+                className={`h-2 w-2 rounded-secondary absolute -top-1 -right-1 ${user?.favorite?.rents?.length > 0 && "bg-green-500"
+                  }`}
+              ></span>
+            </button>
+          </Tooltip>
+      }
 
-          <span
-            className={`h-2 w-2 rounded-secondary absolute -top-1 -right-1 ${
-              user?.favorite?.rents?.length > 0 && "bg-green-500"
-            }`}
-          ></span>
-        </button>
-      </Tooltip>
 
       <Modal
         isOpen={isModalOpen}

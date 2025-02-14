@@ -7,9 +7,6 @@ import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 import AvatarStep from "./steps/AvatarStep";
 import NameStep from "./steps/NameStep";
-import EmailStep from "./steps/EmailStep";
-import PasswordStep from "./steps/PasswordStep";
-
 import VerifyStep from "./steps/VerifyStep";
 import PhoneStep from "./steps/PhoneStep";
 import StepIndicator from "./steps/StepIndicator";
@@ -57,33 +54,33 @@ const StepSignUpForm = () => {
   const nextStep = async () => {
     let valid = false;
     switch (currentStep) {
+    
       case 1:
-        valid = await trigger("name");
-        if (!valid) {
-          toast.error("لطفاً نام خود را وارد کنید");
-          setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
-          return;
-        }
-        valid = true;
-        break;
-      case 2:
         valid = await trigger("phone");
         console.log(errors);
-
         if (!valid) {
           toast.error("لطفاً شماره تلفن خود را به شکل صحیح وارد کنید");
           setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
           return;
         }
         break;
-      case 3:
-        valid = await trigger("verify");
-        if (!valid) {
-          toast.error("لطفاً شماره تلفن خود را به شکل صحیح وارد کنید");
-          setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
-          return;
-        }
-        break;
+        case 2:
+          valid = await trigger("verify");
+          if (!valid) {
+            toast.error("لطفاً شماره تلفن خود را به شکل صحیح وارد کنید");
+            setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
+            return;
+          }
+          break;
+        case 3:
+          valid = await trigger("name");
+          if (!valid) {
+            toast.error("لطفاً نام خود را وارد کنید");
+            setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
+            return;
+          }
+          valid = true;
+          break;
       default:
         break;
     }
@@ -134,9 +131,9 @@ const StepSignUpForm = () => {
 
   const getStepFromField = (field) => {
     const fieldToStep = {
-      name: 1,
-      phone: 2,
-      verify: 3,
+      phone: 1,
+      verify: 2,
+      name: 3,
     };
     return fieldToStep[field];
   };
@@ -144,15 +141,6 @@ const StepSignUpForm = () => {
   const renderStepContent = (step) => {
     switch (step) {
       case 1:
-        return (
-          <NameStep
-            register={register}
-            errors={errors}
-            nextStep={nextStep}
-          />
-        );
-      case 2:
-
         return (
           <PhoneStep
             register={register}
@@ -165,15 +153,24 @@ const StepSignUpForm = () => {
             setValue={setValue}
           />
         );
-      case 3:
+      case 2:   
         return (
           <VerifyStep
             register={register}
             errors={errors}
             prevStep={prevStep}
+            nextStep={nextStep}
             getValues={getValues}
           />
         );
+      case 3:
+        return (
+          <NameStep
+            register={register}
+            errors={errors}
+          />
+        );
+       
       default:
         return null;
     }
@@ -220,9 +217,9 @@ const StepSignUpForm = () => {
 
   useEffect(() => {
     const fieldToStep = {
-      name: 1,
-      phone: 2,
-      verify: 3,
+      phone: 1,
+      verify: 2,
+      name: 3,
     };
 
     setInvalidSteps((prevInvalidSteps) => {

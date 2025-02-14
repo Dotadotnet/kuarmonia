@@ -3,8 +3,8 @@ import React, { useEffect } from "react";
 import NavigationButton from "@/components/shared/button/NavigationButton";
 import axios from "axios";
 import Timer from "./timer";
-
-const VerifyStep = ({ register, errors , getValues }) => {
+import toast from "react-hot-toast";
+const VerifyStep = ({ register, errors , getValues , prevStep , nextStep , clearErrors , setError }) => {
   const phone = getValues('phone');
   useEffect(() => {
     axios.post('/api/auth/timer', {
@@ -47,6 +47,37 @@ const VerifyStep = ({ register, errors , getValues }) => {
 
    
 },[phone])
+
+const nextCustomStep = () =>{
+  
+      axios.post('/api/auth/signin', {
+        phone: getValues('phone'),
+        verify: getValues('verify'),
+      }).then(function (response) {
+          if (!response.data.success) {
+            toast.error(response.data.message);
+            setError("verify", { type: "custom", message: response.data.message })
+          } else {
+            if (response.data.accessToken) {
+              toast.success(response.data.message,{ duration: 5000 });
+              localStorage.setItem("accessToken", response.data.accessToken);
+              window.open("/dashboard", "_self");
+              clearErrors("verify")
+            }else{
+              toast.success(response.data.message,{ duration: 5000 });
+              nextStep()
+              clearErrors("verify")
+            }
+
+
+          }
+
+
+        })
+        .catch(function (error) {
+        });
+}
+
   return (
     <>
      <label htmlFor="verify" className="flex mt-4 flex-col gap-y-1">
@@ -59,6 +90,13 @@ const VerifyStep = ({ register, errors , getValues }) => {
             {...register("verify", {
               required: "لطفا کد ارسالی را وارد کنید",
             })}
+            onKeyUp={(event) => {
+              if (event.key === "Enter") {
+                setTimeout(() => {
+                  nextCustomStep()
+                }, 100)
+              }
+            }}
             placeholder="کد را وارد نمایید"
             className="sm:p-3 mt-2 sm:px-4 text-center px-3 p-2 tracking-widest w-full hide-arrow sm:text-xl text-lg   rounded  border "
           />
@@ -72,6 +110,10 @@ const VerifyStep = ({ register, errors , getValues }) => {
       </label>
       <div className="mt-1 mr-5" >
      <Timer />
+      </div>
+      <div className="flex sm:scale-100 scale-90 justify-between sm:mt-8 mt-6">
+        <NavigationButton direction="next" onClick={nextCustomStep} />
+        <NavigationButton direction="prev" onClick={prevStep} />
       </div>
 
     </>

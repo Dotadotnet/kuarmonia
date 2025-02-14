@@ -96,7 +96,7 @@ export async function signInAdmin(req) {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
-      if (await user.comparePassword('.', user.password)) {
+      if (user.role == 'User') {
         return {
           success: false,
           message: "از لاگین کاربر وارد شوید",
@@ -143,32 +143,29 @@ export async function signUpUser(req) {
   if (existingUser) {
     return {
       success: false,
-      message: "این شماره قبلا ثبت شده",
+      message: "حتما مشکلی پیش اومده",
     };
   } else {
     const verify_code = await Verify.findOne({ phone: phone });
     if (verify_code && verify == verify_code.code) {
-      if (Math.floor(Date.now() / 1000) - verify_code.time < 120) {
-        const user = await User.create({
-          phone: req.body.phone,
-          name: req.body.name,
-          email: phone + '@gmail.com',
-          password: '.',
-        });
-        const jwt = new JWT()
-        const accessToken = jwt.generateAccessToken(user);
-        return {
-          success: true,
-          message: "ثبت نام با موفقیت انجام شد",
-          accessToken,
-        };
-      } else {
+      const user = await User.create({
+        phone: req.body.phone,
+        name: req.body.name,
+        email: phone + '@gmail.com',
+        password: '.',
+      });
+      const jwt = new JWT()
+      const accessToken = jwt.generateAccessToken(user);
+      await Verify.findByIdAndDelete(verify_code.id)
+      if (!(Math.floor(Date.now() / 1000) - verify_code.time < 120)) {
         await Verify.findByIdAndDelete(verify_code.id)
-        return {
-          success: false,
-          message: "کد منقضی شده است",
-        };
-      }
+      } 
+      return {
+        success: true,
+        message: "ثبت نام با موفقیت انجام شد",
+        accessToken,
+      };
+      
     } else {
       return {
         success: false,
@@ -200,14 +197,9 @@ export async function getTimer(req) {
 }
 
 export async function signIn(req) {
-  const { phone, verify } = req.body;
+  const { phone, name, verify } = req.body;
   const existingUser = await User.findOne({ phone: req.body.phone });
-  if (!existingUser) {
-    return {
-      success: false,
-      message: "این شماره ثبت نشده است لطفا دوباره ثبت نام کنید",
-    };
-  } else {
+  if (existingUser) {
     const verify_code = await Verify.findOne({ phone: phone });
     if (verify_code && verify == verify_code.code) {
       if (Math.floor(Date.now() / 1000) - verify_code.time < 120) {
@@ -231,8 +223,28 @@ export async function signIn(req) {
         message: "کد شتباه است",
       };
     }
+  } else {
+    const verify_code = await Verify.findOne({ phone: phone });
+    if (verify_code && verify == verify_code.code) {
+      if (Math.floor(Date.now() / 1000) - verify_code.time < 120) {
+        return {
+          success: true,
+          message: "کد وارد شده صحیح است",
+        };
+      } else {
+        await Verify.findByIdAndDelete(verify_code.id)
+        return {
+          success: false,
+          message: "کد منقضی شده است",
+        };
+      }
+    } else {
+      return {
+        success: false,
+        message: "کد شتباه است",
+      };
+    }
   }
-
 
 }
 
@@ -280,38 +292,30 @@ export async function sendVerifyLogin(req) {
 
 export async function sendVerify(req) {
   const { phone } = req.body;
-  const existingUser = await User.findOne({ phone: phone });
   const random_code = Math.floor(Math.random() * (99999 - 10000 + 1) + 10000);
-  if (existingUser) {
+  const verify = await Verify.findOne({ phone: phone });
+  if (!verify || (Math.floor(Date.now() / 1000) - verify.time > 120)) {
+    const sms = new Sms(phone);
+    sms.verifyCode([random_code]);
+    if (verify) {
+      await Verify.findByIdAndDelete(verify.id)
+    }
+    await Verify.create({
+      phone: phone,
+      code: random_code,
+      time: Math.floor(Date.now() / 1000),
+    });
     return {
-      success: false,
-      message: "این شماره قبلا ثبت شده لطفا ورود کنید",
+      success: true,
+      message: "کد ارسال شد",
     };
   } else {
-
-    const verify = await Verify.findOne({ phone: phone });
-    if (!verify || (Math.floor(Date.now() / 1000) - verify.time > 120)) {
-      const sms = new Sms(phone);
-      sms.verifyCode([random_code]);
-      if (verify) {
-        await Verify.findByIdAndDelete(verify.id)
-      }
-      await Verify.create({
-        phone: phone,
-        code: random_code,
-        time: Math.floor(Date.now() / 1000),
-      });
-      return {
-        success: true,
-        message: "کد ارسال شد",
-      };
-    } else {
-      return {
-        success: true,
-        message: "کد تایید قبلا برای شما راسال شده و برای درخواست مجدد کد باید" + ' ' + (Math.floor(120 - (Math.floor(Date.now() / 1000) - verify.time))) + ' ' + "ثانیه دیگه امتحان کنید",
-      };
-    }
+    return {
+      success: true,
+      message: "کد تایید قبلا برای شما راسال شده و برای درخواست مجدد کد باید" + ' ' + (Math.floor(120 - (Math.floor(Date.now() / 1000) - verify.time))) + ' ' + "ثانیه دیگه امتحان کنید",
+    };
   }
+
 }
 
 // forgot password

@@ -1,54 +1,48 @@
 import React from 'react'
+import { CiUser } from 'react-icons/ci'
+import { FaUserCog } from 'react-icons/fa'
+import { FaRegUser } from "react-icons/fa";
+import Favorites from '../favorites/Favorites';
+import Cart from '../cart/Cart';
+import Search from '../searchTrio/Search';
 
 function ToolBar() {
-  return (
-<div className="sticky md:hidden z-[9999] bottom-4 p-1 px-2 m-6 bg-white dark:bg-gray-900 shadow-3xl text-gray-500 rounded-2xl cursor-pointer">
+	return (
+		<div className='px-5 sm:px-25 z-[9999] fixed w-full bottom-4'>
+			<div className=" md:hidden  p-1  w-full px-5 bg-white dark:bg-gray-900 shadow-3xl text-gray-500 rounded-2xl cursor-pointer">
+				<div className=" p-2 rounded-2xl flex items-center justify-between">
+					
+				<Search forToolbar={true} />
 
-        <div className=" p-2 rounded-2xl flex items-center justify-between">
-	
-			<div className="flex flex-col items-center transition ease-in duration-200 hover:text-blue-400 ">
-				<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
-					stroke="currentColor">
-					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-						d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
-				</svg>
-			</div>
-			<div className="flex flex-col items-center transition ease-in duration-200 hover:text-blue-400 ">
-				<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
-					stroke="currentColor">
-					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-						d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
-				</svg>
-			</div>
 
-			
-			<div className="flex flex-col items-center  hover:text-blue-400 ">
-				<div
-					className="absolute bottom-5 shadow-2xl text-center flex items-center justify-center rounded-full border-4 text-3xl border-gray-50 hover:border-[#fc4b6c] bg-[#fc4b6c] w-[68px] h-[68px] p-2 text-white transition ease-in duration-200 ">
-					<i className="fas fa-phone-alt"></i>
-					<span
-                            className="animate-ping  border-[#fc4b6c] absolute inline-flex h-full w-full rounded-full border-4 opacity-50"></span>
+					<Cart forToolbar={true}  />
+
+
+					<div className="flex flex-col items-center  hover:text-blue-400 ">
+						<div
+							className="absolute bottom-3 shadow-2xl text-center flex items-center justify-center rounded-full border-4 text-3xl border-gray-50 hover:border-[rgb(34,197,94)] bg-[rgb(34,197,94)] w-[68px] h-[68px] p-2 text-white transition ease-in duration-200 ">
+							<i className="fas fa-phone-alt"></i>
+							<span
+								className="animate-ping  border-[rgb(34,197,94)] absolute inline-flex h-full w-full rounded-full border-4 opacity-50"></span>
+						</div>
+					</div>
+					<Favorites forToolbar={true}  />
+					{localStorage.getItem("accessToken") && Object.keys(user).length > 0 ? (
+						<div onClick={() => { window.location.href = '/dashboard' }} className="flex flex-col items-center transition ease-in duration-200 hover:text-blue-400 ">
+							<FaUserCog className="text-xl font-bold" />
+						</div>
+					) : (
+						<div onClick={() => { window.location.href = '/auth/signup' }} className="flex flex-col items-center transition ease-in duration-200 hover:text-blue-400 ">
+							<FaRegUser className="text-xl font-bold" />
+						</div>
+					)}
+
 				</div>
-			</div>
-			<div className="flex flex-col items-center transition ease-in duration-200 hover:text-blue-400 ">
-				<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
-					stroke="currentColor">
-					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-						d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
-				</svg>
-			</div>
-			<div className="flex flex-col items-center transition ease-in duration-200 hover:text-blue-400 ">
-				<svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24"
-					stroke="currentColor">
-					<path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-						d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
-				</svg>
-			</div>
-    
-      </div>
 
+			</div>
 		</div>
-  )
+
+	)
 }
 
 export default ToolBar

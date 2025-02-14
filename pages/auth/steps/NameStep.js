@@ -2,11 +2,11 @@
 import React from "react";
 import NavigationButton from "@/components/shared/button/NavigationButton";
 
-const NameStep = ({ register, errors, prevStep, nextStep }) => {
+const NameStep = ({ register, errors, prevStep }) => {
   return (
     <>
       <label htmlFor="name" className="flex flex-col gap-y-1">
-        <span className="text-sm">نام خود را وارد کنید</span>
+        <span className="text-sm">نام و نام خانوادگی</span>
         <input
           type="text"
           name="name"
@@ -23,11 +23,6 @@ const NameStep = ({ register, errors, prevStep, nextStep }) => {
             },
           })}          placeholder="نام"
           maxLength="100"
-          onKeyDown={(event) =>{
-            if (event.key === "Enter") {
-              nextStep()
-            }
-          }}
           className="p-2 rounded border "
         />
         {errors.name && (
@@ -35,7 +30,6 @@ const NameStep = ({ register, errors, prevStep, nextStep }) => {
         )}
       </label>
       <div className="flex sm:scale-100 scale-90 justify-between sm:mt-8 mt-6">
-      <NavigationButton direction="next" onClick={nextStep} />
       </div>
     </>
   );
