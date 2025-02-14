@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   IoHomeOutline,
-  IoMailOutline,
   IoNewspaperOutline,
   IoReceiptOutline,
   IoInformationCircleOutline,
-  IoHeadsetOutline,
 } from "react-icons/io5";
 
 const LargeMenu = () => {
@@ -16,37 +14,44 @@ const LargeMenu = () => {
     { id: 1, label: "خانه", icon: <IoHomeOutline size={24} />, href: "/" },
     { id: 2, label: "وبلاگ", icon: <IoReceiptOutline size={24} />, href: "/blog" },
     { id: 3, label: "اخبار", icon: <IoNewspaperOutline size={24} />, href: "/news" },
-    { id: 4, label: "مشاوره", icon: <IoHeadsetOutline size={24} />, href: "/consulting" },
-    {
-      id: 5,
-      label: "درباره ما",
-      icon: <IoInformationCircleOutline size={24} />,
-      href: "/about",
-    },
+    { id: 4, label: "درباره ما", icon: <IoInformationCircleOutline size={24} />, href: "/about" },
   ];
+
+  // مقداردهی پیش‌فرض به صفحه‌ی جاری
+  const [selectMenu, setSelectMenu] = useState("");
+
+  useEffect(() => {
+    // پیدا کردن آیتمی که آدرسش با مسیر فعلی یکی است
+    const currentMenu = menuItems.find((item) => item.href === router.pathname);
+    if (currentMenu) {
+      setSelectMenu(currentMenu.label);
+    }
+  }, [router.pathname]); // هر بار که مسیر تغییر کرد، مقدار selectMenu به‌روزرسانی شود.
+
+  const handleClick = (menuItem) => {
+    setSelectMenu(menuItem.label);
+    router.push(menuItem.href);
+  };
 
   return (
     <nav className="bg-neutral-100/70 col-span-8 mx-8 rounded-primary hidden md:flex w-full">
-      <div className="flex flex-row justify-center gap-x-4 overflow-x-auto">
-        <div className="flex flex-row justify-center gap-x-4 border p-1 rounded-secondary bg-white overflow-x-auto scrollbar-hide">
-          {menuItems.map((link) => {
-            const isActive = router.pathname === link.href; // بررسی فعال بودن مسیر
-            return (
+      <div className="bg-neutral-100/70 rounded-primary hidden md:flex">
+        <div className="flex flex-row justify-center gap-x-4 overflow-x-auto">
+          <div className="flex flex-row justify-center gap-x-4 border p-1 rounded-secondary bg-white dark:bg-gray-800 overflow-x-auto scrollbar-hide">
+            {menuItems.map((menuItem) => (
               <button
-                key={link.id}
-                className={`text-sm text-black w-44 text-center h-10 flex flex-row items-center gap-x-1 px-8 py-2 justify-center rounded-secondary border ${
-                  isActive ? "bg-black text-white" : "border-transparent"
-                }`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  router.push(link.href);
-                }}
+                key={menuItem.id}
+                className={
+                  "text-sm text-black dark:text-gray-100 w-44 text-center h-10 flex flex-row items-center gap-x-1 px-8 py-2 justify-center rounded-secondary border border-transparent" +
+                  (selectMenu === menuItem.label ? " bg-black text-white" : "")
+                }
+                onClick={() => handleClick(menuItem)}
               >
-                {link.icon}
-                {link.label}
+                {menuItem.icon}
+                {menuItem.label}
               </button>
-            );
-          })}
+            ))}
+          </div>
         </div>
       </div>
     </nav>

@@ -1,13 +1,10 @@
-
-
 import React, { useState } from "react";
-import { BiSearch } from "react-icons/bi";
-import Tooltip from "../../tooltip/Tooltip";
 import Modal from "../../modal/Modal";
 import SearchFilter from "./SearchFilter";
 import HighlightText from "../../highlightText/HighlightText";
+import Search from "@/components/icons/Search";
 
-const Search = ({forToolbar}) => {
+const MySearch = ({ forToolbar }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -20,22 +17,13 @@ const Search = ({forToolbar}) => {
 
   return (
     <>
+      <div
+        onClick={openModal}
+        className="p-2 rounded-secondary bg-slate-100 dark:bg-slate-800  hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+         >
+        <Search className="w-6 h-6" />
+      </div>
 
-      {
-        forToolbar ?
-          <div onClick={openModal} className="flex flex-col items-center transition ease-in duration-200 hover:text-blue-400 ">
-            <BiSearch className="text-xl font-bold" />
-          </div>
-          :
-          <Tooltip text="جستجو" txtColor="text-white">
-            <button
-              className="p-1.5 border  rounded  border-primary/20 dark:border-gray-800"
-              onClick={openModal}
-            >
-              <BiSearch className="text-lg" />
-            </button>
-          </Tooltip>
-      }
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
@@ -52,4 +40,4 @@ const Search = ({forToolbar}) => {
   );
 };
 
-export default Search;
+export default MySearch;

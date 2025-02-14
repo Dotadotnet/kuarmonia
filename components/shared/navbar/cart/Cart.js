@@ -1,22 +1,18 @@
-
-
 import React, { useEffect, useMemo, useState } from "react";
-import Tooltip from "../../tooltip/Tooltip";
-import { IoCartOutline } from "react-icons/io5";
 import Modal from "../../modal/Modal";
 import HighlightText from "../../highlightText/HighlightText";
-import CartCard from "../../loading/cartCard";
 import Image from "next/image";
 import {
   useGetCartQuery,
-  useRemoveFromCartMutation,
+  useRemoveFromCartMutation
 } from "@/services/cart/cartApi";
 import { useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FiTrash } from "react-icons/fi";
+import Cart from "@/components/icons/Cart";
 
-const Cart = ({ forToolbar }) => {
+const MyCart = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const user = useSelector((state) => state?.auth);
 
@@ -25,8 +21,8 @@ const Cart = ({ forToolbar }) => {
     {
       isLoading: removeFromCartLoading,
       data: removeFromCartData,
-      error: removeFromCartError,
-    },
+      error: removeFromCartError
+    }
   ] = useRemoveFromCartMutation();
 
   useEffect(() => {
@@ -36,13 +32,13 @@ const Cart = ({ forToolbar }) => {
 
     if (removeFromCartData) {
       toast.success(removeFromCartData?.message, {
-        id: "remove-from-cart",
+        id: "remove-from-cart"
       });
     }
 
     if (removeFromCartError?.data) {
       toast.error(removeFromCartError?.data?.message, {
-        id: "remove-from-cart",
+        id: "remove-from-cart"
       });
     }
   }, [removeFromCartLoading, removeFromCartData, removeFromCartError]);
@@ -57,27 +53,18 @@ const Cart = ({ forToolbar }) => {
 
   return (
     <>
-      {
-        forToolbar ?
-          <div onClick={openModal} className="flex flex-col items-center transition ease-in duration-200 hover:text-blue-400 ">
-            <IoCartOutline className="text-xl font-bold" />
-          </div>
-          :
-          <Tooltip text="سبد خرید" txtColor="text-white">
-            <button
-              className="p-1.5 border  rounded  border-primary/20 dark:border-gray-800"
-              onClick={openModal}
-            >
-              <IoCartOutline className="text-lg" />
+      <button
+        className="p-2 rounded-secondary bg-slate-100 dark:bg-slate-800  hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+        onClick={openModal}
+      >
+        <Cart className="h-6 w-6" />
 
-              <span
-                className={`h-2 w-2 rounded-secondary absolute -top-1 -right-1 ${user?.cart?.rents?.length > 0 && "bg-green-500"
-                  }`}
-              ></span>
-            </button>
-          </Tooltip>
-      }
-
+        <span
+          className={`h-2 w-2 rounded-secondary absolute -top-1 -right-1 ${
+            user?.cart?.rents?.length > 0 && "bg-green-500"
+          }`}
+        ></span>
+      </button>
 
       <Modal
         isOpen={isModalOpen}
@@ -150,4 +137,4 @@ const Cart = ({ forToolbar }) => {
   );
 };
 
-export default Cart;
+export default MyCart;
