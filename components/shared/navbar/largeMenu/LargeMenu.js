@@ -5,6 +5,7 @@ import {
   IoNewspaperOutline,
   IoReceiptOutline,
   IoInformationCircleOutline,
+  IoCallOutline, // اضافه کردن آیکون تماس
 } from "react-icons/io5";
 
 const LargeMenu = () => {
@@ -13,10 +14,9 @@ const LargeMenu = () => {
   const menuItems = [
     { id: 1, label: "خانه", icon: <IoHomeOutline size={24} />, href: "/" },
     { id: 2, label: "وبلاگ", icon: <IoReceiptOutline size={24} />, href: "/blog" },
-    { id: 3, label: "اخبار", icon: <IoNewspaperOutline size={24} />, href: "/news" },
+    { id: 3, label: "تماس با ما", icon: <IoCallOutline size={24} />, href: "/contact" }, // استفاده از آیکون تماس
     { id: 4, label: "درباره ما", icon: <IoInformationCircleOutline size={24} />, href: "/about" },
   ];
-
   // مقداردهی پیش‌فرض به صفحه‌ی جاری
   const [selectMenu, setSelectMenu] = useState("");
 

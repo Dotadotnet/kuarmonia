@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const LoadingIndicator = () => {
   const router = useRouter();
@@ -40,6 +41,7 @@ const LoadingIndicator = () => {
               <div className="absolute mt-1 w-5 h-5 rounded-full bg-green-500 dark:bg-blue-500"></div>
               <div className="absolute mt-1 w-5 h-5 rounded-full bg-green-500 dark:bg-blue-500"></div>
             </div>
+            <Image src="/logo.gif" width={100} height={60} />
             <div className="text-gray-500 dark:text-gray-100 text-lg  mt-2 text-center">
               صبر کنید ...
             </div>
