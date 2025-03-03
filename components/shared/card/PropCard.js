@@ -28,9 +28,9 @@ const PropCard = ({
   let updatedFinalPriceLabel = finalPriceLabel;
 
   if (tradeType) {
-    const deposit = variants.find((variant) => variant.type === "deposit")?.value;
-    const monthlyRent = variants.find((variant) => variant.type === "monthlyRent")?.value;
-    const totalPrice = variants.find((variant) => variant.type === "totalPrice")?.value;
+    const deposit = variants?.find((variant) => variant.type === "deposit")?.value;
+    const monthlyRent = variants?.find((variant) => variant.type === "monthlyRent")?.value;
+    const totalPrice = variants?.find((variant) => variant.type === "totalPrice")?.value;
     const installmentAmount = variants.find((variant) => variant.type === "installmentAmount")?.value;
 
     if (deposit) {

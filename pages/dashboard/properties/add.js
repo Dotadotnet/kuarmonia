@@ -311,7 +311,7 @@ const Add = () => {
             </div>
           </form>
         </div>
-        <div className="col-span-1 flex justify-center ">
+        {/* <div className="col-span-1 flex justify-center ">
           <PropertyCard
             title={watch("title")}
             tradeType={watch("tradeType")?.label}
@@ -369,7 +369,7 @@ const Add = () => {
               />
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </section>
   );
