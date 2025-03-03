@@ -67,14 +67,14 @@ const upload = (bucketName) => {
           for (const file of req.files[field]) {
             const hashedName = crypto.randomBytes(16).toString("hex");
             let extension = file.originalname.split(".").pop().toLowerCase();
-            let fileBuffer = file.buffer;
+            let fileBuffer = file.buffer; // متغیر fileBuffer را تعریف کنید
 
-            // اگر تصویر باشد، تبدیل به WebP شود
+            // اگر فایل تصویر باشد، به فرمت WebP تبدیل شود
             if (["jpg", "jpeg", "png"].includes(extension)) {
-              buffer = await sharp(file.buffer)
+              fileBuffer = await sharp(file.buffer)
                 .toFormat("webp", { quality: 80, lossless: extension === "png" }) // PNG با شفافیت
-                .toBuffer();
-              extension = "webp"; // تغییر فرمت
+                .toBuffer(); // فایل به buffer تبدیل می‌شود
+              extension = "webp"; // فرمت به WebP تغییر می‌کند
             }
 
             const filename = `${hashedName}.${extension}`;
