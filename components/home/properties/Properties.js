@@ -44,7 +44,7 @@ console.log(Properties)
               </p>
             </article>
           </div>
-          <div className="h-[500px] ">
+          <div className="h-[600px] ">
             <Swiper
               slidesPerView={1.2}
               breakpoints={{
