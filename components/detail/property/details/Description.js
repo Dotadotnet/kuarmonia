@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from "react";
 import DetailCard from "./DetailCard";
 import Image from "next/image";
@@ -9,11 +7,11 @@ import Inform from "@/components/icons/Inform";
 import { useSelector } from "react-redux";
 import Modal from "@/components/shared/modal/Modal";
 
-const Description = ({ description ,features ,reviews,variants }) => {
+const Description = ({ description, features, reviews, variants }) => {
   const [isOpen, setIsOpen] = useState(false);
   const user = useSelector((state) => state.auth.user);
   const [addReview, { isLoading, data, error }] = useAddReviewMutation();
-console.log(features)
+  console.log(features);
   useEffect(() => {
     if (isLoading) {
       toast.loading("Adding Review...", { id: "addReview" });
@@ -32,7 +30,7 @@ console.log(features)
 
     addReview({
       rating: e.target.rating.value,
-      comment: e.target.comment.value,
+      comment: e.target.comment.value
     });
 
     event.target.reset();
@@ -41,9 +39,7 @@ console.log(features)
   return (
     <section className="flex flex-col gap-y-2.5">
       <div className="flex flex-row gap-x-2 items-center">
-        <span className="whitespace-nowrap text-sm text-black">
-          جزئیات  ملک
-        </span>
+        <span className="whitespace-nowrap text-sm">جزئیات ملک</span>
         <hr className="w-full" />
       </div>
       <article className="flex flex-col gap-y-4">
@@ -55,8 +51,9 @@ console.log(features)
           نظرات
         </button>
         <div className="flex flex-row gap-x-2 items-center">
-          <span className="whitespace-nowrap text-sm text-black">
-ویزگی های این محصول          </span>
+          <span className="whitespace-nowrap text-sm ">
+            ویزگی های این ملک{" "}
+          </span>
           <hr className="w-full" />
         </div>
         <div className="flex flex-col gap-y-4">
