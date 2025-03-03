@@ -1,13 +1,15 @@
-
-
-import { MapContainer, Marker, TileLayer, Popup } from "react-leaflet";
+import React, { useMemo, useState } from "react";
+import { MapContainer, Marker, TileLayer, Popup, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import useGetCountryLatLng from "@/hooks/useGetCountryLatLng";
-import { useMemo } from "react";
+import dynamic from "next/dynamic";
 
-const GeoLocation = ({ location, zoom, height }) => {
+// ایمپورت داینامیک برای جلوگیری از خطای SSR
+const Search = dynamic(() => import("react-leaflet-search"), { ssr: false });
+
+const GeoLocation = ({ location, zoom, height, setSelectedLocation }) => {
   const latlng = useGetCountryLatLng(location);
   const position = useMemo(() => {
     if (latlng) {
@@ -23,11 +25,21 @@ const GeoLocation = ({ location, zoom, height }) => {
     }
   }, [latlng]);
 
-  const key = `${position?.lat}-${position?.lon}`;
+  const [markerPosition, setMarkerPosition] = useState([position.lat, position.lon]);
+
+  const MapClickHandler = () => {
+    useMapEvents({
+      click(e) {
+        setMarkerPosition([e.latlng.lat, e.latlng.lng]);
+        setSelectedLocation({ lat: e.latlng.lat, lng: e.latlng.lng });
+      },
+    });
+    return null;
+  };
 
   return (
     <MapContainer
-      key={key}
+      key={`${position.lat}-${position.lon}`}
       center={position}
       zoom={zoom}
       scrollWheelZoom={false}
@@ -38,9 +50,28 @@ const GeoLocation = ({ location, zoom, height }) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={[position?.lat, position?.lon]}>
-        <Popup>You found it!</Popup>
+
+      {/* جستجوگر مکان */}
+        <Search
+          position="topright"
+          inputPlaceholder="مکان مورد نظر را جستجو کنید..."
+          showMarker={false}
+          closeResultsOnClick={true}
+          provider="OpenStreetMap"
+          providerOptions={{ region: "ir" }}
+          onChange={(info) => {
+            const { lat, lng } = info.latLng;
+            setMarkerPosition([lat, lng]);
+            setSelectedLocation({ lat, lng });
+          }}
+        />
+
+      {/* نشانگر مکان انتخاب‌شده */}
+      <Marker position={markerPosition}>
+        <Popup>مکان انتخاب‌شده</Popup>
       </Marker>
+
+      <MapClickHandler />
     </MapContainer>
   );
 };

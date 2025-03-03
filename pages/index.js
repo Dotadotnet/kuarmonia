@@ -13,6 +13,7 @@ import Gallery from "@/components/home/gallery/Gallery";
 import NewsLetter from "@/components/home/news-letter/NewsLetter";
 import VideoGallery from "@/components/home/VideoGallery/VideoGallery";
 import { useEffect } from "react";
+import Properties from "@/components/home/properties/Properties";
 
 export default function Home() {
 
@@ -25,6 +26,8 @@ export default function Home() {
       </Head>
       <Main>
         <Hero />
+        <Properties />
+
         <VideoGallery />
         <Advantage />
         <Post />

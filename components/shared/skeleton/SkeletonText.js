@@ -8,7 +8,7 @@ const SkeletonText = ({ lines = 5 }) => {
           key={index}
           className={`${
             index === lines - 1 ? "w-2/3" : "w-full"
-          } lg:h-3 h-2 bg-gray-500 animate-pulse rounded py-1`}
+          } lg:h-3 h-fit  bg-gray-500 animate-pulse rounded py-1`}
         ></div>
       ))}
     </div>

@@ -1,9 +1,9 @@
-import multer from "multer";
-import crypto from "crypto";
-import { S3Client, PutObjectCommand, CreateBucketCommand, HeadBucketCommand } from "@aws-sdk/client-s3";
-import { format } from "date-fns";
+import multer from 'multer';
+import crypto from 'crypto';
+import sharp from 'sharp';
+import { S3Client, PutObjectCommand, CreateBucketCommand, HeadBucketCommand } from '@aws-sdk/client-s3';
 
-// تنظیمات MinIO
+// MinIO client configuration
 const s3Client = new S3Client({
   endpoint: process.env.MINIO_ENDPOINT,
   useSSL: process.env.MINIO_USE_SSL === "true",
@@ -15,20 +15,27 @@ const s3Client = new S3Client({
   forcePathStyle: true,
 });
 
-// ساخت تابع `upload`
+const getDateFolder = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  return `${year}-${month}`;
+};
+
 const upload = (bucketName) => {
   const storage = multer.memoryStorage();
 
   const multerInstance = multer({
     storage,
     fileFilter: (_, file, cb) => {
-      const supportedFormats = /jpg|jpeg|png|mp4|avi|mkv/i;
+      const imageFormats = /jpg|jpeg|png|webp/i; // فقط تصاویر قابل تبدیل هستند
+      const videoFormats = /mp4|avi|mkv/i; // ویدیوها تغییری نمی‌کنند
       const extension = file.originalname.split(".").pop().toLowerCase();
 
-      if (supportedFormats.test(extension)) {
+      if (imageFormats.test(extension) || videoFormats.test(extension)) {
         cb(null, true);
       } else {
-        cb(new Error("فرمت فایل باید تصویر (png/jpg/jpeg) یا ویدئو (mp4/avi/mkv) باشد"));
+        cb(new Error("فرمت فایل باید تصویر (png/jpg/jpeg/webp) یا ویدئو (mp4/avi/mkv) باشد"));
       }
     },
   });
@@ -36,19 +43,22 @@ const upload = (bucketName) => {
   const minioUploadMiddleware = (fieldConfig) => async (req, res, next) => {
     multerInstance.fields(fieldConfig)(req, res, async (err) => {
       if (err) {
-        return res.status(400).json({ success: false, message: err.message });
+        return res.status(400).json({
+          acknowledgement: false,
+          message: "Bad Request",
+          description: err.message,
+        });
       }
 
-      const dateFolder = format(new Date(), "yyyy-MM");
+      const dateFolder = getDateFolder();
       try {
-        // بررسی و ایجاد سطل
+        // بررسی و ایجاد سطل در MinIO
         try {
           await s3Client.send(new HeadBucketCommand({ Bucket: bucketName }));
         } catch (e) {
           await s3Client.send(new CreateBucketCommand({ Bucket: bucketName }));
         }
 
-        // نگهداری فایل‌ها بر اساس نام فیلد
         req.uploadedFiles = {};
 
         const fileFields = Object.keys(req.files || {});
@@ -56,7 +66,17 @@ const upload = (bucketName) => {
           req.uploadedFiles[field] = [];
           for (const file of req.files[field]) {
             const hashedName = crypto.randomBytes(16).toString("hex");
-            const extension = file.originalname.split(".").pop();
+            let extension = file.originalname.split(".").pop().toLowerCase();
+            let fileBuffer = file.buffer;
+
+            // اگر تصویر باشد، تبدیل به WebP شود
+            if (["jpg", "jpeg", "png"].includes(extension)) {
+              buffer = await sharp(file.buffer)
+                .toFormat("webp", { quality: 80, lossless: extension === "png" }) // PNG با شفافیت
+                .toBuffer();
+              extension = "webp"; // تغییر فرمت
+            }
+
             const filename = `${hashedName}.${extension}`;
             const uniqueKey = `${dateFolder}/${filename}`;
 
@@ -64,7 +84,7 @@ const upload = (bucketName) => {
               new PutObjectCommand({
                 Bucket: bucketName,
                 Key: uniqueKey,
-                Body: file.buffer,
+                Body: fileBuffer,
                 ContentType: file.mimetype,
               })
             );
@@ -80,14 +100,17 @@ const upload = (bucketName) => {
         next();
       } catch (error) {
         console.error("Error uploading to MinIO:", error);
-        res.status(500).json({ success: false, message: "Error uploading files" });
+        res.status(500).json({
+          acknowledgement: false,
+          message: "Internal Server Error",
+          description: `خطا در بارگذاری فایل‌ها به MinIO: ${error.message}`,
+        });
       }
     });
   };
 
   return {
     single: (fieldName) => minioUploadMiddleware([{ name: fieldName, maxCount: 1 }]),
-    array: (fieldName, maxCount) => minioUploadMiddleware([{ name: fieldName, maxCount: maxCount || 10 }]),
     fields: (fieldsConfig) => minioUploadMiddleware(fieldsConfig),
   };
 };

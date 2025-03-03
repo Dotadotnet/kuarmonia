@@ -2,7 +2,7 @@ import Panel from "@/layouts/Panel";
 import React, { useState, useEffect, useMemo } from "react";
 import AddButton from "@/components/shared/button/AddButton";
 import {
-  useGetPropertysQuery,
+  useGetPropertiesQuery,
 } from "@/services/property/propertyApi";
 import { toast } from "react-hot-toast";
 import Metrics from "@/components/shared/tools/Metrics";
@@ -19,7 +19,7 @@ const Listproperty = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const user = useSelector((state) => state?.auth);
-  const { data, isLoading, error, refetch } = useGetPropertysQuery({
+  const { data, isLoading, error, refetch } = useGetPropertiesQuery({
     page: currentPage,
     limit: itemsPerPage,
     status: statusFilter === "all" ? undefined : statusFilter,
@@ -134,9 +134,9 @@ const Listproperty = () => {
               <div className=" col-span-11 lg:col-span-3 text-center flex items-center">
                 <StatusIndicator isActive={property.status === "active"} />
                 <div className=" py-2 flex flex-row gap-x-2 hover:text-white transition-colors rounded-full cursor-pointer  items-center">
-                  {property?.featuredImage.type === "image" ? (
+                  {property?.thumbnail ? (
                    <Image
-                   src={property?.featuredImage?.url || "/placeholder.png"}
+                   src={property?.thumbnail?.url || "/placeholder.png"}
                    height={100}
                    width={100}
                    className="h-[60px] w-[60px] rounded-full object-cover"
@@ -149,7 +149,7 @@ const Listproperty = () => {
                   <article className="flex-col flex gap-y-2  ">
                     <span className="line-clamp-1 text-base ">
                       <span className="hidden lg:flex">
-                        {property?.authorId?.name}
+                        {property?.title}
                       </span>
                       <span className="flex lg:hidden text-right text-sm">
                         {property.title}

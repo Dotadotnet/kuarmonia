@@ -33,11 +33,11 @@ const Dropdown = ({
 
   const handleOptionSelect = (option) => {
     if (onChange) {
-      onChange(option.value);
+      onChange({ _id:option?._id, id: option.id, value: option.value, label: option.label });
     }
     setIsOpen(false);
   };
-
+  
   const selectedOption = options.find((option) => option.value === value);
 
   return (
@@ -73,8 +73,8 @@ const Dropdown = ({
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-full bg-white dark:bg-slate-600 dark:text-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10">
-          <div className="max-h-60 p-2">
+        <div className="absolute right-0 mt-2 w-full bg-white dark:bg-slate-600 dark:text-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10 ">
+          <div className="max-h-fit p-2">
             {options.length > 0 ? (
               options.map((option) => (
                 <div

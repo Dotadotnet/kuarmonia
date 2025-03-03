@@ -9,7 +9,7 @@ const Logo = () => {
   return (
     <>
       <div
-        className="flex justify-end col-span-2  items-center cursor-pointer"
+        className="flex justify-center col-span-2  items-center cursor-pointer w-full"
         onClick={() => router.push("/")}
       >
         <Image width={1383} height={827} src={"/logo.png"} className="w-[100px] h-[60px]" />

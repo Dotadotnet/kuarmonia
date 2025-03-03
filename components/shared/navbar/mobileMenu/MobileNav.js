@@ -7,7 +7,6 @@ import Category from "@/components/icons/Category";
 import Rules from "@/components/icons/Rules";
 import About from "@/components/icons/About";
 import Phone from "@/components/icons/Phone";
-import { useEffect } from "react";
 
 const MobileNav = ({ isOpen, setIsOpen }) => {
   return (
@@ -24,14 +23,14 @@ const MobileNav = ({ isOpen, setIsOpen }) => {
           onClick={(e) => {
             setIsOpen(false)
             e.stopPropagation()
-          }} // Prevents closing when clicking inside the menu
+          }} 
         >
           {isOpen ?
 
             <div className="flex absolute overflow-y-auto overflow-x-hidden w-2/3 h-2/3 items-center rounded-lg bg-white justify-start gap-10 flex-col top-1/2 right-5 transform pt-8 -translate-y-1/2">
               {[
-                { href: "/menu", icon: <Home className="text-[#22b973]" />, text: "صفحه اصلی" },
-                { href: "/menu", icon: <Category />, text: "دسته بندی خدمات" },
+                { href: "/", icon: <Home className="text-[#22b973]" />, text: "صفحه اصلی" },
+                { href: "/", icon: <Category />, text: "دسته بندی خدمات" },
                 { href: "/store", icon: <Shop />, text: "فروشگاه" },
                 { href: "/services", icon: <User />, text: "حساب کاربری" },
                 { href: "/terms", icon: <Rules />, text: "قوانین و مقررات" },

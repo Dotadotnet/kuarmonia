@@ -11,7 +11,7 @@ export default function useGetCountries() {
         const countries = data.map((country) => {
           const countryNameEn = country.name.common;
           return {
-            name: countryNamesFa[countryNameEn] || countryNameEn, // ترجمه یا نام اصلی
+            name: countryNameEn, // ترجمه یا نام اصلی
             flag: country.flags.svg, // لینک پرچم
             latlng: country.latlng, // مختصات جغرافیایی
           };

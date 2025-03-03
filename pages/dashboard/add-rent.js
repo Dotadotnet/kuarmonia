@@ -13,6 +13,7 @@ import Button from "@/components/shared/button/Button";
 import { useAddRentMutation } from "@/services/rent/rentApi";
 import { toast } from "react-hot-toast";
 import Image from 'next/image'
+import hotelTypes from "@/data/hotelTypes";
 
 const AddRent = () => {
   const [galleryPreview, setGalleryPreview] = useState([]);
@@ -209,7 +210,7 @@ const AddRent = () => {
         </label> */}
 
         {/* members */}
-        {/* <label htmlFor="members" className="flex flex-col gap-y-2">
+         <label htmlFor="members" className="flex flex-col gap-y-2">
           Number of Members*
           <input
             type="number"
@@ -219,12 +220,12 @@ const AddRent = () => {
             className="rounded"
             {...register("members", { required: true })}
           />
-        </label> */}
+        </label> 
 
         {/* duration */}
         <div className="flex md:flex-row flex-col gap-4 w-full">
           {/* start date */}
-          {/* <label htmlFor="startDate" className="flex flex-col gap-y-2 w-full">
+        <label htmlFor="startDate" className="flex flex-col gap-y-2 w-full">
             Rent Start Date*
             <input
               type="date"
@@ -233,10 +234,10 @@ const AddRent = () => {
               className="rounded"
               {...register("duration.startDate", { required: true })}
             />
-          </label> */}
+          </label> 
 
           {/* end date */}
-          {/* <label htmlFor="endDate" className="flex flex-col gap-y-2 w-full">
+         <label htmlFor="endDate" className="flex flex-col gap-y-2 w-full">
             Rent End Date*
             <input
               type="date"
@@ -245,11 +246,11 @@ const AddRent = () => {
               className="rounded"
               {...register("duration.endDate", { required: true })}
             />
-          </label> */}
+          </label> 
         </div>
 
         {/* type */}
-        {/* <label htmlFor="type" className="flex flex-col gap-y-2">
+       <label htmlFor="type" className="flex flex-col gap-y-2">
           Choose Rent Type*
           <select
             name="type"
@@ -263,7 +264,7 @@ const AddRent = () => {
               </option>
             ))}
           </select>
-        </label> */}
+        </label> 
 
         {/* location */}
         <div className="flex flex-col gap-y-4">

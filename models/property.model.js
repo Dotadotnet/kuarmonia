@@ -2,30 +2,8 @@ import { Schema, model, models } from "mongoose";
 import connectDB from "@/libs/db";
 import baseSchema from "./baseSchema.model";
 import Counter from "./counter.model";
-import Tag from "./tag.model";
 
 connectDB();
-
-const socialLinkSchema = new Schema({
-  name: {
-    type: String,
-    required: [true, "نام شبکه اجتماعی الزامی است"],
-    trim: true,
-    enum: {
-      values: ["Facebook", "Twitter", "LinkedIn", "Instagram", "Other"],
-      message: "نام شبکه اجتماعی معتبر نیست"
-    }
-  },
-  url: {
-    type: String,
-    required: [true, "لینک شبکه اجتماعی الزامی است"],
-    trim: true,
-    match: [
-      /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?$/,
-      "لینک شبکه اجتماعی معتبر نیست"
-    ]
-  }
-});
 
 const propertySchema = new Schema(
   {
@@ -40,6 +18,21 @@ const propertySchema = new Schema(
       required: [true, "لطفاً عنوان ملک را وارد کنید"],
       trim: true,
       maxLength: [50, "عنوان نمی‌تواند بیشتر از ۵۰ کاراکتر باشد"]
+    },
+    saleType: {
+      required: [true, "لطفاً نوع فروش ملک را وارد کنید"],
+      type: Schema.Types.ObjectId,
+      ref: "SaleType",
+    },
+    tradeType: {
+      required: [true, "لطفاً نوع معامله ملک را وارد کنید"],
+      type: Schema.Types.ObjectId,
+      ref: "TradeType",   
+     },
+    type: {
+      required: [true, "لطفاً نوع  ملک را وارد کنید"],
+      type: Schema.Types.ObjectId,
+      ref: "PropertyType",
     },
     slug: {
       type: String,
@@ -65,44 +58,39 @@ const propertySchema = new Schema(
       required: [true, "لطفاً توضیحات ملک را وارد کنید"],
       trim: true
     },
-    type: {
-      type: String,
-      enum: ["apartment", "villa", "office", "land"],
-      required: [true, "لطفاً نوع ملک را مشخص کنید"]
-    },
-    listingType: {
-      type: String,
-      enum: ["for sale", "for rent"],
-      required: [true, "لطفاً نوع لیست ملک را مشخص کنید"]
-    },
-    price: {
-      type: Number,
-      required: [true, "لطفاً قیمت ملک را وارد کنید"]
-    },
+    variants: [
+      {
+        type: {
+          type: String,
+          enum: [
+            "deposit",
+            "monthlyRent",
+            "totalPrice",
+            "installmentAmount",
+            "installments"
+          ],
+          required: true
+        },
+        value: {
+          type: Number,
+          required: true
+        }
+      }
+    ],
     currency: {
       type: String,
-      enum: ["TRY", "USD", "EUR"],
+      enum: ["TRY", "USD", "EUR", "IRR"],
       default: "TRY"
+    },    
+
+    location: { 
+      type: {
+        lat: { type: Number, required: true },
+        lng: { type: Number, required: true }
+      },
+      required: [true, "مکان ملک الزامی است"]
     },
-    location: {
-      country: { type: String, required: true },
-      city: { type: String, required: true },
-      district: { type: String, required: true },
-      neighborhood: { type: String }
-    },
-    address: {
-      type: String,
-      required: [true, "لطفاً آدرس ملک را وارد کنید"]
-    },
-    latitude: {
-      type: Number,
-      required: true
-    },
-    longitude: {
-      type: Number,
-      required: true
-    },
-    area: {
+    square: {
       type: Number,
       required: [true, "لطفاً مساحت ملک را وارد کنید"]
     },
@@ -114,25 +102,28 @@ const propertySchema = new Schema(
       type: Number,
       default: 0
     },
-    livingRooms: {
-      type: Number,
-      default: 0
-    },
+
     amenities: [
       {
         type: String,
         enum: ["pool", "parking", "sauna"]
       }
     ],
-    images: [
-      {
-        url: String,
-        public_id: String
-      }
-    ],
-    featuredImage: {
-      type: String,
-      default: "https://placehold.co/600x400.png"
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+      required: [true, "دسته‌بندی پست الزامی است"],
+    },
+    thumbnail: {
+      url: {
+        type: String,
+        required: [true, "لطفاً لینک تصویر بندانگشتی را وارد کنید"],
+        default: "https://placehold.co/296x200.png",
+      },
+      public_id: {
+        type: String,
+        default: "N/A",
+      },
     },
     gallery: [
       {
@@ -143,21 +134,17 @@ const propertySchema = new Schema(
         public_id: {
           type: String,
           default: "N/A"
-        }
+        },
       }
     ],
-    constructionYear: {
+    createDate: {
       type: Number
     },
     ownerId: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true
     },
-    listedDate: {
-      type: Date,
-      default: Date.now
-    },
+  
     updatedDate: {
       type: Date,
       default: Date.now
@@ -166,10 +153,7 @@ const propertySchema = new Schema(
       type: Boolean,
       default: false
     },
-    furnished: {
-      type: Boolean,
-      default: false
-    },
+    
     tags: [
       {
         type: Schema.Types.ObjectId,
@@ -177,10 +161,7 @@ const propertySchema = new Schema(
         required: [true, "تگ ملک الزامی است"]
       }
     ],
-    contactNumber: {
-      type: String,
-      required: [true, "لطفاً شماره تماس را وارد کنید"]
-    },
+  
     metaTitle: {
       type: String,
       maxLength: [60, "متا تایتل نمی‌تواند بیشتر از ۶۰ کاراکتر باشد"],
@@ -258,13 +239,13 @@ const propertySchema = new Schema(
       }
     ],
     views: {
-        type: Number,
-        default: 0,
-        min: [0, "تعداد بازدید نمی‌تواند منفی باشد"]
-      },
+      type: Number,
+      default: 0,
+      min: [0, "تعداد بازدید نمی‌تواند منفی باشد"]
+    },
     ...baseSchema.obj
-},
-{ timestamps: true }
+  },
+  { timestamps: true }
 );
 const defaultDomain = process.env.NEXT_PUBLIC_BASE_URL;
 

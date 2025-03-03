@@ -9,11 +9,11 @@ import Inform from "@/components/icons/Inform";
 import { useSelector } from "react-redux";
 import Modal from "@/components/shared/modal/Modal";
 
-const Description = ({ product }) => {
+const Description = ({ description ,features ,reviews,variants }) => {
   const [isOpen, setIsOpen] = useState(false);
   const user = useSelector((state) => state.auth.user);
   const [addReview, { isLoading, data, error }] = useAddReviewMutation();
-
+console.log(features)
   useEffect(() => {
     if (isLoading) {
       toast.loading("Adding Review...", { id: "addReview" });
@@ -31,7 +31,6 @@ const Description = ({ product }) => {
     e.preventDefault();
 
     addReview({
-      product: product?._id,
       rating: e.target.rating.value,
       comment: e.target.comment.value,
     });
@@ -43,12 +42,12 @@ const Description = ({ product }) => {
     <section className="flex flex-col gap-y-2.5">
       <div className="flex flex-row gap-x-2 items-center">
         <span className="whitespace-nowrap text-sm text-black">
-          جزئیات این محصول
+          جزئیات  ملک
         </span>
         <hr className="w-full" />
       </div>
       <article className="flex flex-col gap-y-4">
-        <p className="text-sm">{product?.summary}</p>
+        <p className="text-sm">{description}</p>
         <button
           className="px-8 py-2 border border-black rounded-secondary bg-black hover:bg-black/90 text-white transition-colors drop-shadow w-fit flex flex-row gap-x-2 items-center"
           onClick={() => setIsOpen(!isOpen)}
@@ -61,7 +60,7 @@ const Description = ({ product }) => {
           <hr className="w-full" />
         </div>
         <div className="flex flex-col gap-y-4">
-          {product?.features?.map((explanation, index) => (
+          {features?.map((explanation, index) => (
             <DetailCard
               key={index}
               title={explanation?.title}
@@ -106,13 +105,13 @@ const Description = ({ product }) => {
               />
             </form>
 
-            {product?.reviews?.length === 0 ? (
+            {reviews?.length === 0 ? (
               <p className="text-sm flex flex-row gap-x-1 items-center justify-center">
                 <Inform /> هیچ نظری برای این محصول ثبت نشده!
               </p>
             ) : (
               <div className="h-full overflow-y-auto scrollbar-hide flex flex-col gap-y-4">
-                {product?.reviews?.map((review, index) => (
+                {reviews?.map((review, index) => (
                   <article
                     key={index}
                     className="flex flex-col gap-y-2 p-4 bg-slate-50 rounded"

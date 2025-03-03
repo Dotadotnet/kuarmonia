@@ -17,7 +17,7 @@ export default function ThemeToggle() {
         }
       />
       <label
-        className="p-2 cursor-pointer rounded-secondary bg-slate-100 dark:bg-slate-800  hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+        className="p-2 cursor-pointer rounded-secondary  dark:bg-slate-800 bg-slate-100  hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
         htmlFor="light-switch"
       >
         <svg

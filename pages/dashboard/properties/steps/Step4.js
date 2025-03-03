@@ -1,118 +1,154 @@
 // Step3.js
 import React from 'react';
-import { FaPlus, FaTag } from "react-icons/fa";
-import MultiSelectDropdown from "@/components/shared/multiSelectDropdown/MultiSelectDropdown";
-import SearchableDropdown from "@/components/shared/dropdownmenu/SearchableDropdown";
-import { Controller } from "react-hook-form";
-import {TagIcon} from "@/utils/SaveIcon"
+import {Minus, Plus} from "@/utils/SaveIcon"
 
 const Step4 = ({
-  tagsOptions,
-  categoryOptions,
-  openTagModal,
-  openCategoryModal,
   errors,
   control,
-  setValue
+  setValue,
+  features,
+  register,
+  setFeatures 
 }) => {
-  const handleTagChange = (selectedTags) => {
-    setValue("tags", selectedTags);
-  };
+// اضافه کردن ویژگی جدید
+function handleAddFeature() {
+  setFeatures([...features, { title: "", content: [""] }]);
+}
+
+// حذف یک ویژگی
+const handleRemoveFeature = (index) => {
+  const updatedFeatures = [...features];
+  updatedFeatures.splice(index, 1);
+  setFeatures(updatedFeatures);
+};
+
+// تغییر عنوان ویژگی
+const handleTitleChange = (index, value) => {
+  const updatedFeatures = [...features];
+  updatedFeatures[index].title = value;
+  setFeatures(updatedFeatures);
+};
+
+// افزودن محتوای جدید به ویژگی
+const handleAddContent = (featureIndex) => {
+  const updatedFeatures = [...features];
+  updatedFeatures[featureIndex].content.push("");
+  setFeatures(updatedFeatures);
+};
+
+// حذف محتوای ویژگی
+const handleRemoveContent = (featureIndex, contentIndex) => {
+  const updatedFeatures = [...features];
+  updatedFeatures[featureIndex].content.splice(contentIndex, 1);
+  setFeatures(updatedFeatures);
+};
+
+// تغییر محتوای ویژگی
+const handleContentChange = (featureIndex, contentIndex, value) => {
+  const updatedFeatures = [...features];
+  updatedFeatures[featureIndex].content[contentIndex] = value;
+  setFeatures(updatedFeatures);
+};
 
   return (
     <>
-      <div className="flex flex-col items-center justify-between gap-2 gap-y-4 w-full">
-        {/* بخش تگ‌ها */}
-        <div className="flex flex-col gap-y-2 w-full ">
-          <div className="flex-1 flex items-center justify-between gap-2 gap-y-2 w-full">
-            <div className="flex flex-col flex-1">
-              <label htmlFor="tags" className="flex flex-col gap-y-2 w-full">
-                تگ‌ها
-                <Controller
-                  control={control}
-                  name="tags"
-                  rules={{ required: 'انتخاب تگ الزامی است' }}
-                  render={({ field: { onChange, value } }) => (
-                    <MultiSelectDropdown
-                      items={tagsOptions}
-                      selectedItems={value || []}
-                      handleSelect={handleTagChange}
-                      icon={<TagIcon />}
-                      placeholder="چند مورد انتخاب کنید"
-                      className={"w-full h-12"}
-                    />
-                  )}
-                />
-              </label>
-            </div>
-            <div className="mt-7 flex justify-start">
-              <button
-                type="button"
-                className="p-4 bg-green-400 dark:bg-blue-600 text-white rounded hover:bg-green-600 dark:hover:bg-blue-400 transition-colors"
-                onClick={openTagModal}
-                aria-label="افزودن تگ جدید"
-              >
-                <FaPlus />
-              </button>
-            </div>
-          </div>
-          {errors.tags && (
-            <span className="text-red-500 text-sm">{errors.tags.message}</span>
-          )}
-        </div>
+     <div className="w-full flex flex-col gap-y-4 p-4 border rounded overflow-y-auto max-h-96">
+        {features.map((feature, index) => (
+          <label key={index} htmlFor="features" className="flex flex-col gap-y-1">
+            <span className="text-sm flex flex-row justify-between items-center">
+              ویژگی های ملک را وارد کنید*
+              <span className="flex flex-row gap-x-1">
+                {index > 0 && (
+                  <span
+                    className="cursor-pointer p-0.5 border rounded-secondary bg-red-500 w-6 h-6 text-white flex justify-center items-center dark:border-gray-700"
+                    onClick={() => handleRemoveFeature(index)}
+                  >
+                    <Minus />
+                  </span>
+                )}
+                {index === features.length - 1 && (
+                  <span
+                    className="cursor-pointer w-6 h-6 flex justify-center items-center p-0.5 border rounded-secondary bg-green-500 text-white  dark:border-gray-700"
+                    onClick={handleAddFeature}
+                  >
+                    <Plus />
+                  </span>
+                )}
+              </span>
+            </span>
+            <div className="flex flex-col gap-y-2.5">
+              {/* عنوان ویژگی */}
+              <input
+                type="text"
+                name={`features[${index}].title`}
+                placeholder="عنوان ویژگی را وارد کنید"
+                maxLength="100"
+                defaultValue={feature.title} // استفاده از defaultValue
+                {...register(`features[${index}].title`, {
+                  required: "عنوان ویژگی الزامی است",
+                  minLength: {
+                    value: 3, // حداقل ۳ کاراکتر
+                    message: "عنوان باید حداقل ۳ کاراکتر باشد",
+                  },
+                  maxLength: {
+                    value: 100, // حداکثر ۱۰۰ کاراکتر
+                    message: "عنوان نباید بیشتر از ۱۰۰ کاراکتر باشد",
+                  },
+                })}
+                
+                className="p-2 rounded border"
+                onChange={(e) => handleTitleChange(index, e.target.value)} // تغییرات به روزرسانی در ویژگی
+              />
+              {errors?.features?.[index]?.title && (
+                <span className="text-red-500 text-sm">
+                  {errors.features[index].title.message}
+                </span>
+              )}
 
-        {/* بخش دسته‌بندی */}
-        <div className="flex flex-col gap-y-2 w-full ">
-          <div className="flex-1 flex items-center justify-between gap-2 gap-y-2 w-full">
-            <div className="flex flex-col flex-1">
-              <label htmlFor="category" className="flex flex-col gap-y-2">
-                دسته‌بندی
-                <Controller
-                  control={control}
-                  name="category"
-                  rules={{ required: 'انتخاب دسته‌بندی الزامی است' }}
-                  render={({ field: { onChange, value } }) => (
-                    <SearchableDropdown
-                    items={categoryOptions}
-                      handleSelect={onChange}
-                      value={value}
-                      sendId={true}
-                      errors={errors.category}
-                      className={"w-full h-12"}
-                    />
+              {/* محتوای ویژگی */}
+              {feature.content.map((content, contentIndex) => (
+                <div key={contentIndex} className="flex flex-row gap-x-2 items-center">
+                  <input
+                    type="text"
+                    name={`features[${index}].content[${contentIndex}]`}
+                    placeholder="محتوای ویژگی را وارد کنید"
+                    maxLength="200"
+                    defaultValue={content} // استفاده از defaultValue برای محتوای ویژگی
+                    {...register(`features[${index}].content[${contentIndex}]`, {
+                      required: "محتوای ویژگی الزامی است",
+                      minLength: {
+                        value: 3, // حداقل ۳ کاراکتر
+                        message: "محتوا باید حداقل ۳ کاراکتر باشد",
+                      },
+                      maxLength: {
+                        value: 200, // حداکثر ۲۰۰ کاراکتر
+                        message: "محتوا نباید بیشتر از ۲۰۰ کاراکتر باشد",
+                      },
+                    })}
+                    className="flex-1 p-2 rounded border"
+                    onChange={(e) =>
+                      handleContentChange(index, contentIndex, e.target.value) // تغییرات به روزرسانی در محتوا
+                    }
+                  />
+                  {contentIndex > 0 && (
+                    <span
+                      className="cursor-pointer p-0.5 border rounded-secondary bg-red-500 w-6 h-6 text-white flex justify-center items-center dark:border-gray-700"
+                      onClick={() => handleRemoveContent(index, contentIndex)}
+                    >
+                      <Minus />
+                    </span>
                   )}
-                />
-              </label>
+                  <span
+                    className="cursor-pointer w-6 h-6 flex justify-center items-center p-0.5 border rounded-secondary bg-green-500 text-white  dark:border-gray-700"
+                    onClick={() => handleAddContent(index)}
+                  >
+                    <Plus />
+                  </span>
+                </div>
+              ))}
             </div>
-            <div className="mt-7 flex justify-start">
-              <button
-                type="button"
-                className="p-4 bg-green-400 dark:bg-blue-600 text-white rounded hover:bg-green-600 dark:hover:bg-blue-400 transition-colors"
-                onClick={openCategoryModal}
-                aria-label="افزودن دسته‌بندی جدید"
-              >
-                <FaPlus />
-              </button>
-            </div>
-          </div>
-          {errors.category && (
-            <span className="text-red-500 text-sm">{errors.category.message}</span>
-          )}
-        </div>
-
-        {/* بخش بلاگ ویژه بودن */}
-        <div className="flex flex-col gap-y-2 w-full ">
-          <label className="inline-flex items-center cursor-pointer justify-start w-full">
-            <span className="ml-3 text-right">آیا این بلاگ ویژه است؟</span>
-            <input
-              type="checkbox"
-              className="sr-only peer"
-              id="isFeatured"
-              {...control.register('isFeatured')}
-            />
-            <div className="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
           </label>
-        </div>
+        ))}
       </div>
     </>
   );

@@ -8,7 +8,7 @@ import Image from "next/image";
 const VideoGallery = () => {
   return (
     <section
-      className="bg-no-repeat bg-contain bg-center h-full pt-24  dark:bg-gray-900 "
+      className="bg-no-repeat bg-contain bg-center h-full  dark:bg-gray-900 "
       style={{
         backgroundImage:
           "url(/assets/home-page/offer/tree1.svg), url(/assets/home-page/offer/tree2.svg)",

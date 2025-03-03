@@ -1,21 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import SkeletonImage from "@/components/shared/skeleton/SkeletonImage";
 
-const Left = ({ thumbnail, gallery, isLoading }) => {
-  // مدیریت تصویر اصلی
-  const [mainImage, setMainImage] = useState(thumbnail?.url);
+const Left = ({ gallery, isLoading }) => {
+  const [mainImage, setMainImage] = useState("");
+
+  useEffect(() => {
+    if (gallery?.length > 0) {
+      setMainImage(gallery[0]?.url);
+    }
+  }, [gallery]); // تغییرات در gallery باعث بروزرسانی تصویر اصلی می‌شود
 
   return (
-    <section className="lg:col-span-6 md:col-span-6 col-span-12 flex flex-col gap-y-4">
+    <section className="col-span-1 flex flex-col gap-y-4">
       <div className="flex flex-col gap-y-4">
-        {isLoading || !mainImage ? (
-          <>
-          <SkeletonImage width={411} height={400} className="rounded w-full h-full" />
-          </>
+        {isLoading || !gallery ? (
+          <div className="w-full h-[400px] bg-gray-300 dark:bg-gray-600 animate-pulse rounded" />
         ) : (
           <Image
-            src={mainImage}
+            src={mainImage || "/placeholder.png"}
             alt="Main product"
             width={480}
             height={200}
@@ -23,27 +25,25 @@ const Left = ({ thumbnail, gallery, isLoading }) => {
           />
         )}
 
-        <div className="grid grid-cols-7 gap-4 ">
-        {isLoading || !gallery?.length
-            ? Array(7)
+        <div className="grid grid-cols-6 gap-3">
+          {isLoading || !gallery?.length
+            ? Array(6)
                 .fill(0)
                 .map((_, index) => (
-                  <SkeletonImage
+                  <div
                     key={index}
-                    width={70}
-                    height={70}
-                    className="rounded object-cover w-full h-full"
+                    className="md:w-20 md:h-20 h-14 w-14 bg-gray-300 dark:bg-gray-600 animate-pulse rounded"
                   />
                 ))
-            : gallery?.map((thumbnail, index) => (
+            : gallery.map((thumbnail, index) => (
                 <Image
-                  src={thumbnail?.url}
+                  src={thumbnail.url}
                   key={index}
-                  alt={thumbnail?.public_id}
+                  alt={thumbnail.public_id}
                   className="rounded object-cover max-w-full w-full h-full cursor-pointer"
                   width={480}
                   height={200}
-                  onClick={() => setMainImage(thumbnail?.url)}
+                  onClick={() => setMainImage(thumbnail.url)} 
                 />
               ))}
         </div>

@@ -1,8 +1,7 @@
 // Signup.jsx
-import ToggleThemeButton from "@/components/shared/theme/ToggleThemeButton";
 import Logo from "@/components/shared/logo/Logo";
-import Link from "next/link";
 import StepSignUpForm from "./StepSignUpFormUser";
+import ThemeToggle from "@/components/shared/navbar/ThemeToggle/ThemeToggle";
 
 const Signup = () => {
   return (
@@ -15,14 +14,15 @@ const Signup = () => {
       <div className="max-w-md w-full dark:bg-gray-800 p-5 sm:p-8 bg-white flex flex-col gap-y-4 rounded-primary shadow-lg z-10">
         <div className="flex flex-row items-center gap-x-2">
           <hr className="w-full" />
-          <Logo />
+          <div className="flex justify-center w-full">
+            <Logo />
+          </div>
           <hr className="w-full" />
         </div>
 
-        <StepSignUpForm
-        />
+        <StepSignUpForm />
         <div className="flex justify-center">
-        <ToggleThemeButton />
+          <ThemeToggle />
         </div>
       </div>
     </section>

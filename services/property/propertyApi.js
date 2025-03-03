@@ -8,15 +8,42 @@ const propertyApi = kuarmoniaApi.injectEndpoints({
         method: "POST",
         body,
       }),
-      invalidatesTags: [
-        "Property",
-      
-      ],
+      invalidatesTags: ["Property"],
     }),
 
-    getPropertys: builder.query({
+    getProperties: builder.query({
       query: ({ page = 1, limit = 7, search = "", userId }) => ({
         url: `/property/?page=${page}&limit=${limit}&search=${search}&userId=${userId}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
+    }),
+
+    getPropertyTypes: builder.query({
+      query: () => ({
+        url: "/property?type=type",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
+    }),
+
+    getSaleTypes: builder.query({
+      query: () => ({
+        url: "/property?type=sale",
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
+    }),
+
+    getTradeTypes: builder.query({
+      query: () => ({
+        url: "/property?type=trade",
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -29,18 +56,17 @@ const propertyApi = kuarmoniaApi.injectEndpoints({
         url: `/property/${id}`,
         method: "GET",
       }),
-      providesTags: ["User"],
+      providesTags: ["Property"],
     }),
 
-    getAllPropertys: builder.query({
-      query: ({ page = 1, limit = 8 }) => ({
-        url: `/property/?page=${page}&limit=${limit}`,
+    getAllProperties: builder.query({
+      query: () => ({
+        url: `/property/`,
         method: "GET",
-        params: { type: "client" }, 
+        params: { type: "client" },
       }),
-      providesTags: ["Property", "Tag", "User","Category"],
+      providesTags: ["Property", "Tag", "User", "Category"],
     }),
-
 
     deleteProperty: builder.mutation({
       query: (id) => ({
@@ -50,40 +76,30 @@ const propertyApi = kuarmoniaApi.injectEndpoints({
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       }),
-  
-      invalidatesTags: [
-        "User",
-        "Category",
-        "Tag",
-        "Like",
-        "Comment",
-        "view",
-      ],
+      invalidatesTags: ["Property", "User", "Category", "Tag", "Like", "Comment", "view"],
     }),
- 
-    updateProperty: builder.mutation({
-      query: ({ id, data }) => {
-        return {
-          url: `/property/${id}`,
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-          body: data,
-        };
-      },
-    }),
-    
-  }),
 
- 
+    updateProperty: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/property/${id}`,
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+        body: data,
+      }),
+    }),
+  }),
 });
 
 export const {
   useAddPropertyMutation,
-  useGetPropertysQuery,
-  useGetAllPropertysQuery,
+  useGetPropertiesQuery, 
+  useGetAllPropertiesQuery,
   useDeletePropertyMutation,
   useGetPropertyQuery,
   useUpdatePropertyMutation,
+  useGetSaleTypesQuery, 
+  useGetTradeTypesQuery, 
+  useGetPropertyTypesQuery,
 } = propertyApi;

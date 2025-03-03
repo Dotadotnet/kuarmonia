@@ -1,8 +1,8 @@
 // Signup.jsx
-import ToggleThemeButton from "@/components/shared/theme/ToggleThemeButton";
 import Logo from "@/components/shared/logo/Logo";
 import Link from "next/link";
 import StepSignUpForm from "./StepSignUpFormAdmin";
+import ThemeToggle from "@/components/shared/navbar/ThemeToggle/ThemeToggle";
 
 const Signup = () => {
   return (
@@ -15,6 +15,7 @@ const Signup = () => {
       <div className="max-w-md w-full dark:bg-gray-800 bg-white flex flex-col gap-y-4 p-5 sm:p-8 rounded-primary shadow-lg z-10">
         <div className="flex flex-row items-center gap-x-2">
           <hr className="w-full" />
+          
           <Logo />
           <hr className="w-full" />
         </div>
@@ -25,11 +26,11 @@ const Signup = () => {
         <div className="text-xs flex flex-row justify-center items-center gap-x-2">
           <Link href="/auth/forgot-password">فراموشی رمز عبور</Link>
           <div className="h-4 border-l"></div>
-          <Link href="/auth/signin">ورود</Link>
+          <Link href="/auth/signin-admin">ورود</Link>
         </div>
         <div className="flex justify-center">
 
-        <ToggleThemeButton />
+        <ThemeToggle />
         </div>
       </div>
     </section>
