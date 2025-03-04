@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import Link from "next/link";
-import MobileNav from "./MobileNav";
 import { CgClose } from "react-icons/cg";
 
 const MobileMenu = ({ isOpen, setIsOpen }) => {
-  const [isOpenMobileNav, setIsOpenMobileNav] = useState(false);
 
   return (
     <div className="relative">
