@@ -16,10 +16,10 @@ const Right = ({  title, content, location ,features ,variants,description}) => 
       <article className="flex flex-col gap-y-8">
         <div className="flex flex-col gap-y-4">
           <h1 className="lg:text-5xl md:text-3xl text-xl">
-            {toPersianNumbers(title) || "عنوان محصول"}
+            {toPersianNumbers(title)}
           </h1>
           <p className="text-xl">
-            {toPersianNumbers(content) || "تضویحات محصول"}
+            {toPersianNumbers(content) }
           </p>
           
         </div>

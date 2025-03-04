@@ -18,34 +18,34 @@ function Right() {
 
             backgroundSize: "cover",
             backgroundPosition: "center",
-            overflow: "hidden" // اضافه کردن این خط برای مخفی کردن هر چیزی که از بنر بیرون می‌رود
+            overflow: "hidden" 
           }}
         >
           <motion.div
             className="lg:absolute bottom-0 right-0 order-2 lg:w-[500px] lg:ml-0 md:ml-auto"
-            initial={{ x: 200, opacity: 0 }} // شروع از سمت راست
+            initial={{ x: 200, opacity: 0 }} 
             animate={{
               opacity: 1,
-              x: 0, // به موقعیت اصلی برسد
-              y: ["0px", "20px", "0px"] // حرکت بالا و پایین
+              x: 0, 
+              y: ["0px", "20px", "0px"] 
             }}
             transition={{
-              duration: 2, // سرعت انیمیشن برای حرکت از سمت راست
-              ease: "easeInOut", // نوع انیمیشن
-              repeat: 0, // از تکرار حرکت از سمت راست جلوگیری می‌کند
-              delay: 0.3 // کمی تأخیر قبل از شروع حرکت
+              duration: 2, 
+              ease: "easeInOut",
+              repeat: 0, 
+              delay: 0.3
             }}
           >
             <motion.div
               className="lg:absolute bottom-0 right-0 order-2 lg:w-[500px] lg:ml-0 md:ml-auto"
               animate={{
-                y: ["0px", "20px", "0px"] // حرکت بالا و پایین
+                y: ["0px", "20px", "0px"]
               }}
               transition={{
-                // نوع انیمیشن
-                repeat: Infinity, // تکرار انیمیشن حرکت بالا و پایین
-                repeatType: "loop", // نوع تکرار: حلقه‌ای
-                duration: 3 // مدت زمان یک سیکل حرکت بالا و پایین
+          
+                repeat: Infinity, 
+                repeatType: "loop", 
+                duration: 3 
               }}
             >
               <Image
@@ -70,9 +70,9 @@ function Right() {
               {/* Animated Title */}
               <motion.h1
                 className="md:text-6xl text-white font-nozha text-6xl w-full text-right"
-                initial={{ x: -200, opacity: 0 }} // Initial state: Slide from left
-                animate={{ x: 0, opacity: 1 }} // End state: Position in place
-                transition={{ duration: 0.3 }} // Duration of slide-in effect
+                initial={{ x: -200, opacity: 0 }} 
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.3 }} 
               >
                 کارمونیا
                 <br />{" "}

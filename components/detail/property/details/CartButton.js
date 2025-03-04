@@ -72,8 +72,7 @@ const CartButton = ({ product }) => {
             ) : (
               <>
                 <Bag />
-                <span className="md:hidden text-white">افزودن</span>
-                <span className="md:flex hidden text-white">
+                <span className="flex  text-white">
                   درخواست مشاروه{" "}
                 </span>
               </>

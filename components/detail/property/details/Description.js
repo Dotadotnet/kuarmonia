@@ -104,7 +104,7 @@ const Description = ({ description, features, reviews, variants }) => {
 
             {reviews?.length === 0 ? (
               <p className="text-sm flex flex-row gap-x-1 items-center justify-center">
-                <Inform /> هیچ نظری برای این محصول ثبت نشده!
+                <Inform /> هیچ نظری برای این ملک ثبت نشده!
               </p>
             ) : (
               <div className="h-full overflow-y-auto scrollbar-hide flex flex-col gap-y-4">
