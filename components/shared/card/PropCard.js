@@ -1,37 +1,36 @@
 import React from "react";
-import { useRouter } from "next/router";
 import { toPersianNumbers } from "@/utils/convertNumbers";
+import Square from "@/components/icons/Square";
 import Image from "next/image";
 import Link from "next/link";
+import {
+  FaBed,
+  FaHome,
+  FaSwimmingPool,
+  FaCar,
+  FaShower,
+  FaRegCalendarAlt,
+  FaBath
+} from "react-icons/fa";
+import { FaRuler } from "react-icons/fa";
 
-const PropCard = ({
-  id,
-  slug,
-  title,
-  summary,
-  saleType,
-  tradeType,
-  type,
-  createDate,
-  finalPrice,
-  finalPriceLabel,
-  currency,
-  square,
-  bedroom,
-  bathroom,
-  thumbnail,
-  variants // variants را دریافت می‌کنیم
-}) => {
-  const router = useRouter();
+const PropertyCard = ({ property }) => {
+  let updatedFinalPrice = property?.finalPrice;
+  let updatedFinalPriceLabel = property?.finalPriceLabel;
 
-  let updatedFinalPrice = finalPrice;
-  let updatedFinalPriceLabel = finalPriceLabel;
-
-  if (tradeType) {
-    const deposit = variants?.find((variant) => variant.type === "deposit")?.value;
-    const monthlyRent = variants?.find((variant) => variant.type === "monthlyRent")?.value;
-    const totalPrice = variants?.find((variant) => variant.type === "totalPrice")?.value;
-    const installmentAmount = variants.find((variant) => variant.type === "installmentAmount")?.value;
+  if (property?.tradeType && property?.variants) {
+    const deposit = property?.variants?.find(
+      (variant) => variant?.type === "deposit"
+    )?.value;
+    const monthlyRent = property?.variants?.find(
+      (variant) => variant?.type === "monthlyRent"
+    )?.value;
+    const totalPrice = property?.variants?.find(
+      (variant) => variant?.type === "totalPrice"
+    )?.value;
+    const installmentAmount = property?.variants.find(
+      (variant) => variant?.type === "installmentAmount"
+    )?.value;
 
     if (deposit) {
       updatedFinalPriceLabel = " ودیعه";
@@ -49,98 +48,122 @@ const PropCard = ({
   }
 
   return (
-    <Link href={`/property/${slug}/${id}`} className="max-w-sm w-full lg:w-full z-50">
-      <div className="bg-white dark:bg-gray-800 shadow-xl rounded-lg overflow-hidden">
+    <Link
+      key={property?._id}
+      href={`/property/${property?.slug}/${property?._id}`}
+      className="max-w-sm w-full  z-49 "
+    >
+      <div className="bg-white dark:bg-gray-800  relative   shadow-xl rounded-lg overflow-hidden ">
+        <div className="w-full absolute overflow-hidden h-full">
+          <span
+            className={`absolute top-2 left-0 w-32 translate-y-4 -translate-x-8 -rotate-45 text-center text-sm z-50 
+            ${
+              property?.citizenshipStatus === "citizenship"
+                ? "bg-green-500 text-white"
+                : property?.citizenshipStatus === "residency"
+                ? "bg-blue-500 text-white"
+                : property?.citizenshipStatus === "goldenVisa"
+                ? "bg-yellow-500 text-white"
+                : "bg-transparent text-transparent"
+            }`}
+          >
+            {property?.citizenshipStatus === "citizenship" && "اخذ شهروندی"}
+            {property?.citizenshipStatus === "residency" && "اخذ اقامت"}
+            {property?.citizenshipStatus === "goldenVisa" && "اخذ ویزای طلایی"}
+          </span>
+        </div>
         <div className="bg-cover w-full relative bg-center h-56">
           <Image
-            src={thumbnail?.url || "/placeholder.png"}
+            src={property?.thumbnail?.url || "/placeholder.png"}
             height={600}
             width={600}
             className="w-full h-full"
+            alt="تصویر ملک"
           />
-
-          <div className="flex justify-end"></div>
         </div>
         <div className="flex w-full gap-1 pt-2 px-2 justify-between h-fit">
-          {type && (
+          {property?.type && (
             <Badge className="text-green-800 dark:text-green-100 bg-green-100 dark:bg-green-600 flex flex-row items-center gap-x-1">
-              {type}
+              {property?.type?.title}
             </Badge>
           )}
           <div className="flex gap-2">
-            {saleType && (
+            {property?.saleType && (
               <Badge className="text-rose-800 dark:text-rose-100 bg-rose-100 dark:bg-rose-600 flex flex-row items-center gap-x-1">
-                {saleType}
+                {property?.saleType.title}
               </Badge>
             )}
-            {tradeType && (
+            {property?.tradeType && (
               <Badge className="text-cyan-800 dark:text-cyan-100 bg-cyan-100 dark:bg-cyan-600 flex flex-row items-center gap-x-1">
-                {tradeType}
+                {property?.tradeType.title}
               </Badge>
             )}
           </div>
         </div>
         <div className="p-4 text-right">
-          <div className="flex justify-between">
-            <h3 className="uppercase tracking-wide text-4xl font-nozha text-gray-900 dark:text-gray-100">
-              {toPersianNumbers(title)}
+          <div className="flex flex-col  justify-between">
+            <h3 className=" tracking-wide text-2xl font-nozha text-gray-900 dark:text-gray-100">
+              {toPersianNumbers(property?.title)}
             </h3>
-            {createDate && (
-              <h3 className="uppercase text-center flex items-center tracking-wide text-lg text-gray-600 dark:text-gray-300">
-                {toPersianNumbers(createDate) + "ساله"}
-              </h3>
-            )}
+            <h4 className="text-gray-700 text-justify dark:text-gray-300 ">
+              {property?.summary}
+            </h4>
           </div>
-          <h4 className="text-gray-700 dark:text-gray-300 mt-4">{summary}</h4>
-          {updatedFinalPrice && currency && (
+          {updatedFinalPrice && property?.currency && (
             <>
               <span className="text-3xl font-extrabold font-nozha text-blue-800 dark:text-blue-300">
                 {" "}
-                {toPersianNumbers(Number(updatedFinalPrice).toLocaleString("fa-IR"))}
-                </span>
-              <span className="text-gray-500 dark:text-gray-300">{currency}</span>
+                {toPersianNumbers(
+                  Number(updatedFinalPrice).toLocaleString("fa-IR")
+                )}
+              </span>
+              <span className="text-gray-500 dark:text-gray-300">
+                {property?.currency}
+              </span>
               <strong className="text-blue-600 dark:text-blue-400 text-sm">
                 {updatedFinalPriceLabel}
               </strong>
             </>
           )}
-
-          <p className="text-gray-700 dark:text-gray-300">{square} متر مساحت </p>
         </div>
-
-        <div className="flex p-4 border-t border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">
-          {bedroom>0 && (
-            <div className="flex-1 inline-flex items-center">
-              <svg
-                className="h-6 w-6 text-gray-600 dark:text-gray-300 fill-current ml-3"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
-                <path d="M0 16L3 5V1a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v4l3 11v5a1 1 0 0 1-1 1v2h-1v-2H2v2H1v-2a1 1 0 0 1-1-1v-5zM19 5h1V1H4v4h1V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h2V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1zm0 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V6h-2v2a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6H3.76L1.04 16h21.92L20.24 6H19zM1 17v4h22v-4H1zM6 4v4h4V4H6zm8 0v4h4V4h-4z"></path>
-              </svg>
-              <p>
-                <span className="text-gray-900 dark:text-gray-100 ml-2">{bedroom}</span>
-                
-              </p>
-            </div>
+        <div className="flex gap-x-2 justify-start pt-1 px-4 pb-10 border-t border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300">
+          {property?.square && (
+            <Tooltip
+              data-tooltip-target="square "
+              aria-label="مساحت"
+              title="مساحت"
+              value={property.square}
+              icon={<Square className="h-6 w-6 " />}
+            />
           )}
-          {bathroom >0 && (
-            <div className="flex-1 inline-flex items-center">
-              <svg
-                className="h-6 w-6 text-gray-600 dark:text-gray-300 fill-current ml-3"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M17.03 21H7.97a4 4 0 0 1-1.3-.22l-1.22 2.44-.9-.44 1.22-2.44a4 4 0 0 1-1.38-1.55L.5 11h7.56a4 4 0 0 1 1.78.42l2.32 1.16a4 4 0 0 0 1.78.42h9.56l-2.9 5.79a4 4 0 0 1-1.37 1.55l1.22 2.44-.9.44-1.22-2.44a4 4 0 0 1-1.3.22zM21 11h2.5a.5.5 0 1 1 0 1h-9.06a4.5 4.5 0 0 1-2-.48l-2.32-1.15A3.5 3.5 0 0 0 8.56 10H.5a.5.5 0 0 1 0-1h8.06c.7 0 1.38.16 2 .48l2.32 1.15a3.5 3.5 0 0 0 1.56.37H20V2a1 1 0 0 0-1.74-.67c.64.97.53 2.29-.32 3.14l-.35.36-3.54-3.54.35-.35a2.5 2.5 0 0 1 3.15-.32A2 2 0 0 1 21 2v9zm-5.48-9.65l2 2a1.5 1.5 0 0 0-2-2zm-10.23 17A3 3 0 0 0 7.97 20h9.06a3 3 0 0 0 2.68-1.66L21.88 14h-7.94a5 5 0 0 1-2.23-.53L9.4 12.32A3 3 0 0 0 8.06 12H2.12l3.17 6.34z"
-                ></path>
-              </svg>
-              <p>
-                <span className="text-gray-900 dark:text-gray-100">{bathroom}</span>{" "}
-                
-              </p>
-            </div>
+
+          {property?.createDate && (
+            <Tooltip
+              data-tooltip-target="createDate"
+              aria-label="سال ساخت"
+              title="سال ساخت"
+              value={property?.createDate}
+              icon={<FaRegCalendarAlt className="h-6 w-6 " />}
+            />
+          )}
+          {property?.bedrooms > 0 && (
+            <Tooltip
+              data-tooltip-target="bedrooms"
+              aria-label="اتاق"
+              title="اتاق"
+              value={property?.bedrooms}
+              icon={<FaBed className="h-6 w-6 " />}
+            />
+          )}
+
+          {property?.bathrooms > 0 && (
+            <Tooltip
+              data-tooltip-target="bathrooms"
+              aria-label="حمام"
+              title="حمام"
+              value={property?.bathrooms}
+              icon={<FaBath className="h-6 w-6 " />}
+            />
           )}
         </div>
       </div>
@@ -148,11 +171,12 @@ const PropCard = ({
   );
 };
 
-function Badge({ props, children, className }) {
+function Badge({ className, children, props }) {
   return (
     <span
       className={
-        "text-xs text-gray-500 dark:text-gray-300 py-1 px-3 rounded-full " + className
+        "text-xs text-gray-500 dark:text-gray-300 py-1 px-3 rounded-full " +
+        className
       }
       {...props}
     >
@@ -161,4 +185,19 @@ function Badge({ props, children, className }) {
   );
 }
 
-export default PropCard;
+function Tooltip({ children, value, icon, ...props }) {
+  return (
+    <span {...props} className="custom-button !p-3 relative">
+      {icon}
+      <div
+        className={`absolute  top-full left-1/2 -translate-x-1/2 mt-2 !px-4 bg-green-300 text-green-500 text-sm rounded shadow-lg transition-opacity duration-300  whitespace-nowrap !py-0 cursor-pointer  border border-green-500/5 dark:border-blue-500/5 bg-green-500/5 dark:bg-blue-500/5 p-2  dark:text-blue-500  hover:border-green-500/10 dark:hover:border-blue-500/10 hover:bg-green-500/10 dark:hover:bg-blue-500/10 hover:!opacity-100 group-hover:opacity-70
+        `}
+      >
+        {value}
+        <div className="absolute  top-0 left-1/2 -translate-x-1/2 -translate-y-full border-8 border-transparent border-b-green-500/5 dark:border-b-blue-500/5 cursor-pointer"></div>
+      </div>
+    </span>
+  );
+}
+
+export default PropertyCard;

@@ -1,79 +1,51 @@
 // controllers/property.controller.js
 import Property from "@/models/property.model";
-import Like from "@/models/like.model";
 import User from "@/models/user.model";
-import path from "path";
-import SaleType from "@/models/saleType.model"; // مدل saleType
-import TradeType from "@/models/tradeType.model"; // مدل tradeType
-import PropertyType from "@/models/propertyType.model";
 export async function addProperty(req) {
   try {
     const {
-      title,
-      description,
-      summary,
-      createDate,
-      square,
-      bathroom,
-      bedroom,
-      currency,
-      saleType,
-      tradeType,
-      propertyType,
-      category,
-      isFeatured,
       selectedLocation,
       variants,
       tags,
       features,
-      authorId  
+      amenities,
+      ...otherInformation // سایر اطلاعات ورودی
     } = req.body;
-
+    
     let thumbnail = null;
     let gallery = [];
-
+    
     // پردازش تصاویر
-    if (req.uploadedFiles["thumbnail"].length) {
+    if (req.uploadedFiles["thumbnail"]?.length) {
       thumbnail = {
         url: req.uploadedFiles["thumbnail"][0].url,
         public_id: req.uploadedFiles["thumbnail"][0].key
       };
     }
-  
-    if (req.uploadedFiles["gallery"] && req.uploadedFiles["gallery"].length > 0) {
+    
+    if (req.uploadedFiles["gallery"]?.length > 0) {
       gallery = req.uploadedFiles["gallery"].map((file) => ({
         url: file.url,
         public_id: file.key
       }));
     }
-
-
+    
+    // ایجاد ملک
     const property = await Property.create({
-      title,
-      description,
-      summary,
-      createDate,
-      square,
-      bathrooms:bathroom,
-      bedroom:bedroom,
-      currency,
-      tradeType,
-      type:propertyType,
-      saleType:saleType,
-      category,
-      isFeatured,
-      location :JSON.parse(selectedLocation),
-      features: JSON.parse(features), 
-      tags,
+      ...otherInformation, // سایر اطلاعات به‌صورت مستقیم اضافه می‌شود
+      location: JSON.parse(selectedLocation),
+      features: JSON.parse(features),
+      tags: JSON.parse(tags),
+      variants: JSON.parse(variants),
+      amenities: JSON.parse(amenities),
       thumbnail,
-      gallery,
-      variants:JSON.parse(variants),
-      authorId: authorId
+      gallery
     });
+    
 
     return {
       success: true,
-      message: "پست با موفقیت ایجاد شد",
+      message: "ملک با موفقیت ایجاد شد",
       data: property
     };
   } catch (error) {
@@ -104,7 +76,7 @@ export async function getProperties(req) {
           $or: [
             { title: { $regex: search, $options: "i" } },
             { description: { $regex: search, $options: "i" } },
-            {  }
+            {}
           ],
           isDeleted: false
         }
@@ -116,8 +88,11 @@ export async function getProperties(req) {
       .skip(skip)
       .limit(Number(limit))
       .populate("authorId", "name avatar.url")
+      .populate("type", "title featrues")
+      .populate("tradeType", "title priceFields")
+      .populate("saleType", "title ")
       .select(
-        "_id propertyId title createdAt  views likes dislikes status likeCount dislikeCount thumbnail"
+        "_id propertyId title createdAt  views likes dislikes status likeCount dislikeCount thumbnail "
       );
 
     const total = await Property.countDocuments(searchQuery);
@@ -127,109 +102,39 @@ export async function getProperties(req) {
         success: true,
         data: propertys,
         total,
-        message: "پست‌ها با موفقیت دریافت شد"
+        message: "املاک با موفقیت دریافت شد"
       };
     } else {
       return {
         success: false,
-        message: "هیچ پستی یافت نشد"
+        message: "هیچ ملکی یافت نشد"
       };
     }
   } catch (error) {
+    console.log("error",error)
     return {
       success: false,
-      message: error.message
-    };
-  }
-}
-// تابع برای دریافت Sale Types
-export async function getSaleTypes(req) {
-  try {
-    const saleTypes = await SaleType.find();
-    if (saleTypes.length > 0) {
-      return {
-        success: true,
-        data: saleTypes,
-        message: "Sale Types retrieved successfully"
-      };
-    } else {
-      return {
-        success: false,
-        message: "No Sale Types found"
-      };
-    }
-  } catch (error) {
-    return {
-      success: false,
-      message: error.message
+      message: error
     };
   }
 }
 
-// تابع برای دریافت Trade Types
-export async function getTradeTypes(req) {
-  try {
-    const tradeTypes = await TradeType.find();
 
-    if (tradeTypes.length > 0) {
-      return {
-        success: true,
-        data: tradeTypes,
-        message: "Trade Types retrieved successfully"
-      };
-    } else {
-      return {
-        success: false,
-        message: "No Trade Types found"
-      };
-    }
-  } catch (error) {
-    return {
-      success: false,
-      message: error.message
-    };
-  }
-}
-
-// تابع برای دریافت Property Types
-export async function getpropertyType(req) {
-  try {
-    const propertyTypes = await PropertyType.find();
-    if (propertyTypes.length > 0) {
-      return {
-        success: true,
-        data: propertyTypes,
-        message: "Property Types retrieved successfully"
-      };
-    } else {
-      return {
-        success: false,
-        message: "No Property Types found"
-      };
-    }
-  } catch (error) {
-    return {
-      success: false,
-      message: error.message
-    };
-  }
-}
 
 export async function getClientProperties() {
   try {
-
     const properties = await Property.find()
-    .populate("authorId", "name avatar.url")
-    .populate("category", "title")
-    .populate("tags", "title")
-    .populate("saleType", "label")
-    .populate("type", "label")
-    .populate("tradeType", "label")
-    .select(" _id title slug summary variants thumbnail bathrooms bedrooms currency createDate ")
-    .lean();
-      console.log(properties);
+      .populate("authorId", "name avatar.url")
+      .populate("category", "title")
+      .populate("tags", "title")
+      .populate("saleType", "title")
+      .populate("type", "title features")
+      .populate("tradeType", "title priceFileds ")
+      .select(
+        " _id title slug summary variants thumbnail bathrooms bedrooms currency createDate country square state city citizenshipStatus"
+      )
+      .lean();
 
-   
     if (properties.length > 0) {
       return {
         success: true,
@@ -250,42 +155,17 @@ export async function getClientProperties() {
   }
 }
 
-export async function getPropertysForDropDownMenu() {
-  try {
-    const propertys = await Propertys.find({
-      isDeleted: false,
-      status: "active"
-    }).select("id title description");
 
-    if (propertys.length > 0) {
-      return {
-        success: true,
-        data: categories,
-        message: "پست ها با موفقیت برای DropDownMenu دریافت شدند"
-      };
-    } else {
-      return {
-        success: false,
-        message: "هیچ پستی فعال برای DropDownMenu یافت نشد"
-      };
-    }
-  } catch (error) {
-    return {
-      success: false,
-      message: error.message
-    };
-  }
-}
 
 export async function getProperty(req) {
   try {
     const property = await Property.findById(req.query.id)
       .populate("authorId", "name avatar.url")
       .populate("category", "title")
-      .populate("tags", "title")
-      .select(
-        "_id propertyId title description slug  createdAt  status isFeatured gallery features publishDate location"
-      );
+      .populate("tradeType", "title priceFileds")
+      .populate("saleType", "title")
+      .populate("type", "title features")
+   
     if (property) {
       return {
         success: true,

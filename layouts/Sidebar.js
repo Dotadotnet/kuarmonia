@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { IoHomeOutline } from "react-icons/io5";
+import { FaChevronDown } from "react-icons/fa"; // اضافه کردن آیکون Down
 import { useSelector } from "react-redux";
 import Image from "next/image";
 import JWT from "@/utils/jwt.util";
@@ -11,33 +12,77 @@ const Sidebar = ({ routes }) => {
   const user = useSelector((state) => state?.auth);
   const routes_result = [];
   const jwt = new JWT();
-  routes.forEach(route => {
-    if(jwt.isAccessAllowedNumber(route.Access)){
-      routes_result.push(route)
+  routes.forEach((route) => {
+    if (jwt.isAccessAllowedNumber(route.Access)) {
+      routes_result.push(route);
     }
   });
+
+  const [openSubRoutes, setOpenSubRoutes] = useState({});
+
   const isActive = (href) => {
     return router.pathname === href
-      ? "bg-primary dark:bg-blue-500 text-white"
+      ? "bg-primary dark:bg-blue-500 text-white" 
       : "";
   };
 
+  const toggleSubRoutes = (index) => {
+    setOpenSubRoutes((prevState) => ({
+      ...prevState,
+      [index]: !prevState[index] 
+    }));
+  };
+  const handleRouteClick = (route, index) => {
+    if (route.path) {
+      router.push(route.path);
+    } else {
+      toggleSubRoutes(index);
+    }
+  };
   return (
-    <div className="w-full h-full flex flex-col gap-y-2 ">
+    <div className="w-full h-full flex flex-col gap-y-2">
       <div className="flex flex-col gap-y-1 overflow-y-auto scrollbar-hide">
         {routes_result.map((route, index) => (
-          <Link
-            key={index}
-            href={route.path}
-            className={
-              "flex flex-row gap-x-2  items-center px-4 py-2   hover:text-white dark:hover:bg-blue-500 link-hover transition-colors rounded text-sm" +
-              " " +
-              isActive(route.path)
-            }
-          >
-            {route.icon}
-            {route.name}
-          </Link>
+          <div key={index}>
+            {/* Main Route Link */}
+            <div
+              className="flex flex-row gap-x-2 items-center px-4 py-2 cursor-pointer justify-between hover:text-white dark:hover:bg-blue-500 transition-colors rounded text-sm"
+              onClick={() => handleRouteClick(route, index)}  
+            >
+              <span className="flex flex-row gap-x-2 items-center">
+                {route.icon}
+                {route.name}
+              </span>
+              <span>
+                {route.subRoutes && (
+                  <FaChevronDown
+                    className={`ml-auto w-4 h-4 transition-transform transform ${
+                      openSubRoutes[index] ? "rotate-180" : ""
+                    }`}
+                  />
+                )}
+              </span>
+            </div>
+
+            {/* Subroutes (Dropdown) */}
+            {route.subRoutes && openSubRoutes[index] && (
+              <div className="pr-6 flex flex-col mt-4 gap-y-2">
+                {route.subRoutes.map((subRoute, subIndex) => (
+                  <Link
+                    key={subIndex}
+                    href={subRoute.path}
+                    className={
+                      "flex flex-row gap-x-2 items-center px-4 py-2 hover:text-white dark:hover:bg-blue-500 link-hover transition-colors rounded text-sm " +
+                      isActive(subRoute.path)
+                    }
+                  >
+                    {subRoute.icon}
+                    {subRoute.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         ))}
       </div>
 

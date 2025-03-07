@@ -14,7 +14,7 @@ const Tooltip = ({ text, children, bgColor = "bg-primary dark:bg-blue-600" ,txtC
       {children}
       {showTooltip && (
         <span
-          className={`absolute top-full whitespace-nowrap mt-1 right-1  z-20 p-2 rounded text-xs ${txtColor} ${bgColor}`}
+          className={`absolute top-full  mt-1 right-1  z-20 p-2 rounded text-xs ${txtColor} ${bgColor}`}
         >
           {text}
         </span>

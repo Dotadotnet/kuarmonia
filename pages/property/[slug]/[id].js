@@ -24,12 +24,7 @@ const Property = () => {
       <Main>
         <div className="pt-28"></div>
         <PropertyDetail
-          thumbnail={fetchData?.thumbnail}
-          galleryPreview={fetchData?.data?.gallery}
-          location={fetchData?.data?.location}
-          features={fetchData?.data?.features}
-          title={fetchData?.data?.title}
-          description={fetchData?.data?.title}
+         property={fetchData?.data}
         />
       </Main>
     </main>

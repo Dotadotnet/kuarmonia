@@ -61,24 +61,10 @@ console.log(Properties)
                       <SkeletonPropCard />
                     </SwiperSlide>
                   ))
-                : Properties.map((Property, index) => (
+                : Properties.map((property, index) => (
                     <SwiperSlide key={index}>
                       <PropCard
-                        id={Property._id}
-                        title={Property?.title}
-                        slug={Property?.slug}
-                        summary={Property?.summary}
-                        thumbnail={Property?.thumbnail}
-                        createDate={Property?.createDate}
-                        saleType={Property?.saleType?.label}
-                        tradeType={Property?.tradeType?.label}
-                        type={Property?.type?.label}
-                        isLoading={isLoading}
-                        square={Property?.square}
-                        currency={Property?.currency}
-                        bedroom={Property?.bedrooms}
-                        variants={Property?.variants}
-                        bathroom={Property?.bathrooms}
+                      property={property}
                       />
                     </SwiperSlide>
                   ))}

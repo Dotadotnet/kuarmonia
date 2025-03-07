@@ -34,7 +34,7 @@ const LargeMenu = () => {
   };
 
   return (
-    <nav className="bg-neutral-100/70 col-span-8 mx-8 rounded-primary hidden md:flex w-full">
+    <nav className="bg-neutral-100/70 col-span-9  justify-center  rounded-primary hidden md:flex w-full">
       <div className="bg-neutral-100/70 rounded-primary hidden md:flex">
         <div className="flex flex-row justify-center gap-x-4 overflow-x-auto">
           <div className="flex flex-row justify-center gap-x-4 border p-1 rounded-secondary bg-white dark:bg-gray-800 overflow-x-auto scrollbar-hide">

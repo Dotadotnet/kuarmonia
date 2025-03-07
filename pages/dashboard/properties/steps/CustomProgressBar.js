@@ -1,54 +1,72 @@
 import React from 'react';
 import { FaAddressCard } from "react-icons/fa";
 import {BranchIcon,ContentIcon,RankIcon,Gallery} from '@/utils/SaveIcon';
+import { FiDollarSign,FiCoffee   } from "react-icons/fi";
 const steps = [
   {
     number: 1,
-    label:'مشخصات کارت',
+    label:' نوع معامله و قیمت',
     required: true,
     icon: (
-      <FaAddressCard size={25} />
+      <FiDollarSign size={25} />
 
     ),
   },
   {
     number: 2,
-    label: 'تصویر و محتوا',
+    label: 'مشخصات',
     required: true,
     icon: (
-      <ContentIcon />
+      <FaAddressCard />
 
     ),
   },
   {
     number: 3,
-    label: 'گالری',
+    label: 'امکانات',
     required: false,
+    icon: (
+      <FiCoffee />
+
+    ),
+  },
+  {
+    number: 4,
+    label: 'گالری',
+    required: true,
     icon: (
       <Gallery />
 
     ),
   },
   {
-    number: 4,
-    label: 'شاخه بندی',
-    required: true,
-    icon: (
-      <BranchIcon />
-
-    ),
-  },
-  {
     number: 5,
-    label: 'تنظیمات انتشار',
+    label: ' ویژگی ها',
     required: true,
     icon: (
-<span className="si--settings-duotone "></span>
+<></>
     ),
   },
   {
     number: 6,
-    label: 'SEO',
+    label: 'دسته بندی',
+    required: false,
+    icon: (
+      <RankIcon />
+    ),
+  },
+  
+  {
+    number: 7,
+    label: 'آدرس',
+    required: false,
+    icon: (
+      <RankIcon />
+    ),
+  },
+  {
+    number: 8,
+    label: 'انتشار',
     required: false,
     icon: (
       <RankIcon />

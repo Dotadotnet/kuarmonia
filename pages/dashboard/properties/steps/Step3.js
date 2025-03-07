@@ -1,88 +1,124 @@
-import React from "react";
-import GalleryUpload from "@/components/shared/gallery/GalleryUpload";
-import DisplayImages from "@/components/shared/gallery/DisplayImages";
-import ThumbnailUpload from "@/components/shared/gallery/ThumbnailUpload";
+import StatusSwitch from "@/components/shared/button/StatusSwitch";
+import React, { useState, useEffect } from "react";
+import { useGetTypesQuery } from "@/services/type/typeApi";
 import { Controller } from "react-hook-form";
+import Dropdown from "@/components/shared/dropdownmenu/Dropdown";
 
-const Step3 = ({
-  setGalleryPreview,
-  setGallery,
-  register,
-  galleryPreview,
-  setThumbnailPreview,
-  setThumbnail,
-  editorData,
-  setEditorData,
-  errors,
-  useState,
-  control
-}) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const stripHtmlTags = (html) => {
-    const tempElement = document.createElement("div");
-    tempElement.innerHTML = html;
-    return tempElement.textContent || tempElement.innerText || "";
-  };
+const Step3 = ({ register, errors, control }) => {
+  const { data: propertyTypesData, isLoading } = useGetTypesQuery({
+    page: 1,
+    search: "",
+    limit: 10000
+  });
+  const propertyTypes = propertyTypesData?.data || [];
+  console.log(propertyTypes);
+  const [selectedProperty, setSelectedProperty] = useState(null);
+  const [availableFeatures, setAvailableFeatures] = useState([]);
+
+  // وقتی که نوع ملک تغییر می‌کند، ویژگی‌های آن را تنظیم می‌کنیم
+  useEffect(() => {
+    if (selectedProperty) {
+      // یافتن ویژگی‌های ملک بر اساس نوع ملک انتخاب شده
+      const selectedType = propertyTypes.find(
+        (type) => type.title === selectedProperty
+      );
+      setAvailableFeatures(selectedType?.features || []);
+    }
+  }, [selectedProperty, propertyTypes]);
+
   return (
-    <>
-      <label htmlFor="thumbnail" className="flex flex-col text-center gap-y-2">
-        تصویر عنوان وبلاگ
-        <ThumbnailUpload
-          setThumbnailPreview={setThumbnailPreview}
-          setThumbnail={setThumbnail}
-          register={register("thumbnail", {
-            required: "آپلود تصویر عنوان الزامی است"
-          })}
-          maxFiles={1}
-        />
-      </label>
-      {errors.gallery && (
-        <span className="text-red-500 text-sm">{errors.gallery.message}</span>
-      )}
-      <div className="flex flex-col text-center gap-y-2">
-        <GalleryUpload
-          setGallery={setGallery}
-          setGalleryPreview={setGalleryPreview}
-          maxFiles={5}
-          register={register("gallery", {
-            required: "آپلود حداقل یک تصویر الزامی است"
-          })}
-          title="آپلود تصاویر گالری"
-        />
-
-        {/* نمایش پیش‌نمایش تصاویر */}
-        <DisplayImages
-          galleryPreview={galleryPreview.map((item) => item)}
-          imageSize={150}
-        />
-      </div>
-      <label htmlFor="description" className="flex flex-col gap-y-1 w-full">
-        <span className="text-sm">توضیحات   ملک را وارد کنید</span>
-        <textarea
+    <div className="w-full max-h-128 flex flex-col gap-y-2">
+      <label htmlFor="bedrooms" className="flex flex-col gap-y-2 w-full">
+        تعداد اتاق
+        <input
           type="text"
-          name="description"
-          id="description"
-          {...register("description", {
-            required: "وارد کردن توضیحات الزامی است",
-            minLength: {
-              value: 3,
-              message: "توضیحات باید حداقل ۳ حرف داشته باشد"
-            },
-            maxLength: {
-              value: 460,
-              message: "توضیحات نباید بیشتر از ۴۶۰ حرف باشد"
-            }
+          id="bedrooms"
+          className="rounded p-2 border w-full border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          {...register("bedrooms", {
+            pattern: { value: /^\d{1,2}$/, message: "عدد معتبر وارد کنید" }
           })}
-          placeholder="توضیحات ملک"
-          maxLength="460"
-          className="p-2 rounded border w-full"
-
         />
-        {errors.description && (
-          <span className="text-red-500 text-sm">{errors.description.message}</span>
+        {errors.bedrooms && (
+          <span className="text-red-500 text-sm">{errors.bedrooms.message}</span>
         )}
       </label>
-    </>
+
+      {/* تعداد حمام */}
+      <label htmlFor="bathrooms" className="flex flex-col gap-y-2 w-full">
+        تعداد حمام
+        <input
+          type="text"
+          id="bathrooms"
+          className="rounded p-2 border w-full border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          {...register("bathrooms", {
+            pattern: { value: /^\d{1}$/, message: "عدد معتبر وارد کنید" }
+          })}
+        />
+        {errors.bathrooms && (
+          <span className="text-red-500 text-sm">
+            {errors.bathrooms.message}
+          </span>
+        )}
+      </label>
+
+      {/* انتخاب نوع ملک */}
+      <label htmlFor="propertyType" className="flex flex-col gap-y-2 w-full">
+        نوع ملک
+        <Controller
+          control={control}
+          name="propertyType"
+          render={({ field: { onChange, value } }) => (
+            <Dropdown
+              options={propertyTypes}
+              placeholder="نوع ملک"
+              value={value?._id}
+              onChange={(selectedOption) => {
+                onChange(selectedOption);
+                setSelectedProperty(selectedOption?.title);
+              }}
+              className="w-full"
+              height="py-3"
+              error={errors.propertyType}
+            />
+          )}
+        />
+        {errors.propertyType && (
+          <span className="text-red-500 text-sm">
+            {errors.propertyType.message}
+          </span>
+        )}
+      </label>
+
+      {/* امکانات ملک */}
+      {availableFeatures.length > 0 && (
+        <div className="mt-4">
+          <h3 className="text-lg">امکانات</h3>
+          <div className="grid grid-cols-2 gap-3 mt-2">
+            {availableFeatures.map((feature, index) => (
+              <Controller
+                key={index}
+                control={control}
+                name={`amenities[${index}]`} 
+                render={({ field: { onChange, value } }) => (
+                  <StatusSwitch
+                    label={feature}
+                    id={feature}
+                    register={register}
+                    defaultChecked={value?.hasAmenity || false}
+                    onChange={(e) => {
+                      onChange({
+                        title: feature, 
+                        hasAmenity: e.target.checked
+                      });
+                    }}
+                  />
+                )}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

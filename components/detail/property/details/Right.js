@@ -10,25 +10,25 @@ const GeoLocation = dynamic(() => import("./Location"), {
   loading: () => <p className="font-sans">نقشه در حال آماده سازی...</p>,
   ssr: false,
 });
-const Right = ({  title, content, location ,features ,variants,description}) => {
+const Right = ({ property}) => {
   return (
     <section className="col-span-1 flex flex-col gap-y-8">
       <article className="flex flex-col gap-y-8">
         <div className="flex flex-col gap-y-4">
           <h1 className="lg:text-5xl md:text-3xl text-xl">
-            {toPersianNumbers(title)}
+            {toPersianNumbers(property?.title)}
           </h1>
           <p className="text-xl">
-            {toPersianNumbers(content) }
+            {toPersianNumbers(property?.description) }
           </p>
           
         </div>
-        <CartButton />
+        <CartButton property={property} />
       </article>
 
-      <Description features={features} description={description} />
+      <Description property={property} />
       <div className="pl-8">
-        <GeoLocation location={location} />
+        <GeoLocation property={property} />
       </div>
     </section>
   );

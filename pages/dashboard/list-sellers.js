@@ -17,7 +17,6 @@ const ListSellers = () => {
   const { isLoading, data, error } = useGetUsersQuery();
   const users = useMemo(() => data?.data || [], [data]);
   const sellers = users.filter((user) => user?.rents?.length > 0);
-console.log("data",data)
   useEffect(() => {
     if (error) {
       toast.error(error?.data?.message, {

@@ -6,7 +6,7 @@ const FooterLogo = () => {
   return (
     <section>
       <article className="flex md:flex-col md:justify-normal md:items-start flex-row justify-between items-center gap-y-4">
-        <Logo />
+        <Logo justify="start" />
         <p className="text-xs md:block hidden">
           ما در **شرکت مهاجرتی کارمونیا، به شما در تمامی مراحل مهاجرت کمک می‌کنیم. 
           خدمات ما شامل مشاوره تخصصی، ثبت درخواست و پیگیری وضعیت درخواست‌هاست. 

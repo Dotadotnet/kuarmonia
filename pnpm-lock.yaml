@@ -245,6 +245,9 @@ importers:
       react:
         specifier: 18.2.0
         version: 18.2.0
+      react-country-state-city:
+        specifier: ^1.1.11
+        version: 1.1.11(react@18.2.0)
       react-dom:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
@@ -3120,6 +3123,11 @@ packages:
   range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
     engines: {node: '>= 0.6'}
+
+  react-country-state-city@1.1.11:
+    resolution: {integrity: sha512-mIxKeY8gVztLe152sDvVqOfWR9FkViavFo0b822cRZcgqs7v1Mf4qdsUzouYT1U/eSsYYF5dzrU/3/sfCH77tw==}
+    peerDependencies:
+      react: '>=16'
 
   react-dom@18.2.0:
     resolution: {integrity: sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==}
@@ -7691,6 +7699,10 @@ snapshots:
   queue-microtask@1.2.3: {}
 
   range-parser@1.2.1: {}
+
+  react-country-state-city@1.1.11(react@18.2.0):
+    dependencies:
+      react: 18.2.0
 
   react-dom@18.2.0(react@18.2.0):
     dependencies:

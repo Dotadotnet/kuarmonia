@@ -6,9 +6,9 @@ import { FaInstagram, FaTwitter, FaTelegramPlane } from "react-icons/fa";
 
 const SocialInformationField = ({ control, index, remove, errors, getValues }) => {
   const iconOptions = [
-    { id: 1, value: "FaInstagram", label: "", description: "لینک به اینستاگرام", icon: <FaInstagram className="text-pink-500 w-5 h-5" /> },
-    { id: 2, value: "FaTwitter", label: "", description: "لینک به توییتر", icon: <FaTwitter className="text-blue-500 w-5 h-5" /> },
-    { id: 3, value: "FaTelegramPlane", label: "", description: "لینک به تلگرام", icon: <FaTelegramPlane className="text-blue-600 w-5 h-5" /> },
+    { _id: 1, value: "Instagram", label: "", description: "لینک به اینستاگرام", icon: <FaInstagram className="text-pink-500 w-5 h-5" /> },
+    { _id: 2, value: "Twitter", label: "", description: "لینک به توییتر", icon: <FaTwitter className="text-blue-500 w-5 h-5" /> },
+    { _id: 3, value: "TelegramPlane", label: "", description: "لینک به تلگرام", icon: <FaTelegramPlane className="text-blue-600 w-5 h-5" /> },
   ];
 
   const urlPatterns = {
@@ -28,8 +28,8 @@ const SocialInformationField = ({ control, index, remove, errors, getValues }) =
           render={({ field: { onChange, value } }) => (
             <Dropdown
               options={iconOptions} // لیست آیکون‌ها
-              placeholder="انتخاب آیکون"
-              value={value}
+              placeholder=" "
+              value={value?._id}
               onChange={onChange} // تغییر مقدار name
               className="w-16"
               height="py-2"
@@ -55,17 +55,10 @@ const SocialInformationField = ({ control, index, remove, errors, getValues }) =
         <Controller
           control={control}
           name={`socialLinks.${index}.url`}
-          rules={{
-            validate: value => {
-              const selectedName = getValues(`socialLinks.${index}.name`);
-              const pattern = urlPatterns[selectedName];
-              return pattern.test(value) || `لطفاً لینک معتبر برای ${selectedName} وارد کنید`;
-            },
-          }}
+         
           render={({ field }) => (
             <input
               type="url"
-              {...field}
               className="flex-1 rounded border px-2 !py-0 h-10"
               placeholder="وارد کردن لینک..."
               maxLength="100"

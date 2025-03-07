@@ -10,9 +10,9 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 
-const Location = ({ location }) => {
-  const position = [location?.lat ||24.084081797317943, location?.lng||89.99015092849733]; 
-  console.log(location);
+const Location = ({ property }) => {
+  console.log(property?.location?.lat)
+  const position = [property?.location?.lat ||24.084081797317943, property?.location?.lng||89.99015092849733]; 
   return (
     <div className="map-container" style={{ height: "500px", width: "100%" }}>
       <MapContainer

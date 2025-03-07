@@ -14,7 +14,7 @@ const MobileNav = ({ isOpen, setIsOpen }) => {
       initial={{ opacity: 0, x: 200 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 200 }}
-      className={"fixed  z-[9999]  inset-0 flex-col backdrop-blur-sm items-start justify-start w-screen h-screen overflow-y-hidden" + ' ' + (isOpen ? 'flex' : "hidden")}
+      className={"fixed  z-50  inset-0 flex-col backdrop-blur-sm items-start justify-start w-screen h-screen overflow-y-hidden" + ' ' + (isOpen ? 'flex' : "hidden")}
 
     >
       <section className="relative w-full h-full">
@@ -27,7 +27,7 @@ const MobileNav = ({ isOpen, setIsOpen }) => {
         >
           {isOpen ?
 
-            <div className="flex absolute overflow-y-auto overflow-x-hidden w-2/3 h-2/3 items-center rounded-lg bg-white justify-start gap-10 flex-col top-1/2 right-5 transform pt-8 -translate-y-1/2">
+            <div className="flex absolute overflow-y-auto overflow-x-hidden w-2/3 h-2/3 items-center rounded-lg bg-white justify-start dark:bg-gray-900 gap-10 flex-col top-1/2 right-5 transform pt-8 -translate-y-1/2">
               {[
                 { href: "/", icon: <Home className="text-[#22b973]" />, text: "صفحه اصلی" },
                 { href: "/", icon: <Category />, text: "دسته بندی خدمات" },

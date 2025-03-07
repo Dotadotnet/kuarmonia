@@ -3,23 +3,14 @@ import React from "react";
 const Step2 = ({
   
   register,
-  control,
-  createDate,
   errors,
-  publishDate
 }) => {
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
 
   return (
-    <>
-      <label htmlFor="title" className="flex flex-col gap-y-1 w-full">
+    <div className="w-full max-h-128 flex flex-col gap-y-2">
+      <label htmlFor="title" className="flex flex-col  gap-y-1 w-full">
         <span className="text-sm">عنوان ملک را وارد کنید</span>
         <input
           type="text"
@@ -70,7 +61,32 @@ const Step2 = ({
           <span className="text-red-500 text-sm">{errors.summary.message}</span>
         )}
       </label>
+      <label htmlFor="description" className="flex flex-col gap-y-1 w-full">
+        <span className="text-sm">توضیحات   ملک را وارد کنید</span>
+        <textarea
+          type="text"
+          name="description"
+          id="description"
+          {...register("description", {
+            required: "وارد کردن توضیحات الزامی است",
+            minLength: {
+              value: 3,
+              message: "توضیحات باید حداقل ۳ حرف داشته باشد"
+            },
+            maxLength: {
+              value: 460,
+              message: "توضیحات نباید بیشتر از ۴۶۰ حرف باشد"
+            }
+          })}
+          placeholder="توضیحات ملک"
+          maxLength="460"
+          className="p-2 rounded border w-full"
 
+        />
+        {errors.description && (
+          <span className="text-red-500 text-sm">{errors.description.message}</span>
+        )}
+      </label>
       <label htmlFor="createDate" className="flex flex-col gap-y-2 w-full">
         تاریخ ساخت
         <input
@@ -102,7 +118,7 @@ const Step2 = ({
           {...register("square", {
             required: "مساحت ساخت الزامی است",
             pattern: {
-              value: /^\d{1,2,3,4}$/, 
+              value: /^\d{1,3}$/, 
               message: "لطفاً مساحت را به درستی وارد کنید"
             }
           })}
@@ -113,50 +129,10 @@ const Step2 = ({
           </span>
         )}
       </label>
-      <label htmlFor="bedroom" className="flex flex-col gap-y-2 w-full">
-      تعداد اتاق
-        <input
-          type="text"
-          name="bedroom"
-          id="bedroom"
-          className="rounded p-2 border w-full border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          {...register("bedroom", {
-            pattern: {
-              value: /^\d{1,2}$/, 
-              message: "لطفاً تعداد اتاق را به درستی وارد کنید"
-            }
-          })}
-        />
-        {errors.bedroom && (
-          <span className="text-red-500 text-sm">
-            {errors.bedroom.message}
-          </span>
-        )}
-      </label>
-      <label htmlFor="bathroom" className="flex flex-col gap-y-2 w-full">
-      تعداد حمام
-        <input
-          type="text"
-          name="bathroom"
-          id="bathroom"
-          className="rounded p-2 border w-full border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          {...register("bathroom", {
-            pattern: {
-              value: /^\d{1,2,3,4}$/, 
-              message: "لطفاً تعداد حمام را به درستی وارد کنید"
-            }
-          })}
-        />
-        {errors.bathroom && (
-          <span className="text-red-500 text-sm">
-            {errors.bathroom.message}
-          </span>
-        )}
-      </label>
-     
+    
 
     
-    </>
+    </div>
   );
 };
 

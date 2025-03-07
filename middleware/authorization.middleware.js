@@ -7,7 +7,7 @@ const authorization = (...role) => {
     if (!role.includes(userRole)) {
       return res.send({
         success: false,
-        message: "You are not authorized to access this feature",
+        message: "شما اجازه دسترسی به این ویژگی را ندارید"
       });
     }
     next();

@@ -14,6 +14,7 @@ import NewsLetter from "@/components/home/news-letter/NewsLetter";
 import VideoGallery from "@/components/home/VideoGallery/VideoGallery";
 import { useEffect } from "react";
 import Properties from "@/components/home/properties/Properties";
+import FAQ from "@/components/detail/FAQ";
 
 export default function Home() {
 
@@ -38,6 +39,7 @@ export default function Home() {
         <Steps />
         <PopularDestination />
         <NewsLetter />
+        <FAQ />
       </Main>
     
     

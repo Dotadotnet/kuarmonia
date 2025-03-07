@@ -7,11 +7,10 @@ import Inform from "@/components/icons/Inform";
 import { useSelector } from "react-redux";
 import Modal from "@/components/shared/modal/Modal";
 
-const Description = ({ description, features, reviews, variants }) => {
+const Description = ({ property }) => {
   const [isOpen, setIsOpen] = useState(false);
   const user = useSelector((state) => state.auth.user);
   const [addReview, { isLoading, data, error }] = useAddReviewMutation();
-  console.log(features);
   useEffect(() => {
     if (isLoading) {
       toast.loading("Adding Review...", { id: "addReview" });
@@ -35,15 +34,35 @@ const Description = ({ description, features, reviews, variants }) => {
 
     event.target.reset();
   };
+  console.log("property?.amenities", property?.amenities);
 
   return (
     <section className="flex flex-col gap-y-2.5">
       <div className="flex flex-row gap-x-2 items-center">
-        <span className="whitespace-nowrap text-sm">جزئیات ملک</span>
+        <span className="whitespace-nowrap text-sm">امکانات ملک🏡</span>
+        <div className="flex flex-row gap-x-2 items-center">
+          <hr className="w-full border-gray-300 dark:border-gray-700" />
+        </div>
+
+        {/* لیست امکانات */}
         <hr className="w-full" />
       </div>
+      <div>
+        <div className="grid grid-cols-2 gap-2">
+          {property?.amenities
+            ?.filter((amenity) => amenity) // حذف موارد null
+            .map((amenity, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-x-2 text-gray-700 dark:text-gray-300"
+              >
+                {amenity.hasAmenity ? "✅" : "❌"}
+                <span>{amenity.title}</span>
+              </div>
+            ))}
+        </div>
+      </div>
       <article className="flex flex-col gap-y-4">
-        <p className="text-sm">{description}</p>
         <button
           className="px-8 py-2 border border-black rounded-secondary bg-black hover:bg-black/90 text-white transition-colors drop-shadow w-fit flex flex-row gap-x-2 items-center"
           onClick={() => setIsOpen(!isOpen)}
@@ -51,13 +70,11 @@ const Description = ({ description, features, reviews, variants }) => {
           نظرات
         </button>
         <div className="flex flex-row gap-x-2 items-center">
-          <span className="whitespace-nowrap text-sm ">
-            ویزگی های این ملک{" "}
-          </span>
+          <span className="whitespace-nowrap text-sm ">ویزگی های این ملک </span>
           <hr className="w-full" />
         </div>
         <div className="flex flex-col gap-y-4">
-          {features?.map((explanation, index) => (
+          {property?.features?.map((explanation, index) => (
             <DetailCard
               key={index}
               title={explanation?.title}
@@ -102,13 +119,13 @@ const Description = ({ description, features, reviews, variants }) => {
               />
             </form>
 
-            {reviews?.length === 0 ? (
+            {property?.reviews?.length === 0 ? (
               <p className="text-sm flex flex-row gap-x-1 items-center justify-center">
                 <Inform /> هیچ نظری برای این ملک ثبت نشده!
               </p>
             ) : (
               <div className="h-full overflow-y-auto scrollbar-hide flex flex-col gap-y-4">
-                {reviews?.map((review, index) => (
+                {property?.reviews?.map((review, index) => (
                   <article
                     key={index}
                     className="flex flex-col gap-y-2 p-4 bg-slate-50 rounded"

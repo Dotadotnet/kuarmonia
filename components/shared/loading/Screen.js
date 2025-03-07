@@ -1,7 +1,5 @@
-
-
 import React from "react";
-import Image from 'next/image'
+import Image from 'next/image';
 
 const Screen = () => {
   return (
@@ -11,7 +9,7 @@ const Screen = () => {
         alt="loading"
         height={300}
         width={300}
-        className=""
+        priority // Add the priority prop
       />
     </section>
   );

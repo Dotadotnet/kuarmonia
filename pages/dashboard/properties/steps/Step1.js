@@ -1,23 +1,14 @@
 import Dropdown from "@/components/shared/dropdownmenu/Dropdown";
 import React from "react";
 import { Controller } from "react-hook-form";
-import {
-  useGetSaleTypesQuery,
-  useGetTradeTypesQuery,
-  useGetPropertyTypesQuery
-} from "@/services/property/propertyApi";
-
+import { useGetSaleTypesQuery } from "@/services/saleType/saleTypeApi";
+import { useGetAllTradeTypesQuery } from "@/services/tradeType/tradeTypeApi";
 const Step1 = ({ register, errors, control }) => {
-  const {
-    data: propertyTypesData,
-    isLoading: isLoadingPropertyTypes,
-    error: errorPropertyTypes
-  } = useGetPropertyTypesQuery();
   const {
     data: tradeTypesData,
     isLoading: isLoadingTradeTypes,
     error: errorTradeTypes
-  } = useGetTradeTypesQuery();
+  } = useGetAllTradeTypesQuery();
   const {
     data: saleTypesData,
     isLoading: isLoadingSaleTypes,
@@ -26,13 +17,13 @@ const Step1 = ({ register, errors, control }) => {
 
   const tradeTypes = tradeTypesData?.data || [];
   const saleTypes = saleTypesData?.data || [];
-  const propertyType = propertyTypesData?.data || [];
   const currencies = [
-    { label: "لیر ترکیه (TRY)", value: "TRY" },
-    { label: "دلار آمریکا (USD)", value: "USD" },
-    { label: "یورو (EUR)", value: "EUR" },
-    { label: "ریال ایران (IRR)", value: "IRR" }
+    { _id: 1, title: "TRY", value: "TRY", description: "لیر ترکیه" },
+    { _id: 2, title: "USD", value: "USD", description: "دلار آمریکا" },
+    { _id: 3, title: "EUR", value: "EUR", description: "یورو اتحادیه اروپا" },
+    { _id: 4, title: "IRR", value: "IRR", description: "ریال ایران" }
   ];
+  
 
   return (
     <>
@@ -45,7 +36,8 @@ const Step1 = ({ register, errors, control }) => {
             <Dropdown
               options={tradeTypes}
               placeholder="نوع معامله و بهره‌برداری"
-              value={value?.value}
+              value={value?._id}
+              prop={"priceFields"}
               onChange={(selectedOption) => {
                 onChange(selectedOption);
               }}
@@ -65,15 +57,14 @@ const Step1 = ({ register, errors, control }) => {
       <Controller
         control={control}
         name="tradeType"
-        render={({ field: { value: tradeType } }) => {
-          const selectedTrade = tradeTypes.find(
-            (t) => t.value === tradeType?.value
-          ); // تغییر این خط
+        render={({ field: { onChange, value } }) => {
+          const selectedTrade = tradeTypes.find((t) => t._id === value?._id);
 
           if (!selectedTrade) return null;
 
           return (
             <>
+              {/* بررسی و نمایش فیلدهای مختلف بر اساس priceFields */}
               {selectedTrade.priceFields.includes("deposit") && (
                 <label
                   htmlFor="deposit"
@@ -159,7 +150,7 @@ const Step1 = ({ register, errors, control }) => {
                     {...register("installmentAmount", {
                       required: "مبلغ قسط الزامی است"
                     })}
-                    placeholder=" مبلغ هر قسط"
+                    placeholder="مبلغ هر قسط"
                     className="p-2 rounded border w-full"
                   />
                   {errors.installmentAmount && (
@@ -181,7 +172,7 @@ const Step1 = ({ register, errors, control }) => {
           <Dropdown
             options={currencies}
             placeholder="انتخاب ارز"
-            value={value?.value}
+            value={value?._id}
             onChange={(selectedOption) => {
               onChange(selectedOption);
             }}
@@ -194,31 +185,6 @@ const Step1 = ({ register, errors, control }) => {
       {errors.currency && (
         <span className="text-red-500 text-sm">{errors.currency.message}</span>
       )}
-      <label htmlFor="propertyType" className="flex flex-col gap-y-2 w-full">
-        نوع ملک
-        <Controller
-          control={control}
-          name="propertyType"
-          render={({ field: { onChange, value } }) => (
-            <Dropdown
-              options={propertyType}
-              placeholder="نوع ملک"
-              value={value?.value}
-              onChange={(selectedOption) => {
-                onChange(selectedOption);
-              }}
-              className="w-full"
-              height="py-3"
-              error={errors.propertyType}
-            />
-          )}
-        />
-        {errors.propertyType && (
-          <span className="text-red-500 text-sm">
-            {errors.propertyType.message}
-          </span>
-        )}
-      </label>
 
       <label htmlFor="saleType" className="flex flex-col gap-y-2 w-full">
         نوع فروش
@@ -229,7 +195,7 @@ const Step1 = ({ register, errors, control }) => {
             <Dropdown
               options={saleTypes}
               placeholder="نوع فروش ملک"
-              value={value?.value}
+              value={value?._id}
               onChange={(selectedOption) => {
                 onChange(selectedOption);
               }}

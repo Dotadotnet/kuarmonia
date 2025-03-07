@@ -58,6 +58,25 @@ const propertySchema = new Schema(
       required: [true, "لطفاً توضیحات ملک را وارد کنید"],
       trim: true
     },
+    country: {
+      type: String,
+      required: [true, "لطفاً کشور را وارد کنید"],
+      trim: true
+    },
+    state: {
+      type: String,
+      required: [true, "لطفاً استان را وارد کنید"],
+      trim: true
+    },
+    city: {
+      type: String,
+      required: [true, "لطفاً شهر را وارد کنید"],
+      trim: true
+    },
+    citizenshipStatus: {
+      type: String,
+      enum: ["goldenVisa", "residency", "citizenship"],
+    },
     variants: [
       {
         type: {
@@ -103,12 +122,10 @@ const propertySchema = new Schema(
       default: 0
     },
 
-    amenities: [
-      {
-        type: String,
-        enum: ["pool", "parking", "sauna"]
-      }
-    ],
+    amenities: {
+      type: [String],
+      default: [] 
+    },    
     category: {
       type: Schema.Types.ObjectId,
       ref: "Category",
@@ -222,6 +239,19 @@ const propertySchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: "Review"
+      }
+    ],
+    amenities: [
+      {
+        title: {
+          type: String,
+          required: [true, " امکانات الزامی است"],
+          maxLength: [100, " امکانات نمی‌تواند بیشتر از ۱۰۰ کاراکتر باشد"]
+        },
+        hasAmenity: {
+          type: Boolean,
+          default: false, 
+        }
       }
     ],
     features: [

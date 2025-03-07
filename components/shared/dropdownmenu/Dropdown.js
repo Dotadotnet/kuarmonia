@@ -1,4 +1,3 @@
-// Dropdown.js
 import React, { useState, useRef, useEffect } from "react";
 import Tooltip from "@/components/shared/tooltip/Tooltip";
 
@@ -9,7 +8,8 @@ const Dropdown = ({
   onChange,
   className = "",
   error,
-  height=""
+  height = "",
+  prop, 
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -33,28 +33,33 @@ const Dropdown = ({
 
   const handleOptionSelect = (option) => {
     if (onChange) {
-      onChange({ _id:option?._id, id: option.id, value: option.value, label: option.label });
+      const selectedProp = option[prop]; 
+
+      onChange({
+        _id: option?._id,
+        id: option.id,
+        title: option.title,
+        [prop]: selectedProp, 
+      });
     }
     setIsOpen(false);
   };
-  
-  const selectedOption = options.find((option) => option.value === value);
+
+  const selectedOption = options.find((option) => option._id === value);
 
   return (
     <div className={`relative ${className}`} ref={dropdownRef}>
       <button
         type="button"
-        className={`inline-flex justify-between w-full px-1 ${height} text-sm font-medium text-gray-700 bg-white border border-gray-500 rounded-lg shadow-sm dark:text-gray-50 focus:outline-none focus:ring-offset-2 dark:focus:!border-blue-500 ${
-          isOpen ? "dark:border-blue-500 dark:bg-[#0a2d4d]" : "dark:bg-gray-600"
+        className={`inline-flex justify-between w-full px-1 ${height} text-sm font-medium text-gray-700 bg-white border border-gray-500 rounded-lg shadow-sm dark:bg-[#0a2d4d] dark:text-gray-50 focus:outline-none focus:ring-offset-2 dark:focus:!border-blue-500 ${
+          isOpen ? "dark:border-blue-500 " : ""
         }`}
         onClick={toggleDropdown}
       >
-        <span className="flex items-center text-gray-500">
-          {selectedOption ? selectedOption.label : placeholder}
+        <span className="flex items-center text-gray-500 dark:text-gray-100">
+          {selectedOption ? selectedOption.title : placeholder}
           {selectedOption?.icon && (
-            <span className="mr-2">
-              {selectedOption.icon}
-            </span>
+            <span className="mr-2">{selectedOption.icon}</span>
           )}
         </span>
         <svg
@@ -73,30 +78,29 @@ const Dropdown = ({
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-full bg-white dark:bg-slate-600 dark:text-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10 ">
+        <div className="absolute right-0 mt-2 w-full bg-white dark:bg-slate-600 max-h-96 overflow-y-auto dark:text-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10 ">
           <div className="max-h-fit p-2">
             {options.length > 0 ? (
               options.map((option) => (
                 <div
-                  key={option.id}
+                  key={option._id}
                   onClick={() => handleOptionSelect(option)}
                   className="flex items-center px-4 py-2 text-gray-700 dark:text-gray-100 dark:hover:bg-slate-700 hover:bg-gray-100 cursor-pointer rounded-md"
                 >
-                  {option.icon && (
-                    <span className="">
-                      {option.icon}
-                    </span>
-                  )}
-                  <Tooltip text={option.description || ""} placement="right" 
-                                          txtColor={"text-white"}
-
+                  {option.icon && <span className="">{option.icon}</span>}
+                  <Tooltip
+                    text={option.description || ""}
+                    placement="right"
+                    txtColor={"text-white"}
                   >
-                    <span>{option.label}</span>
+                    <span>{option.title}</span>
                   </Tooltip>
                 </div>
               ))
             ) : (
-              <p className="text-gray-500 text-center py-2">هیچ گزینه‌ای موجود نیست</p>
+              <p className="text-gray-500 text-center py-2">
+                هیچ گزینه‌ای موجود نیست
+              </p>
             )}
           </div>
         </div>

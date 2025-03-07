@@ -1,9 +1,6 @@
 import upload from "@/middleware/upload.middleware";
 import {
   addProperty,
-  getpropertyType,
-  getSaleTypes,
-  getTradeTypes,
   getProperties,
   getClientProperties
 } from "@/controllers/property.controller";
