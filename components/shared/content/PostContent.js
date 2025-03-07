@@ -3,6 +3,7 @@ import SkeletonImage from "@/components/shared/skeleton/SkeletonImage";
 import { FaRegHeart } from "react-icons/fa";
 import { IoMdMore } from "react-icons/io";
 import Image from "next/image";
+import { TagIcon } from "@/utils/SaveIcon";
 
 const PostHeader = ({ isLoading, avatar, author, publishDate }) => (
   <div className="flex flex-row-reverse justify-between items-center py-2 px-2">
@@ -72,7 +73,7 @@ const PostMedia = ({ isLoading, thumbnailPreview }) => (
   </div>
 );
 
-const PostContent = ({ content, isLoading }) => (
+const PostContent = ({ content, isLoading ,selectedTags  }) => (
   <div className="text-base leading-8 my-5 px-2 text-justify">
     {content ? (
       <div
@@ -83,6 +84,22 @@ const PostContent = ({ content, isLoading }) => (
     ) : (
       <SkeletonText lines={8} />
     )}
+     {selectedTags.length ? (
+              selectedTags.map((tag, index) => {
+
+                return (
+                  <div
+                    key={index}
+                    className={`ml-2 text-xs inline-flex items-center  leading-sm uppercase px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-900`} 
+                  >
+                    <TagIcon className="ml-1" />
+                    {tag.title }
+                  </div>
+                );
+              })
+            ) : (
+              <SkeletonText lines={1} />
+            )}
   </div>
 );
 
@@ -198,7 +215,8 @@ const Post = ({
   comments,
   avatar,
   author,
-  publishDate
+  publishDate,
+  selectedTags
 }) => {
   return (
     <div className="relative bg-white dark:bg-gray-800 dark:text-gray-100 rounded-lg shadow-lg">
@@ -209,7 +227,7 @@ const Post = ({
         publishDate={publishDate}
       />
       <PostMedia isLoading={isLoading} thumbnailPreview={thumbnailPreview} />
-      <PostContent content={content} isLoading={isLoading} />
+      <PostContent content={content} isLoading={isLoading} selectedTags={selectedTags } />
       <PostComments comments={comments} />
     </div>
   );

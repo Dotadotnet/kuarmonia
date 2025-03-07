@@ -15,7 +15,7 @@ const PostContent = () => {
     data: fetchData,
     error: fetchError,
   } = useGetPostQuery(id);
-console.log(fetchData)
+console.log(fetchData.data.tags)
   return (
     <main>
       <Head>
