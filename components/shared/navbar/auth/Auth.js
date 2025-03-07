@@ -20,7 +20,7 @@ function Auth() {
       ) : (
         <button
           className="p-2 rounded-secondary bg-slate-100 dark:bg-slate-800  hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-          onClick={() => router.push("/auth/signup")}
+          onClick={() => router.push("/auth/signin")}
         >
           <UserNav className="h-6 w-6" />
         </button>
