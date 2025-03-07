@@ -18,10 +18,11 @@ export async function signUpAdmin(req) {
       };
     }
     let avatar = null;
-    if (req.uploadedFiles && req.uploadedFiles["avatar"] && req.uploadedFiles["avatar"].length > 0) {
+
+    if (req.uploadedFiles["avatar"]?.length) {
       avatar = {
         url: req.uploadedFiles["avatar"][0].url,
-        public_id: req.uploadedFiles["avatar"][0].key,
+        public_id: req.uploadedFiles["avatar"][0].key
       };
     }
     const userCount = await User.countDocuments();
@@ -29,21 +30,6 @@ export async function signUpAdmin(req) {
     const status = userCount === 0 ? "active" : "inactive";
 
 
-
-    // console.log(MelipayamakApi)
-    // const MelipayamakApi = require('melipayamak-api')
-    // const username = 'username';
-    // const password = 'password';
-    // const api = new MelipayamakApi('19999935106','Amir@1385');
-    // const sms = api.sms();
-    // const to = '09917240849';
-    // const from = '50002710035106';
-    // const text = 'تست وب سرویس ملی پیامک';
-    // sms.send(to,from,text).then(res=>{
-    //     //RecId or Error Number 
-    // }).catch(err=>{
-    //     //
-    // })
 
 
 
