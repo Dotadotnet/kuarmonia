@@ -40,7 +40,7 @@ export async function addMedia(req) {
     const result = await Media.create({
       title,
       description,
-      tags,
+      tags: JSON.parse(tags),
       media,
       thumbnail,
       category,
@@ -249,6 +249,7 @@ export async function getMedia(req) {
 export async function updateMedia(req) {
   const { id } = req.query;
   try {
+    console.log(req.body)
     const { title, description, content, publishDate, tags, category, featuredImage, authorId, isDeleted ,publishStatus} = req.body || {};
 
     const updateFields = {};
@@ -264,9 +265,7 @@ export async function updateMedia(req) {
      if (publishStatus !== undefined) updateFields.publishStatus = publishStatus;
 
     const Media = await Media.findByIdAndUpdate(id, updateFields, { new: true })
-      .populate('tags')  
-      .populate('category')  
-      .populate('authorId');  
+  
     if (Media) {
       return {
         success: true,

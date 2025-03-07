@@ -93,9 +93,8 @@ const AddMedia = ({ isOpen, onClose, onSuccess, mediaToEdit = null }) => {
     formData.append("category", data.category);
     formData.append("visibility", data.visibility);
     formData.append("authorId", user?._id);
-    data.tags.forEach((tag) => {
-      formData.append("tags[]", tag.id);
-    });
+    formData.append("tags[]", JSON.stringify(data.tags));
+
     try {
       if (mediaToEdit) {
         await updateMedia({ id: mediaToEdit._id, ...formData }).unwrap();

@@ -9,9 +9,8 @@ export async function addProperty(req) {
       tags,
       features,
       amenities,
-      ...otherInformation // سایر اطلاعات ورودی
+      ...otherInformation 
     } = req.body;
-    
     let thumbnail = null;
     let gallery = [];
     

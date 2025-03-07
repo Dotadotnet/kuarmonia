@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 export default class JWT {
   signature = process.env.TOKEN_SECRET;
-  roles = ['user', 'admin', 'superadmin']
+  roles = ['user', 'admin', 'superAdmin']
   generateAccessToken({ _id, name, email, role, avatar }) {
     const token = jwt.sign(
       {

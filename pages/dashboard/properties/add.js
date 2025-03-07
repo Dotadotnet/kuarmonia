@@ -89,7 +89,7 @@ const Add = () => {
     if (addData?.success) {
       toast.success(addData?.message, { id: "add-property" });
     }
-    if (!addData?.success) {
+    if (addData && !addData?.success) {
       toast.error(addData?.message, { id: "add-property" });
     }
 
@@ -118,7 +118,7 @@ const Add = () => {
     formData.append("category", data.category);
     formData.append("currency", data.currency?.title);
     formData.append("tradeType", data.tradeType?._id);
-    formData.append("propertyType", data.propertyType?._id);
+    formData.append("type", data.propertyType?._id);
     formData.append("saleType", data.saleType?._id);
     formData.append("isFeatured", data.isFeatured);
     formData.append("country", country?.name);
