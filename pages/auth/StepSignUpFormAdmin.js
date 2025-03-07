@@ -33,7 +33,7 @@ const StepSignUpForm = () => {
       console.log(data)
       toast.success(data?.message, { id: "signup" });
       setAvatarPreview(null);
-      window.open("/auth/signin", "_self");
+      window.open("/auth/signin-admin", "_self");
       reset();
     }
     if (!data?.success && data?.message) {

@@ -83,7 +83,7 @@ const Signinadmin = () => {
         </form>
 
         <div className="text-xs flex flex-row justify-center items-center gap-x-2">
-          <Link href="/auth/signup">ثبت‌نام</Link>
+          <Link href="/auth/signup-admin">ثبت‌نام</Link>
           <div className="h-4 border-l"></div>
           <Link href="/auth/forgot-password">فراموشی رمز عبور</Link>
         </div>

@@ -2,7 +2,7 @@
 import React from "react";
 import NavigationButton from "@/components/shared/button/NavigationButton";
 
-const NameStep = ({ register, errors, prevStep }) => {
+const NameStep = ({ register, errors, prevStep, nextStep  }) => {
   return (
     <>
       <label htmlFor="name" className="flex flex-col gap-y-1">
@@ -29,8 +29,13 @@ const NameStep = ({ register, errors, prevStep }) => {
           <span className="text-red-500 mr-5 text-sm">{errors.name.message}</span>
         )}
       </label>
-      <div className="flex sm:scale-100 scale-90 justify-between sm:mt-8 mt-6">
+      <div className="flex justify-between mt-12">
+      <NavigationButton direction="next" onClick={nextStep} />
+
+      <NavigationButton direction="prev" onClick={prevStep} />
+
       </div>
+
     </>
   );
 };

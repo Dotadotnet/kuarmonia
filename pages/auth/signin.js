@@ -3,7 +3,7 @@ import Logo from "@/components/shared/logo/Logo";
 import StepSignUpForm from "./StepSignUpFormUser";
 import ThemeToggle from "@/components/shared/navbar/ThemeToggle/ThemeToggle";
 
-const Signup = () => {
+const signin = () => {
   return (
     <section
       className={`relative bg-[#dce9f5] dark:bg-[#1a202c] h-screen w-screen overflow-hidden text-black dark:text-gray-300 min-h-screen flex justify-center items-center p-4`}
@@ -29,4 +29,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default signin;
