@@ -14,7 +14,7 @@ const Location = ({ property }) => {
   console.log(property?.location?.lat)
   const position = [property?.location?.lat ||24.084081797317943, property?.location?.lng||89.99015092849733]; 
   return (
-    <div className="map-container" style={{ height: "500px", width: "100%" }}>
+    <div className="map-container" style={{ height: "200px", width: "100%" }}>
       <MapContainer
         center={position}
         zoom={13}

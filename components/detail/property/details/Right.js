@@ -27,7 +27,7 @@ const Right = ({ property}) => {
       </article>
 
       <Description property={property} />
-      <div className="pl-8">
+      <div className=" flex justify-center items-center">
         <GeoLocation property={property} />
       </div>
     </section>
