@@ -84,7 +84,7 @@ const PostContent = ({ content, isLoading ,selectedTags  }) => (
     ) : (
       <SkeletonText lines={8} />
     )}
-     {selectedTags.length ? (
+     {selectedTags?.length ? (
               selectedTags.map((tag, index) => {
 
                 return (
