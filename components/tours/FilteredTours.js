@@ -14,7 +14,7 @@ const FilteredTours = () => {
 
   useEffect(() => {
     if (isLoading) {
-      toast.loading("Fetching filtered rents...", { id: "filteredTours" });
+      toast.loading("صبر کنید...", { id: "filteredTours" });
     }
 
     if (data) {
