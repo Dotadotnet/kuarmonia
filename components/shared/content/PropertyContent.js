@@ -7,7 +7,7 @@ const PropertyDetail = ({ property ,isMobile }) => {
   return (
     
     <div
-      className={`relative  dark:text-gray-100 rounded-lg shadow-lg  grid 
+      className={`relative  dark:text-gray-100 rounded-lg shadow-lg p-4  grid 
     
        gap-8 ${isMobile ? "!grid-cols-1" : ""}  grid-cols-1 md:grid-cols-2   `}
     >

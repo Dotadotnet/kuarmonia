@@ -84,7 +84,7 @@ const Add = () => {
     useAddPropertyMutation();
   useEffect(() => {
     if (isAdding) {
-      toast.loading("Updating rent...", { id: "add-property" });
+      toast.loading("در حال افزودن...", { id: "add-property" });
     }
     if (addData?.success) {
       toast.success(addData?.message, { id: "add-property" });
