@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Panel from "@/layouts/Panel";
-import { useGetCategoriesQuery } from "@/services/category/categoryApi";
+import { useGetCategoriesQuery ,useDeleteCategoryMutation} from "@/services/category/categoryApi";
 import DeleteModal from "@/components/shared/modal/DeleteModal";
 import { toast } from "react-hot-toast";
 import StatusIndicator from "@/components/shared/tools/StatusIndicator";
@@ -23,7 +23,10 @@ const ListCategory = () => {
   });
   const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;
   const categories = useMemo(() => data?.data || {}, [data]);
-
+  const [
+    removeCategory,
+    { isLoading: isRemoving, data: deleteCategory, error: removeError }
+  ] = useDeleteCategoryMutation();
   useEffect(() => {
     if (isLoading) {
       toast.loading("در حال دریافت دسته بندی...", { id: "category-loading" });

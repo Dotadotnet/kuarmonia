@@ -37,6 +37,16 @@ const categoryApi = kuarmoniaApi.injectEndpoints({
       }),
       providesTags: ["CategoryDropdown"],
     }),
+    deleteCategory: builder.mutation({
+      query: (id) => ({
+        url: `/category/${id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
+      invalidatesTags: ["Category"], 
+    }),
 
     updateCategory: builder.mutation({
       query: ({ id, ...formData }) => ({
@@ -54,4 +64,6 @@ export const {
   useGetCategoriesQuery,
   useGetCategoriesForDropDownMenuQuery,
   useUpdateCategoryMutation,
+    useDeleteCategoryMutation,
+  
 } = categoryApi;

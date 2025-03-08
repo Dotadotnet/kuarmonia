@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import Modal from "@/components/shared/modal/Modal";
 import AddButton from "@/components/shared/button/AddButton";
+import { FiEdit3 } from "react-icons/fi";
 
 const AddCategory = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,8 +29,13 @@ const AddCategory = () => {
 
   return (
     <>
-      <AddButton onClick={() => setIsOpen(true)} />
-      {isOpen && (
+      <span
+             className="line-clamp-1 cursor-pointer rounded-full border border-green-500/5 bg-green-500/5 p-2 text-green-500 transition-colors hover:border-green-500/10 hover:bg-green-500/10 hover:!opacity-100 group-hover:opacity-70"
+             onClick={() => setIsOpen(true)}
+           >
+             <FiEdit3 className="w-5 h-5" />
+           </span>
+           {isOpen && (
         <Modal
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
