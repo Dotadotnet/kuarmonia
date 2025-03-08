@@ -1,4 +1,3 @@
-
 import Banner from "@/components/tours/Banner";
 import Destinations from "@/components/tours/Destinations";
 import Main from "@/layouts/Main";
@@ -9,10 +8,10 @@ const Tours = () => {
   return (
     <main>
       <Head>
-  <title>
-    مهاجرت با کارمونیا - مسیر آسان به دنیای جدید با مشاوره و خدمات تخصصی
-  </title>
-</Head>
+        <title>
+          مهاجرت با کارمونیا - مسیر آسان به دنیای جدید با مشاوره و خدمات تخصصی
+        </title>
+      </Head>
       <Main>
         <Banner />
         <Destinations />

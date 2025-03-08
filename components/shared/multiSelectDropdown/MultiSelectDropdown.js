@@ -13,6 +13,7 @@ const MultiSelectDropdown = ({
   const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef(null);
 
+
   const filteredItems = items.filter((item) =>
     item.value.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -53,7 +54,7 @@ const MultiSelectDropdown = ({
         onClick={() => setIsOpen((prev) => !prev)}
         className={`inline-flex justify-between items-center px-2 py-2 text-center text-sm font-medium text-gray-700 bg-white dark:!bg-[#0a2d4d] border border-gray-300 dark:border-blue-500 rounded-md shadow-sm focus:outline-none ${className}`}
       >
-        <div className="flex gap-1 w-full h-full overflow-x-auto scrollbar-hidden whitespace-nowrap">
+        <div className="flex gap-1 w-full h-8 overflow-x-auto scrollbar-hidden whitespace-nowrap">
           {selectedItems.length > 0 ? (
             selectedItems.map((itemKey) => {
               const item = items.find(
@@ -61,11 +62,11 @@ const MultiSelectDropdown = ({
               );
               return (
                 <div
-                  key={itemKey}
-                  className="bg-blue-100 text-blue-700 px-2 py-1 rounded-md flex items-center gap-1 "
+                key={`${itemKey}-${Math.random()}`}
+                className="bg-blue-100 text-blue-700 px-2 py-1 rounded-md flex items-center gap-1 "
                 >
                   {icon && <span className="mr-1">{icon}</span>}
-                  {item?.value}
+                  {item?.title}
                   <span
                     className="text-red-500 cursor-pointer"
                     onClick={(e) => {
@@ -109,8 +110,8 @@ const MultiSelectDropdown = ({
               const itemKey = returnType === "id" ? item.id : item.value;
               return (
                 <li
-                  key={item.id}
-                  onClick={() => handleItemSelect(item)}
+                key={returnType === "id" ? item.id : item.value}
+                onClick={() => handleItemSelect(item)}
                   className={`px-4 py-2 rounded-md cursor-pointer ${
                     selectedItems.includes(itemKey)
                       ? "bg-blue-100 text-blue-700"

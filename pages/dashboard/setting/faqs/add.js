@@ -87,7 +87,7 @@ const AddFaq = ({}) => {
                   type="text"
                   name="question"
                   id="question"
-                  maxLength={50}
+                  maxLength={160}
                   placeholder=" سوال را تایپ کنید..."
                   className="rounded"
                   autoFocus
@@ -102,7 +102,7 @@ const AddFaq = ({}) => {
                   type="text"
                   name="answer"
                   id="answer"
-                  maxLength={50}
+                  maxLength={160}
                   placeholder="  پاسخ را تایپ کنید..."
                   className="rounded"
                   autoFocus

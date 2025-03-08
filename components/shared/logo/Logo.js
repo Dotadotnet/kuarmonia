@@ -12,7 +12,7 @@ const Logo = ({justify="center"}) => {
         className={`flex justify-${justify} items-center cursor-pointer w-full`}
         onClick={() => router.push("/")}
       >
-        <Image width={1383} height={827} src={"/logo.png"} className="w-[100px] h-[60px]" />
+        <Image width={1383} height={827} alt="logo" src={"/logo.png"} className="w-[100px] h-[60px]" />
         
       </div>
     </>

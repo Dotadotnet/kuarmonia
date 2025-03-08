@@ -185,7 +185,7 @@ const Panel = ({ children }) => {
           <Sidebar routes={routes} />
         </aside>
         <main className="flex-1 p-1 lg:p-8 pb-8 overflow-hidden dark:bg-gray-900">
-          <div className="h-full overflow-y-auto scrollbar-hide">
+          <div className="h-full  overflow-y-auto scrollbar-hide">
             {" "}
             {children}
           </div>
@@ -198,7 +198,7 @@ const Panel = ({ children }) => {
         </main>
       </div>
       {open && (
-        <div className="lg:hidden md:hidden sticky absolute top-[100px] right-2 w-3/4 h-[500px] bg-secondary dark:bg-gray-900 overflow-y-auto scrollbar-hide z-50 rounded p-4 mt-16 text-slate-900 dark:text-white">
+        <div className="lg:hidden md:hidden sticky  top-[100px] right-2 w-3/4 h-[500px] bg-secondary dark:bg-gray-900 overflow-y-auto scrollbar-hide z-50 rounded p-4 mt-16 text-slate-900 dark:text-white">
           <button
             className="absolute top-2 left-2 border p-1 rounded-secondary dark:border-gray-600 p-2 mb-2" // اضافه کردن حاشیه پایین
             onClick={() => setOpen(false)} // بستن سایدبار

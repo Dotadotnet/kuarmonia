@@ -32,6 +32,7 @@ const propertyTypeSchema = new Schema({
     ref: 'User',
     required: [true, "شناسه نویسنده الزامی است"],
   },
+  icon: { type: String, required: false },
   description: { type: String, required: true },
   ...baseSchema.obj,
 });

@@ -1,13 +1,13 @@
-import { FaPassport } from 'react-icons/fa'; // برای پاسپورت
-import { IoIosPeople } from 'react-icons/io'; // برای مهاجرت به عنوان کارگر
-import { MdHomeWork } from 'react-icons/md'; // برای ویزای کاری
-import { GiBoatFishing } from 'react-icons/gi'; // برای مهاجرت با کشتی
-import { FaHospital } from 'react-icons/fa'; // برای مهاجرت پزشکی
-import { MdLocationCity } from 'react-icons/md'; // برای مهاجرت به شهرهای خاص
-import { FaPlaneDeparture } from 'react-icons/fa'; // برای مهاجرت از طریق پرواز
-import { FaUniversity } from 'react-icons/fa'; // برای تحصیل در خارج
-import { GiFamilyHouse } from 'react-icons/gi'; // برای مهاجرت خانواده
-import { FaHandshake } from 'react-icons/fa'; // برای مهاجرت از طریق سرمایه‌گذاری
+import { FaPassport } from 'react-icons/fa'; 
+import { IoIosPeople } from 'react-icons/io'; 
+import { MdHomeWork } from 'react-icons/md'; 
+import { GiBoatFishing } from 'react-icons/gi'; 
+import { FaHospital } from 'react-icons/fa'; 
+import { MdLocationCity } from 'react-icons/md';
+import { FaPlaneDeparture } from 'react-icons/fa';
+import { FaUniversity } from 'react-icons/fa';
+import { GiFamilyHouse } from 'react-icons/gi'; 
+import { FaHandshake } from 'react-icons/fa'; 
 
 const migrationMethods = [
   { name: "پاسپورت", icon: <FaPassport /> },

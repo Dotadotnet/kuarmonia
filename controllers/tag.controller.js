@@ -4,7 +4,7 @@ export async function addTag(req) {
   try {
     const { title, description, robots,keynotes,authorId
  } = req.body; 
-
+console.log(robots)
     const tag = await Tag.create({
       title,
       description,
@@ -68,6 +68,32 @@ console.log("search",search)
   }
 }
 
+export async function getTag(req) {
+  try {
+    const tag = await Tag.findById(req.query.id);
+  
+   
+    if (tag) {
+      return {
+        success: true,
+        message: "تگ  با موفقیت دریافت شد",
+        data: tag
+      };
+    } else {
+      return {
+        success: false,
+        message: "دریافت اطلاعات تگ با شکست مواجه شد"
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message
+    };
+  }
+}
+
+
 export async function getTagsForDropDownMenu() {
   try {
     const tags = await Tag.find({ isDeleted: false, status: 'active' }).select('_id title description');
@@ -94,14 +120,12 @@ export async function getTagsForDropDownMenu() {
 
 export async function updateTag(req) {
   const { id } = req.query;
-  console.log(req.body)
   try {
-    const { title, description, status, isDeleted ,robots,keynotes} = req.body || {};
+    const { title, description, status ,robots,keynotes} = req.body || {};
     const updateFields = {};
     if (title !== undefined) updateFields.title = title;
     if (description !== undefined) updateFields.description = description;
     if (status !== undefined) updateFields.status = status;
-    if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
     if (robots !== undefined) updateFields.robots = robots;
     if (keynotes !== undefined) updateFields.keywords =JSON.parse(keynotes);
     const tag = await Tag.findByIdAndUpdate(id, updateFields, { new: true });
@@ -122,6 +146,34 @@ export async function updateTag(req) {
     return {
       success: false,
       message: error.message,
+    };
+  }
+}
+
+export async function deleteTag(req) {
+  try {
+    const tag = await Tag.findByIdAndUpdate(
+      req.query.id,
+      { isDeleted: true },
+      { new: true }
+    );
+
+    if (tag) {
+      return {
+        success: true,
+        message: "تگ با موفقیت حذف شد",
+        data: tag
+      };
+    } else {
+      return {
+        success: false,
+        message: "تگ پیدا نشد"
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message
     };
   }
 }

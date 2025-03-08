@@ -128,7 +128,7 @@ const AddMedia = ({ isOpen, onClose, onSuccess, mediaToEdit = null }) => {
   const handleTagChange = (selectedTags) => {
     setValue("tags", selectedTags);
   };
-
+console.log(mediaToEdit?.tags)
   return (
     <>
 
@@ -211,7 +211,7 @@ const AddMedia = ({ isOpen, onClose, onSuccess, mediaToEdit = null }) => {
                       selectedItems={
                         mediaToEdit?.tags?.map(tag => ({
                           id: tag._id,
-                          value: tag.title
+                          title: tag.title
                         })) || value
                       }
                       handleSelect={handleTagChange}

@@ -43,7 +43,6 @@ const tagSchema = new Schema(
           .replace(/-+/g, "-")
           .replace(/^-+|-+$/g, "");
     
-        console.log('Generated slug:', slug); // نمایش مقدار تولید شده برای slug
         return slug;
       }
     },
