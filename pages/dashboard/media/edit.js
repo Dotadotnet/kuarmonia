@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import Button from "@/components/shared/button/Button";
 import Modal from "@/components/shared/modal/Modal";
 import DisplayImages from "@/components/shared/gallery/DisplayImages";
 import ThumbnailUpload from "@/components/shared/gallery/ThumbnailUpload";
 import { toast } from "react-hot-toast";
-import { useAddMediaMutation } from "@/services/media/mediaApi";
+import {
+  useUpdateMediaMutation,
+  useGetMediaQuery
+} from "@/services/media/mediaApi";
 import { Controller } from "react-hook-form";
 import MultiSelectDropdown from "@/components/shared/multiSelectDropdown/MultiSelectDropdown";
 import SearchableDropdown from "@/components/shared/dropdownmenu/SearchableDropdown";
@@ -13,10 +16,15 @@ import { useGetCategoriesForDropDownMenuQuery } from "@/services/category/catego
 import { useGetTagsForDropDownMenuQuery } from "@/services/tag/tagApi";
 import { TagIcon } from "@/utils/SaveIcon";
 import { FaPlus } from "react-icons/fa";
-import AddButton from "@/components/shared/button/AddButton";
+import { FiEdit3 } from "react-icons/fi";
 import StatusSwitch from "@/components/shared/button/StatusSwitch";
-const AddMedia = ({}) => {
+const UpdateMedia = ({ id }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [thumbnailPreview, setThumbnailPreview] = useState(null);
+  const [mediaPreview, setMediaPreview] = useState(null);
+
+  const [thumbnail, setThumbnail] = useState(null);
+  const [media, setMedia] = useState(null);
 
   const {
     register,
@@ -26,9 +34,13 @@ const AddMedia = ({}) => {
     control,
     formState: { errors }
   } = useForm();
-  const [addMedia, { isLoading: isAdding, data: addData, error: addError }] =
-    useAddMediaMutation();
+  const { isLoading, data, error } = useGetMediaQuery(id, { skip: !isOpen });
+  const med = useMemo(() => data?.data || {}, [data]);
 
+  const [
+    updateMedia,
+    { isLoading: isUpdating, data: updateData, error: updateError }
+  ] = useUpdateMediaMutation();
   const { data: categoriesData, refetch: refetchCategories } =
     useGetCategoriesForDropDownMenuQuery();
   const { data: tagsData, refetch: refetchTags } =
@@ -49,48 +61,73 @@ const AddMedia = ({}) => {
     value: tag.title,
     description: tag.description
   }));
+  useEffect(() => {
+    if (med) {
+      reset({
+        id: med?.id,
+        title: med.title || "",
+        description: med.description || "",
+        category: med.category?._id || "",
+        tags: med.tags?.map((tag) => tag._id) || [],
+        isFeatured: med.isFeatured || false,
+        visibility: med.visibility || false
+      });
 
-  const [thumbnailPreview, setThumbnailPreview] = useState(null);
-  const [mediaPreview, setMediaPreview] = useState(null);
+      setMedia(med.media);
+      setThumbnail(med.thumbnail);
+      setMediaPreview(med.media);
+      setThumbnailPreview(med.thumbnail);
+      if (isUpdating) {
+        toast.loading("در حال پردازش...", { id: "media" });
+      }
+      if (updateData?.success) {
+        toast.success(updateData?.message, { id: "media" });
+        reset();
+        setIsOpen(false);
+      }
+      if (updateData && !updateData?.success) {
+        toast.error(updateData?.message, { id: "media" });
+      }
 
-  const [thumbnail, setThumbnail] = useState(null);
-  const [media, setMedia] = useState(null);
-
-  const handleAddOrUpdateMedia = async (data) => {
+      if (updateError?.data) {
+        toast.error(updateError?.data?.message, { id: "media" });
+      }
+    }
+  }, [med, reset, updateData, , updateError, , isUpdating]);
+  const handleUpdateMedia = async (data) => {
     const formData = new FormData();
-    console.log("Category:", data.category);
 
+    // افزودن داده‌های متنی
     formData.append("title", data.title);
     formData.append("description", data.description);
-    formData.append("thumbnail", thumbnail);
-    formData.append("media", media);
-    formData.append("isFeatured", data.isFeatured);
     formData.append("category", data.category);
     formData.append("visibility", data.visibility);
-    formData.append("tags[]", JSON.stringify(data.tags));
-    addMedia(formData);
+    formData.append("tags[]", JSON.stringify(data.tags)); // برای ارسال آرایه از "[]"
+
+    // افزودن فایل‌ها (اگر وجود داشته باشند)
+    if (thumbnail && thumbnail instanceof File) {
+      formData.append("thumbnail", thumbnail);
+    }
+    
+    if (media && media instanceof File) {
+      formData.append("media", media);
+    }
+    
+    formData.forEach((value, key) => {
+      console.log(`${key}:`, value);
+    });
+    // ارسال درخواست به `updateMedia`
+    updateMedia({ id: data.id, data: formData });
   };
 
-  useEffect(() => {
-    if (isAdding) {
-      toast.loading("در حال پردازش...", { id: "media" });
-    }
-    if (addData?.success) {
-      toast.success(addData?.message, { id: "media" });
-      reset();
-      setIsOpen(false);
-    }
-    if (addData && !addData?.success) {
-      toast.error(addData?.message, { id: "media" });
-    }
-
-    if (addError?.data) {
-      toast.error(addError?.data?.message, { id: "media" });
-    }
-  }, [addData, , addError, , isAdding,  reset]);
   return (
     <>
-      <AddButton onClick={() => setIsOpen(true)} />
+      <span
+        className="line-clamp-1 cursor-pointer rounded-full border border-green-500/5 bg-green-500/5 p-2 text-green-500 transition-colors hover:border-green-500/10 hover:bg-green-500/10 hover:!opacity-100 group-hover:opacity-70"
+        onClick={() => setIsOpen(true)}
+      >
+        <FiEdit3 className="w-5 h-5" />
+      </span>{" "}
       {isOpen && (
         <Modal
           isOpen={isOpen}
@@ -98,8 +135,8 @@ const AddMedia = ({}) => {
           className="lg:w-1/3 md:w-1/3 w-full z-50"
         >
           <form
-            className="text-sm flex flex-col gap-y-4"
-            onSubmit={handleSubmit(handleAddOrUpdateMedia)}
+            className="text-sm flex flex-col gap-y-4  text-right"
+            onSubmit={handleSubmit(handleUpdateMedia)}
           >
             <div className="flex flex-col gap-y-2">
               {/* عنوان */}
@@ -212,7 +249,7 @@ const AddMedia = ({}) => {
                           <SearchableDropdown
                             items={categoryOptions}
                             handleSelect={onChange}
-                            value={value}
+                            value={med?.category?._id || value}
                             sendId={true}
                             errors={errors.category}
                             className={"w-full h-12"}
@@ -252,7 +289,7 @@ const AddMedia = ({}) => {
               )}
               {mediaPreview && (
                 <DisplayImages
-                  galleryPreview={[mediaPreview]}
+                  galleryPreview={[mediaPreview || med?.media]}
                   imageSize={150}
                 />
               )}
@@ -271,29 +308,33 @@ const AddMedia = ({}) => {
               )}
               {thumbnailPreview && (
                 <DisplayImages
-                  galleryPreview={[thumbnailPreview]}
+                  galleryPreview={[thumbnailPreview || med?.thumbnail]}
                   imageSize={150}
                 />
               )}
 
-              <div className="flex flex-row gap-y-4 justify-between">
+              <div className="flex flex-row justify-between">
                 <StatusSwitch
                   label={"رسانه ویژه "}
                   id="isFeatured"
                   register={register}
-                  defaultChecked={false}
+                  defaultChecked={med?.isFeatured}
                 />{" "}
                 <StatusSwitch
                   label={"محتوای خصوصی"}
                   id="visibility"
                   register={register}
-                  defaultChecked={false}
+                  defaultChecked={med?.visibility}
                 />
               </div>
 
               {/* دکمه ارسال */}
-              <Button type="submit" className="py-2 mt-4" isLoading={isAdding}>
-                ایجاد کردن
+              <Button
+                type="submit"
+                className="py-2 mt-4"
+                isLoading={isUpdating}
+              >
+                ویرایش کردن
               </Button>
             </div>
           </form>
@@ -303,4 +344,4 @@ const AddMedia = ({}) => {
   );
 };
 
-export default AddMedia;
+export default UpdateMedia;

@@ -7,11 +7,11 @@ const mediaApi = kuarmoniaApi.injectEndpoints({
         url: "/media/",
         method: "POST",
         body,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
       }),
-      invalidatesTags: [
-        "Media",
-      
-      ],
+      invalidatesTags: ["Media", "Tag", "Category"] // تغییر این قسمت
     }),
 
     getMedias: builder.query({
@@ -19,64 +19,54 @@ const mediaApi = kuarmoniaApi.injectEndpoints({
         url: `/media/?page=${page}&limit=${limit}&search=${search}&userId=${userId}`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
       }),
+      providesTags: ["Media", "Tag", "Category"]  // تگ‌ها درست تنظیم شده‌اند
     }),
+    
 
     getMedia: builder.query({
       query: (id) => ({
         url: `/media/${id}`,
-        method: "GET",
+        method: "GET"
       }),
-      providesTags: ["User"],
+      providesTags: ["User"]
     }),
 
     getAllMedia: builder.query({
       query: ({ page = 1, limit = 8 }) => ({
         url: `/media/?page=${page}&limit=${limit}`,
         method: "GET",
-        params: { type: "client" }, 
+        params: { type: "client" }
       }),
-      providesTags: ["Media", "Tag", "User","Category"],
+      providesTags: ["Media", "Tag", "Category"]  // تگ‌ها درست تنظیم شده‌اند
     }),
-
 
     deleteMedia: builder.mutation({
       query: (id) => ({
         url: `/media/${id}`,
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
       }),
-  
-      invalidatesTags: [
-        "User",
-        "Category",
-        "Tag",
-        "Like",
-        "Comment",
-        "view",
-      ],
-    }),
- 
-    updateMedia: builder.mutation({
-      query: ({ id, data }) => {
-        return {
-          url: `/media/${id}`,
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-          body: data,
-        };
-      },
-    }),
-    
-  }),
 
- 
+      invalidatesTags: ["User", "Category", "Tag", "Like", "Comment", "view"]
+    }),
+
+    updateMedia: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `/media/${id}`,
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        },
+        body: data
+      }),
+      invalidatesTags: ["Media", "Tag", "Category"] // تغییر این قسمت
+    })
+  })
 });
 
 export const {
@@ -85,5 +75,5 @@ export const {
   useGetAllMediaQuery,
   useDeleteMediaMutation,
   useGetMediaQuery,
-  useUpdateMediaMutation,
+  useUpdateMediaMutation
 } = mediaApi;

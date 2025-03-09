@@ -11,23 +11,29 @@ const categoryApi = kuarmoniaApi.injectEndpoints({
         },
         body,
       }),
-      invalidatesTags: [
-        "Rent",
-        "User",
-        "Cart",
-        "Favorite",
-        "Purchase",
-        "Review",
-      ],
+      invalidatesTags: ["Category"], // این باید دقیقا با providesTags یکسان باشد
     }),
-
-    GetCategories: builder.query({
+    
+    getCategories: builder.query({
       query: ({ page = 1, limit = 7, search = "" } = {}) => ({
         url: `/category/?page=${page}&limit=${limit}&search=${search}`,
         method: "GET",
       }),
+
       providesTags: ["Category"],
     }),
+
+    getCategory: builder.query({
+      query: (id) => ({
+        url: `/category/${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      }),
+      providesTags: ["Category"],
+    }),
+    
 
     getCategoriesForDropDownMenu: builder.query({
       query: () => ({
@@ -35,7 +41,6 @@ const categoryApi = kuarmoniaApi.injectEndpoints({
         method: "GET",
         params: { type: "dropdown" }, 
       }),
-      providesTags: ["CategoryDropdown"],
     }),
     deleteCategory: builder.mutation({
       query: (id) => ({
@@ -62,6 +67,7 @@ const categoryApi = kuarmoniaApi.injectEndpoints({
 export const {
   useAddCategoryMutation,
   useGetCategoriesQuery,
+  useGetCategoryQuery,
   useGetCategoriesForDropDownMenuQuery,
   useUpdateCategoryMutation,
     useDeleteCategoryMutation,

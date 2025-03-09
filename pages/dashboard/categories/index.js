@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Panel from "@/layouts/Panel";
-import { useGetCategoriesQuery ,useDeleteCategoryMutation} from "@/services/category/categoryApi";
+import {
+  useGetCategoriesQuery,
+  useDeleteCategoryMutation
+} from "@/services/category/categoryApi";
 import DeleteModal from "@/components/shared/modal/DeleteModal";
 import { toast } from "react-hot-toast";
 import StatusIndicator from "@/components/shared/tools/StatusIndicator";
@@ -22,7 +25,7 @@ const ListCategory = () => {
     search: searchTerm
   });
   const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;
-  const categories = useMemo(() => data?.data || {}, [data]);
+  const categories = useMemo(() => data?.data || [], [data]);
   const [
     removeCategory,
     { isLoading: isRemoving, data: deleteCategory, error: removeError }
@@ -31,16 +34,34 @@ const ListCategory = () => {
     if (isLoading) {
       toast.loading("در حال دریافت دسته بندی...", { id: "category-loading" });
     }
-
+  
     if (data && !isLoading) {
       toast.dismiss("category-loading");
     }
-
+  
     if (error?.data) {
       toast.error(error?.data?.message, { id: "category-loading" });
+  
+      if (isRemoving) {
+        toast.loading("در حال حذف  ...", { id: "category-remove" });
+      }
+  
+      if (deleteCategory && !isRemoving) {
+        toast.dismiss("category-remove");
+      }
+  
+      if (removeError?.data) {
+        toast.error(removeError?.data?.message, { id: "category-remove" });
+      }
     }
-  }, [data, error, isLoading]);
-
+  
+    // اضافه کردن بررسی برای عملیات موفق حذف
+    if (deleteCategory && !isRemoving) {
+      toast.success("دسته بندی با موفقیت حذف شد.", { id: "category-remove" });
+    }
+  
+  }, [data, error, isLoading, isRemoving, removeError, deleteCategory]);
+  
   return (
     <>
       <Panel>

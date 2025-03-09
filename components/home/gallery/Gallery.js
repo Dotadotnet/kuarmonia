@@ -25,7 +25,7 @@ const Gallery = () => {
 
   useEffect(() => {
     if (categories.length > 0) {
-      setTab(categories[0].category._id);
+      setTab(categories[0].category?._id);
     }
   }, [categories]);
 

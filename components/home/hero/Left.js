@@ -91,6 +91,7 @@ function Left() {
                   src="/assets/home-page/banner/building1.png"
                   height={872}
                   width={500}
+                  alt="سرمایه گذاری"
                   className="w-40  ml-4 block md:mr-auto"
                 />
               </motion.div>
@@ -110,6 +111,7 @@ function Left() {
                   src="/assets/home-page/banner/marriage1.png"
                   height={500}
                   width={500}
+                  alt="ازدواج بین المللی"
                   className="w-80  ml-4 block md:mr-auto"
                 />
               </motion.div>
@@ -150,6 +152,7 @@ function Left() {
                   src="/assets/home-page/banner/marriage2.png"
                   height={872}
                   width={500}
+                  alt="ازدواج بین االمللی"
                   className="w-80  ml-4 block md:mr-auto"
                 />
               </motion.div>
@@ -191,6 +194,7 @@ function Left() {
                   src="/assets/home-page/banner/tourism.png"
                   height={872}
                   width={500}
+                  alt="'گردشگری و تفریحی"
                   className="  ml-4 block md:mr-auto"
                 />
               </motion.div>

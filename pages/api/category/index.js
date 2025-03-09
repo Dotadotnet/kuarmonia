@@ -1,4 +1,6 @@
 import { addCategory, getCategories, getCategoriesForDropDownMenu, softDeleteCategory } from "@/controllers/category.controller";
+import authorization from "@/middleware/authorization.middleware";
+import verify from "@/middleware/verify.middleware";
 
 export const config = {
   api: {
@@ -10,10 +12,27 @@ export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
       try {
-        const result = await addCategory(req);
-        res.status(200).json(result);
+        verify(req, res, async (err) => {
+          if (err) {
+            return res.send({
+              success: false,
+              error: err.message,
+            });
+          }
+          authorization("superAdmin", "admin")(req, res, async (err) => {
+            if (err) {
+              return res.send({
+                success: false,
+                error: err.message,
+              });
+            }
+
+            const result = await addCategory(req);
+            res.send(result);
+          });
+        });
       } catch (error) {
-        return res.status(500).json({
+        res.send({
           success: false,
           message: error.message,
         });

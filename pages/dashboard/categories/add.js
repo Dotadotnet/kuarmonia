@@ -18,14 +18,27 @@ const AddCategory = () => {
     if (isAdding) {
       toast.loading("در حال پردازش...", { id: "category" });
     }
+    if (addData?.success) {
+      toast.success(addData?.message, { id: "category" });
+      reset()
+      setIsOpen(false)
+    }
+    if (addData && !addData?.success) {
+      toast.error(addData?.message, { id: "category" });
+    }
 
     if (addError?.data) {
-      toast.error((addError?.data)?.message, {
-        id: "category"
-      });
+      toast.error(addError?.data?.message, { id: "category" });
     }
   }, [addData, , addError, , isAdding, , reset]);
+  const onSubmit = async (data) => {
+    const requestData = {
+      title: data.title,
+      description: data.description
+    };
 
+    addCategory(requestData);
+  };
   return (
     <>
       <AddButton onClick={() => setIsOpen(true)} />
@@ -37,7 +50,7 @@ const AddCategory = () => {
         >
           <form
             className="text-sm w-full h-full flex flex-col gap-y-4"
-            onSubmit={handleSubmit(handleAddOrUpdateCategory)}
+            onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex gap-4 flex-col">
               <label htmlFor="title" className="flex flex-col gap-y-2">

@@ -14,14 +14,13 @@ import "swiper/css/free-mode";
 const Properties = () => {
   const { isLoading, data, error } = useGetAllPropertiesQuery();
   const Properties = useMemo(() => data?.data || [], [data]);
-console.log(Properties)
   return (
     <section
       id="Propertys"
       className="bg-clip-border h-full py-12 dark:bg-gray-900 "
       style={{
         backgroundImage:
-          "url(/assets/home-page/Propertys-and-travel-guide/bg.svg)",
+          "url(/assets/home-page/blogs-and-travel-guide/bg.svg)",
         backgroundPosition: "125% 80%"
       }}
     >

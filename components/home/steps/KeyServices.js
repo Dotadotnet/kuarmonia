@@ -46,7 +46,7 @@ const KeyServices = () => {
     <div className="relative grid grid-cols-2 mt-8 lg:grid-cols-6 gap-5 sm:gap-16 xl:gap-10">
       <picture className="hidden md:block absolute inset-x-0 top-5">
         <source srcSet="/assets/home/steps/step-bg.svg" type="image/svg" />
-        <img src="/assets/steps/step-bg.svg" alt="vector" />
+        <img src="/assets/home-page/keyservice/step-bg.svg" alt="vector" />
       </picture>
       {steps.map((step) => (
         <Link key={step.id} href={step.href} passHref>

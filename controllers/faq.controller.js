@@ -10,7 +10,6 @@ import removePhoto from "@/utils/remove.util";
 export async function addFaq(req) {
   try {
     const { question, answer, category, tags } = req.body;
-    console.log(question, answer, category, tags);
 
     // برای اطمینان از ذخیره‌سازی درست، از 'await' استفاده کنید.
     await Faqs.create({

@@ -13,7 +13,6 @@ const MultiSelectDropdown = ({
   const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef(null);
 
-
   const filteredItems = items.filter((item) =>
     item.value.toLowerCase().includes(searchTerm.toLowerCase())
   );

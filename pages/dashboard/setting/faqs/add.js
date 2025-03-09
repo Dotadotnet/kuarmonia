@@ -62,7 +62,6 @@ const AddFaq = ({}) => {
       category: data.category,  // اطمینان حاصل کنید که category به درستی انتخاب شده است
       tags: data.tags,  // فرض می‌کنیم که این یک آرایه است
     };
-  
     addFaq(requestData);  // ارسال به API به جای ارسال به صورت FormData
   };
   
