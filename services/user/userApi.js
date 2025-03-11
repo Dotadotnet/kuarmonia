@@ -6,7 +6,7 @@ const adminApi = kuarmoniaApi.injectEndpoints({
     // get all admins
     getUsers: builder.query({
       query: () => ({
-        url: "/admins",
+        url: "/users",
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -19,7 +19,7 @@ const adminApi = kuarmoniaApi.injectEndpoints({
     // get an admin
     getUser: builder.query({
       query: (id) => ({
-        url: `/admins/${id}`,
+        url: `/users/${id}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -32,7 +32,7 @@ const adminApi = kuarmoniaApi.injectEndpoints({
     // update an admin
     updateUser: builder.mutation({
       query: ({ id, body }) => ({
-        url: `/admins/${id}`,
+        url: `/users/${id}`,
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -46,7 +46,7 @@ const adminApi = kuarmoniaApi.injectEndpoints({
     // delete an admin
     deleteUser: builder.mutation({
       query: (id) => ({
-        url: `/admins/${id}`,
+        url: `/users/${id}`,
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

@@ -1,4 +1,4 @@
-import { getUsers } from "@/controllers/admin.controller";
+import { getUsers } from "@/controllers/user.controller";
 import authorization from "@/middleware/authorization.middleware";
 import verify from "@/middleware/verify.middleware";
 

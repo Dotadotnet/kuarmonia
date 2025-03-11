@@ -4,7 +4,7 @@ import { AiOutlineDelete, AiOutlineLoading3Quarters } from "react-icons/ai";
 import {
   useDeleteUserMutation,
   useGetUserQuery
-} from "@/services/admin/adminApi";
+} from "@/services/user/userApi";
 import { toast } from "react-hot-toast";
 import Modal from "../shared/modal/Modal";
 import { RxCross2 } from "react-icons/rx";

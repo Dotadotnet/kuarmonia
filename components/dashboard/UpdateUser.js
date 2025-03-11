@@ -1,4 +1,4 @@
-import { useUpdateUserMutation } from "@/services/admin/adminApi";
+import { useUpdateUserMutation } from "@/services/user/userApi";
 import React, { useEffect, useState } from "react";
 import Button from "../shared/button/Button";
 import { useForm } from "react-hook-form";

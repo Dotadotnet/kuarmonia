@@ -1,5 +1,5 @@
 import Table from "@/components/shared/loading/Table";
-import { useGetUsersQuery } from "@/services/admin/adminApi";
+import { useGetUsersQuery } from "@/services/user/userApi";
 import React, { useEffect, useState } from "react";
 import { FiEdit3 } from "react-icons/fi";
 import Modal from "@/components/shared/modal/Modal";
