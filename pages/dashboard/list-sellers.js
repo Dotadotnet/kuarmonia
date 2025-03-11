@@ -3,7 +3,7 @@
 import Modal from "@/components/shared/modal/Modal";
 import { setRent } from "@/features/rent/rentSlice";
 import Panel from "@/layouts/Panel";
-import { useGetUsersQuery } from "@/services/admin/adminApi";
+import { useGetUsersQuery } from "@/services/user/userApi";
 import React, { useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { IoMdPricetag } from "react-icons/io";
