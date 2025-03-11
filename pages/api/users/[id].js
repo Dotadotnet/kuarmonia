@@ -1,5 +1,5 @@
 
-import { deleteUser, getUser, updateUser } from "@/controllers/admin.controller";
+import { deleteUser, getUser, updateUser } from "@/controllers/user.controller";
 import authorization from "@/middleware/authorization.middleware";
 import getUploadMiddleware from "@/middleware/upload.middleware";
 import verify from "@/middleware/verify.middleware";
