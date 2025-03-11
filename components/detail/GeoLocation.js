@@ -51,21 +51,7 @@ const GeoLocation = ({ location, zoom, height, setSelectedLocation }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
 
-      {/* جستجوگر مکان */}
-        <Search
-          position="topright"
-          inputPlaceholder="مکان مورد نظر را جستجو کنید..."
-          showMarker={false}
-          closeResultsOnClick={true}
-          provider="OpenStreetMap"
-          providerOptions={{ region: "ir" }}
-          onChange={(info) => {
-            const { lat, lng } = info.latLng;
-            setMarkerPosition([lat, lng]);
-            setSelectedLocation({ lat, lng });
-          }}
-        />
-
+      
       {/* نشانگر مکان انتخاب‌شده */}
       <Marker position={markerPosition}>
         <Popup>مکان انتخاب‌شده</Popup>

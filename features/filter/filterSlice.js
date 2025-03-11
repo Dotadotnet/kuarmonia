@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   type: [],
+  tradeType: [],
+  SaleType: [],
   countries: [],
   priceRange: { min: 5, max: 500 },
   dateRange: { startDate: null, endDate: null },
@@ -43,6 +45,7 @@ const filterSlice = createSlice({
     resetFilter: (state) => {
       state.type = [];
       state.tradeType = [];
+      state.SaleType = [];
       state.countries = [];
       state.priceRange = { min: 5, max: 500 };
       state.dateRange = { startDate: null, endDate: null };
@@ -54,6 +57,7 @@ const filterSlice = createSlice({
 export const {
   setType,
   setTradeType,
+  setSaleType,
   setCountries,
   setPriceRange,
   setDateRange,
