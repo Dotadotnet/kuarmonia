@@ -2,7 +2,6 @@
 import Logo from "@/components/shared/logo/Logo";
 import ThemeToggle from "@/components/shared/navbar/ThemeToggle/ThemeToggle";
 import GoogleLogin from "./user/GoogleLogin";
-import PhoneLogin from "./user/phoneLogin/PhoneLogin";
 const signin = () => {
   return (
     <section
@@ -27,7 +26,6 @@ const signin = () => {
               یا
             </p>
           </div>
-          <PhoneLogin />
         </div>{" "}
         <div className="flex justify-center">
           <ThemeToggle />
