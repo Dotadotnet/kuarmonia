@@ -11,7 +11,7 @@ const AddSaleType = ({ isOpen, onClose, onSuccess, saleTypeToEdit = null }) => {
   const { register, handleSubmit, reset, setValue } = useForm();
   const [addSaleType, { isLoading: isAdding, data: addData, error: addError }] = useAddSaleTypeMutation();
   const [updateSaleType, { isLoading: isUpdating, data: updateData, error: updateError }] = useUpdateSaleTypeMutation();
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
 
   useEffect(() => {
     if (saleTypeToEdit) {
@@ -48,7 +48,7 @@ const AddSaleType = ({ isOpen, onClose, onSuccess, saleTypeToEdit = null }) => {
 
   const handleAddOrUpdateSaleType = async (formData) => {
     try {
-      formData.authorId=user?._id;
+      formData.authorId=admin?._id;
       if (saleTypeToEdit) {
         await updateSaleType({ id: saleTypeToEdit._id, ...formData }).unwrap();
       } else {

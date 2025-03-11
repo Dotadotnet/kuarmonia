@@ -1,7 +1,7 @@
 import Button from "@/components/shared/button/Button";
 import Logo from "@/components/shared/logo/Logo";
 import ToggleThemeButton from "@/components/shared/theme/ToggleThemeButton";
-import { useSigninMutation } from "@/services/auth/authApi";
+import { useSigninMutation } from "@/services/auth/adminAuthApi";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -10,7 +10,6 @@ import { toast } from "react-hot-toast";
 const Signinadmin = () => {
   const { register, handleSubmit, reset } = useForm();
   const [signin, { isLoading, data, error }] = useSigninMutation();
-
   useEffect(() => {
     if (data) {
       if(data.success){

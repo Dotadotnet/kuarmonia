@@ -1,7 +1,7 @@
 // Signup.jsx
 import Logo from "@/components/shared/logo/Logo";
 import Link from "next/link";
-import StepSignUpForm from "./StepSignUpFormAdmin";
+import StepSignUpForm from "./admin/StepSignUpFormAdmin";
 import ThemeToggle from "@/components/shared/navbar/ThemeToggle/ThemeToggle";
 
 const Signup = () => {

@@ -1,7 +1,7 @@
 // controllers/post.controller.js
 import Post from '@/models/post.model';
 import Like from '@/models/like.model';
-import User from '@/models/user.model';
+import User from '@/models/admin.model';
 import path from "path";
 export async function addPost(req) {
   try {
@@ -131,17 +131,17 @@ export async function addPost(req) {
 
 export async function getPosts(req) {
   try {
-    const { page = 1, limit = 7, search = "",userId } = req.query; 
+    const { page = 1, limit = 7, search = "",adminId } = req.query; 
     const skip = (page - 1) * limit;
-    const user = await User.findById(userId);
-    if (!user) {
+    const admin = await User.findById(adminId);
+    if (!admin) {
       return {
         success: false,
         message: "کاربر پیدا نشد",
       };
     }
 
-    const isSuperAdmin = user.role === 'superAdmin';
+    const isSuperAdmin = admin.role === 'superAdmin';
 
 
 
@@ -156,7 +156,7 @@ export async function getPosts(req) {
       }
     : { isDeleted: false };
     if (!isSuperAdmin) {
-      searchQuery.authorId = userId;
+      searchQuery.authorId = adminId;
     }
     const posts = await Post.find(searchQuery)
     .skip(skip)

@@ -134,14 +134,14 @@ const PostComments = ({ comments }) => (
             >
               <div className="flex items-center mb-2">
                 <Image
-                  src={comment.userAvatar || "https://via.placeholder.com/40"}
+                  src={comment.adminAvatar || "https://via.placeholder.com/40"}
                   alt="تصویر کاربر"
                   width={40} // عرض تصویر
                   height={40} // ارتفاع تصویر
                   className="rounded-full ml-3"
                 />
                 <div>
-                  <h3 className="font-semibold">{comment.userName}</h3>
+                  <h3 className="font-semibold">{comment.adminName}</h3>
                   <p className="text-sm text-gray-500 dark:text-gray-300">
                     ارسال شده در{" "}
                     {new Date(comment.date).toLocaleDateString("fa-IR")}

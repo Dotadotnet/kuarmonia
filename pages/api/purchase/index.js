@@ -23,7 +23,7 @@ export default async function handler(req, res) {
             });
           }
 
-          authorization("user", "admin")(req, res, async (err) => {
+          authorization("admin", "admin")(req, res, async (err) => {
             if (err) {
               return res.send({
                 success: false,

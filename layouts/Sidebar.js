@@ -1,37 +1,50 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoHomeOutline } from "react-icons/io5";
-import { FaChevronDown } from "react-icons/fa"; // اضافه کردن آیکون Down
+import { FaChevronDown } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import Image from "next/image";
-import JWT from "@/utils/jwt.util";
+import { useLogoutMutation } from "@/services/auth/logout";
+import toast from "react-hot-toast";
 
 const Sidebar = ({ routes }) => {
   const router = useRouter();
-  const user = useSelector((state) => state?.auth);
-  const routes_result = [];
-  const jwt = new JWT();
-  routes.forEach((route) => {
-    if (jwt.isAccessAllowedNumber(route.Access)) {
-      routes_result.push(route);
-    }
-  });
-
+  const admin = useSelector((state) => state?.auth?.admin);
+  const user = useSelector((state) => state?.auth?.user);
+    const [logout, { isLoading, error, data }] = useLogoutMutation();
+  
   const [openSubRoutes, setOpenSubRoutes] = useState({});
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("در حال خروج ...", { id: "logout" });
+    }
+
+    if (data?.success) {
+      toast.success(data?.message, { id: "logout" });
+      window.location.href = "/";
+    }
+    if (data && !data?.success) {
+      toast.error(data?.message, { id: "logout" });
+    }
+
+    if (error?.data) {
+      toast.error(error?.data?.message, { id: "logout" });
+    }
+  }, [isLoading, data, error]);
 
   const isActive = (href) => {
-    return router.pathname === href
-      ? "bg-primary dark:bg-blue-500 text-white" 
-      : "";
+    return router.pathname === href ? "bg-primary dark:bg-blue-500 text-white" : "";
   };
 
   const toggleSubRoutes = (index) => {
     setOpenSubRoutes((prevState) => ({
       ...prevState,
-      [index]: !prevState[index] 
+      [index]: !prevState[index]
     }));
   };
+  
+
   const handleRouteClick = (route, index) => {
     if (route.path) {
       router.push(route.path);
@@ -39,32 +52,26 @@ const Sidebar = ({ routes }) => {
       toggleSubRoutes(index);
     }
   };
+
   return (
     <div className="w-full h-full flex flex-col gap-y-2">
       <div className="flex flex-col gap-y-1 overflow-y-auto scrollbar-hide">
-        {routes_result.map((route, index) => (
+        {routes.map((route, index) => (
           <div key={index}>
-            {/* Main Route Link */}
             <div
               className="flex flex-row gap-x-2 items-center px-4 py-2 cursor-pointer justify-between hover:text-white dark:hover:bg-blue-500 transition-colors rounded text-sm"
-              onClick={() => handleRouteClick(route, index)}  
+              onClick={() => handleRouteClick(route, index)}
             >
               <span className="flex flex-row gap-x-2 items-center">
                 {route.icon}
                 {route.name}
               </span>
-              <span>
-                {route.subRoutes && (
-                  <FaChevronDown
-                    className={`ml-auto w-4 h-4 transition-transform transform ${
-                      openSubRoutes[index] ? "rotate-180" : ""
-                    }`}
-                  />
-                )}
-              </span>
+              {route.subRoutes && (
+                <FaChevronDown
+                  className={`ml-auto w-4 h-4 transition-transform transform ${openSubRoutes[index] ? "rotate-180" : ""}`}
+                />
+              )}
             </div>
-
-            {/* Subroutes (Dropdown) */}
             {route.subRoutes && openSubRoutes[index] && (
               <div className="pr-6 flex flex-col mt-4 gap-y-2">
                 {route.subRoutes.map((subRoute, subIndex) => (
@@ -85,24 +92,20 @@ const Sidebar = ({ routes }) => {
           </div>
         ))}
       </div>
-
       <div className="flex flex-col gap-y-2 mt-auto">
         <div
           className="px-4 py-2 flex flex-row gap-x-2 hover:bg-primary hover:text-white transition-colors rounded cursor-pointer"
-          onClick={() => {
-            localStorage.removeItem("accessToken");
-            window.open("/", "_self");
-          }}
+          onClick={() =>  logout() }
         >
           <Image
-            src={user?.avatar?.url || "/placeholder.png"}
-            alt={user?.avatar?.public_id || "User Avatar"}
+            src={admin?.avatar?.url || user?.avatar?.url || "/placeholder.png"}
+            alt={admin?.avatar?.public_id || "User Avatar"}
             height={100}
             width={100}
             className="rounded-full object-cover w-[35px] h-[35px]"
           />
           <article className="flex flex-col gap-y-0.5">
-            <h2 className="line-clamp-1 text-base">{user?.name}</h2>
+            <h2 className="line-clamp-1 text-base">{admin?.name} {admin?.user}</h2>
             <span className="text-xs">خروج</span>
           </article>
         </div>

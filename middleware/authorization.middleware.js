@@ -1,13 +1,9 @@
-
-
-const authorization = (...role) => {
+const authorization = (...roles) => {
   return (req, res, next) => {
-    const userRole = req.user.role;
-
-    if (!role.includes(userRole)) {
-      return res.send({
+    if (!req.admin || !roles.includes(req.admin.role)) {
+      return res.status(403).json({
         success: false,
-        message: "شما اجازه دسترسی به این ویژگی را ندارید"
+        message: "شما اجازه دسترسی به این ویژگی را ندارید",
       });
     }
     next();

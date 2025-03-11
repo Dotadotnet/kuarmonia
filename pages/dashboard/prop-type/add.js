@@ -15,7 +15,7 @@ const AddType = ({ isOpen, onClose, onSuccess, typeToEdit = null }) => {
   const [features, setFeatures] = useState([""]);
 
   const [updateType, { isLoading: isUpdating, data: updateData, error: updateError }] = useUpdateTypeMutation();
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
 
   // مقداردهی اولیه برای ویرایش
   useEffect(() => {
@@ -53,7 +53,7 @@ const AddType = ({ isOpen, onClose, onSuccess, typeToEdit = null }) => {
     try {
       const finalData = {
         ...formData,
-        authorId: user?._id,
+        authorId: admin?._id,
         features, // ارسال ویژگی‌ها به‌صورت آرایه
       };
 

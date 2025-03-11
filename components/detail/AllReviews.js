@@ -26,7 +26,7 @@ const AllReviews = ({ className }) => {
   const [isOpen, setIsOpen] = useState(false);
   const rent = useSelector((state) => state?.rent);
   const reviews = useMemo(() => rent?.reviews || [], [rent?.reviews]);
-  const user = useSelector((state) => state?.user);
+  const admin = useSelector((state) => state?.admin);
   const [addReview, { isLoading, data, error }] = useAddReviewMutation();
 
   useEffect(() => {

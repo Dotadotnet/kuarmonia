@@ -1,5 +1,5 @@
 
-import { deleteUser, getUser, updateUser } from "@/controllers/user.controller";
+import { deleteUser, getUser, updateUser } from "@/controllers/admin.controller";
 import authorization from "@/middleware/authorization.middleware";
 import getUploadMiddleware from "@/middleware/upload.middleware";
 import verify from "@/middleware/verify.middleware";
@@ -62,7 +62,7 @@ export default async function handler(req, res) {
                 error: err.message,
               });
             }
-            const upload = getUploadMiddleware("user");    
+            const upload = getUploadMiddleware("admin");    
             upload.single("avatar")(req, res, async (err) => {
               if (err) {
                 return res.send({

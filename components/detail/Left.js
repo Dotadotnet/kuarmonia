@@ -32,7 +32,7 @@ const stripePromise = loadStripe(
 
 const Left = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
   const tour = useSelector((state) => state?.rent);
   const { handleSubmit, control, watch, setValue } = useForm();
   const dispatch = useDispatch();
@@ -276,7 +276,7 @@ const Left = () => {
                 Book Now
               </button>
               {/* <Checkout members={members} duration={duration} /> */}
-              {user?.cart?.rents?.some((rent) => rent?._id === tour?._id) ? (
+              {admin?.cart?.rents?.some((rent) => rent?._id === tour?._id) ? (
                 <button
                   type="button"
                   className="bg-primary hover:bg-secondary hover:text-primary hover:border-primary border border-transparent text-white p-1.5 rounded-primary flex justify-center items-center transition-all delay-100 text-sm"
@@ -325,13 +325,13 @@ const Left = () => {
 
 function Checkout({ rent, setIsOpen, members }) {
   const booking = useSelector((state) => state?.booking);
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
   const [createPaymentIntent, { isLoading, data, error }] =
     useCreatePaymentIntentMutation();
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      name: user?.name,
-      email: user?.email,
+      name: admin?.name,
+      email: admin?.email,
     },
   });
 

@@ -25,7 +25,7 @@ const Right = () => {
             </span>
             <span className="text-xs flex items-center gap-x-1 py-0.5 px-2 bg-indigo-50 text-indigo-800 border border-indigo-500 rounded-secondary">
               <FaUsers className="w-4 h-4 text-yellow-500" /> (
-              {tour?.users?.length})
+              {tour?.admins?.length})
             </span>
           </p>
         </div>

@@ -49,7 +49,7 @@ const Add = () => {
       publishDate: new Date().toISOString().split("T")[0],
     },
   });
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 5;
   const [galleryPreview, setGalleryPreview] = useState([]);
@@ -100,11 +100,11 @@ const Add = () => {
   }));
   const defaultValues = useMemo(() => {
     return {
-      name: user?.name,
-      avatar: user?.avatar,
-      id: user?._id,
+      name: admin?.name,
+      avatar: admin?.avatar,
+      id: admin?._id,
     };
-  }, [user]);
+  }, [admin]);
 
   const onSubmit = async (data) => {
     const formData = new FormData();
@@ -119,7 +119,7 @@ const Add = () => {
     formData.append("isFeatured", data.isFeatured);
     formData.append("readTime", data.readTime);
     formData.append("publishDate", new Date().toISOString().split("T")[0]);
-    formData.append("authorId", user?._id);
+    formData.append("authorId", admin?._id);
     data.tags.forEach((tag) => {
       formData.append("tags[]", tag.id);
     });

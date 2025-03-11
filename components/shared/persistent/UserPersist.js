@@ -1,6 +1,6 @@
 
 
-import { usePersistUserQuery } from "@/services/auth/authApi";
+import { usePersistUserQuery } from "@/services/auth/userAuthApi";
 import React from "react";
 import { useMemo } from "react";
 import { useDispatch } from "react-redux";
@@ -12,7 +12,7 @@ const UserPersist = ({ children }) => {
   const { data, isLoading, error } = usePersistUserQuery();
   const user = useMemo(() => data?.data || {}, [data]);
   const dispatch = useDispatch();
-  
+  console.log(user);  
   useEffect(() => {
     if (Object?.keys(user).length > 0) {
       dispatch(addUser(user));

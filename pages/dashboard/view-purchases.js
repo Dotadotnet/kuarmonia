@@ -13,7 +13,7 @@
 // import { useSelector } from "react-redux";
 
  const ViewPurchases = () => {
-//   const user = useSelector((state) => state?.auth);
+//   const admin = useSelector((state) => state?.auth);
 
   return (
 <></>

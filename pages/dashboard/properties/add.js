@@ -50,7 +50,7 @@ const Add = () => {
       socialLinks: []
     }
   });
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
   const [currentStep, setCurrentStep] = useState(1);
   const [galleryPreview, setGalleryPreview] = useState([]);
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
@@ -101,11 +101,11 @@ const Add = () => {
 
   const defaultValues = useMemo(() => {
     return {
-      name: user?.name,
-      avatar: user?.avatar,
-      id: user?._id
+      name: admin?.name,
+      avatar: admin?.avatar,
+      id: admin?._id
     };
-  }, [user]);
+  }, [admin]);
   const onSubmit = async (data) => {
     const formData = new FormData();
     formData.append("title", data.title);
@@ -125,7 +125,7 @@ const Add = () => {
     formData.append("state", currentState?.name);
     formData.append("city", currentCity?.name);
     formData.append("citizenshipStatus", citizenshipStatus);
-    formData.append("authorId", user?._id);
+    formData.append("authorId", admin?._id);
     formData.append("features", JSON.stringify(features));
     formData.append("selectedLocation", JSON.stringify(selectedLocation));
 

@@ -12,7 +12,7 @@ import Card from "../shared/card/Card";
 import { useSelector } from "react-redux";
 
 const MoreRents = ({ className }) => {
-  const user = useSelector((state) => state?.rent?.owner);
+  const admin = useSelector((state) => state?.rent?.owner);
 
   return (
     <section id="flights" className="py-12">
@@ -35,11 +35,11 @@ const MoreRents = ({ className }) => {
             </p>
           </article>
 
-          {user?.rents?.length === 0 ? (
+          {admin?.rents?.length === 0 ? (
             <p className="text-sm text-red-500">No rents found!</p>
           ) : (
             <div className="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-1 gap-6">
-              {user?.rents?.slice(0, 8)?.map((tour) => (
+              {admin?.rents?.slice(0, 8)?.map((tour) => (
                 <Card key={tour._id} tour={tour} />
               ))}
             </div>

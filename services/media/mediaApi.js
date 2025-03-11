@@ -15,8 +15,8 @@ const mediaApi = kuarmoniaApi.injectEndpoints({
     }),
 
     getMedias: builder.query({
-      query: ({ page = 1, limit = 7, search = "", userId }) => ({
-        url: `/media/?page=${page}&limit=${limit}&search=${search}&userId=${userId}`,
+      query: ({ page = 1, limit = 7, search = "", adminId }) => ({
+        url: `/media/?page=${page}&limit=${limit}&search=${search}&adminId=${adminId}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`

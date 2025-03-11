@@ -1,4 +1,4 @@
-import { getUsers } from "@/controllers/user.controller";
+import { getUsers } from "@/controllers/admin.controller";
 import authorization from "@/middleware/authorization.middleware";
 import verify from "@/middleware/verify.middleware";
 
@@ -33,9 +33,9 @@ export default async function handler(req, res) {
             const result = await getUsers();
 
             // فیلتر کاربران بر اساس نقش admin
-            if (req.user.role === "admin") {
+            if (req.admin.role === "admin") {
               const filteredUsers = result.data.filter(
-                (user) => user.role !== "superAdmin"
+                (admin) => admin.role !== "superAdmin"
               );
               return res.status(200).send({
                 success: true,

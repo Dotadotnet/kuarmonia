@@ -14,7 +14,7 @@ import Cart from "@/components/icons/Cart";
 
 const MyCart = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
 
   const [
     removeFromCart,
@@ -61,7 +61,7 @@ const MyCart = () => {
 
         <span
           className={`h-2 w-2 rounded-secondary absolute -top-1 -right-1 ${
-            user?.cart?.rents?.length > 0 && "bg-green-500"
+            admin?.cart?.rents?.length > 0 && "bg-green-500"
           }`}
         ></span>
       </button>
@@ -76,11 +76,11 @@ const MyCart = () => {
             بررسی <HighlightText>سبد خرید</HighlightText>
           </h1>
           <section className="h-full w-full">
-            {user?.cart?.rents?.length === 0 ? (
+            {admin?.cart?.rents?.length === 0 ? (
               <p className="text-sm text-red-500">No rents found!</p>
             ) : (
               <section className="grid grid-cols-2 gap-4">
-                {user?.cart?.rents?.map((rent) => (
+                {admin?.cart?.rents?.map((rent) => (
                   <div
                     key={rent?._id}
                     className="flex flex-col gap-y-2.5 border p-4 rounded relative"
@@ -102,15 +102,15 @@ const MyCart = () => {
                       </div>
                       <div className="flex flex-row gap-x-2 items-start">
                         <Image
-                          src={user?.avatar?.url}
-                          alt={user?.avatar?.public_id}
+                          src={admin?.avatar?.url}
+                          alt={admin?.avatar?.public_id}
                           height={25}
                           width={25}
                           className="h-[25px] w-[25px] rounded-secondary object-cover"
                         />
                         <div className="flex flex-col gap-y-0.5 flex-1 w-full">
-                          <h2 className="text-sm">{user?.name}</h2>
-                          <p className="text-xs !line-clamp-1">{user?.email}</p>
+                          <h2 className="text-sm">{admin?.name}</h2>
+                          <p className="text-xs !line-clamp-1">{admin?.email}</p>
                         </div>
                       </div>
                     </article>

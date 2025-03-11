@@ -129,7 +129,7 @@ const DeleteRent = ({ id }) => {
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
                   <LuShoppingCart className="h-5 w-5" /> Your will lost{" "}
-                  {rent?.users?.length} users!
+                  {rent?.admins?.length} admins!
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
                   <MdOutlineReviews className="h-5 w-5" /> You will lost{" "}

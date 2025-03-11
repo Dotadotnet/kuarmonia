@@ -18,13 +18,13 @@ const ListBlog = () => {
   const itemsPerPage = 7;
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
   const { data, isLoading, error, refetch } = useGetBlogsQuery({
     page: currentPage,
     limit: itemsPerPage,
     status: statusFilter === "all" ? undefined : statusFilter,
     search: searchTerm,
-    userId: user?._id,
+    adminId: admin?._id,
   });
 
   const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;

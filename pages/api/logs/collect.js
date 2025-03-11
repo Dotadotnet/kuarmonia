@@ -1,6 +1,6 @@
 // // pages/api/collect.js
 // import connectDB from '@/libs/db'; 
-// import UserLog from '@/models/userLog.model';
+// import UserLog from '@/models/adminLog.model';
 // import geoip from 'geoip-lite';
 // import UAParser from 'ua-parser-js';
 
@@ -12,13 +12,13 @@
 
 // export default async function handler(req, res) {
 //   if (req.method === 'POST') {
-//     const { userId, pageUrl, interaction } = req.body;
+//     const { adminId, pageUrl, interaction } = req.body;
 //     const ipAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
-//     const userAgentString = req.headers['user-agent'] || 'unknown';
+//     const adminAgentString = req.headers['admin-agent'] || 'unknown';
 //     const referrer = req.headers['referer'] || 'direct';
 
 //     // Parse User-Agent
-//     const parser = new UAParser(userAgentString);
+//     const parser = new UAParser(adminAgentString);
 //     const uaResult = parser.getResult();
 //     const deviceType = uaResult.device.type || 'desktop';
 
@@ -33,8 +33,8 @@
 //       await connectDB();
 
 //       let log;
-//       if (userId) {
-//         log = await UserLog.findOne({ userId, pageUrl }).sort({ timestamp: -1 });
+//       if (adminId) {
+//         log = await UserLog.findOne({ adminId, pageUrl }).sort({ timestamp: -1 });
 //       } else {
 //         log = await UserLog.findOne({ ipAddress, pageUrl }).sort({ timestamp: -1 });
 //       }
@@ -45,10 +45,10 @@
 //         await log.save();
 //       } else {
 //         log = new UserLog({
-//           userId: userId || null,
+//           adminId: adminId || null,
 //           ipAddress,
 //           deviceIp: ipAddress,
-//           userAgent: userAgentString,
+//           adminAgent: adminAgentString,
 //           referrer,
 //           pageUrl,
 //           deviceType,

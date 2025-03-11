@@ -1,6 +1,6 @@
 
 
-import { persistUser } from "@/controllers/auth.controller";
+import { persistUser } from "@/controllers/authUser.controller";
 import verify from "@/middleware/verify.middleware";
 
 export const config = {

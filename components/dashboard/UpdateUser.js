@@ -1,4 +1,4 @@
-import { useUpdateUserMutation } from "@/services/user/userApi";
+import { useUpdateUserMutation } from "@/services/admin/adminApi";
 import React, { useEffect, useState } from "react";
 import Button from "../shared/button/Button";
 import { useForm } from "react-hook-form";
@@ -9,7 +9,7 @@ import Image from 'next/image'
 
 const UpdateUser = ({ setIsOpen }) => {
   const [avatarPreview, setAvatarPreview] = useState(null);
-  const user = useSelector((state) => state?.user);
+  const admin = useSelector((state) => state?.admin);
   const [updateUser, { isLoading, data, error }] = useUpdateUserMutation();
 
   useEffect(() => {
@@ -33,13 +33,13 @@ const UpdateUser = ({ setIsOpen }) => {
 
   const { register, handleSubmit } = useForm({
     defaultValues: {
-      name: user?.name,
-      email: user?.email,
-      phone: user?.phone,
-      avatar: user?.avatar,
-      address: user?.address,
-      role: user?.role,
-      status: user?.status,
+      name: admin?.name,
+      email: admin?.email,
+      phone: admin?.phone,
+      avatar: admin?.avatar,
+      address: admin?.address,
+      role: admin?.role,
+      status: admin?.status,
     },
   });
 
@@ -72,7 +72,7 @@ const UpdateUser = ({ setIsOpen }) => {
       formData.append("avatar", data.avatar[0]);
     }
 
-    updateUser({ id: user?._id, body: formData });
+    updateUser({ id: admin?._id, body: formData });
   };
 
   return (
@@ -86,11 +86,11 @@ const UpdateUser = ({ setIsOpen }) => {
       className="flex flex-col gap-y-1 w-fit mx-auto items-center"
     >
       <span className="text-sm">آپلود آواتار 300x300</span>
-      {(avatarPreview || user?.avatar?.url) && (
+      {(avatarPreview || admin?.avatar?.url) && (
         <div className="relative h-[100px] w-[100px]">
           <Image
-            src={avatarPreview || `${user?.avatar?.url}`}
-            alt={user?.avatar?.public_id || "avatar"}
+            src={avatarPreview || `${admin?.avatar?.url}`}
+            alt={admin?.avatar?.public_id || "avatar"}
             height={100}
             width={100}
             className="rounded h-[100px] w-[100px] object-cover"
@@ -144,7 +144,7 @@ const UpdateUser = ({ setIsOpen }) => {
     <label htmlFor="role" className="flex flex-col gap-y-1">
       <span className="text-sm">ویرایش نقش</span>
       <select name="role" id="role" {...register("role")} className="">
-        <option value="user">کاربر</option>
+        <option value="admin">کاربر</option>
         <option value="admin">مدیر</option>
         <option value="operator">اپراتور</option>
       </select>

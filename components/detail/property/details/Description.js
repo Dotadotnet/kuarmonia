@@ -9,7 +9,7 @@ import Modal from "@/components/shared/modal/Modal";
 
 const Description = ({ property }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const user = useSelector((state) => state.auth.user);
+  const admin = useSelector((state) => state.auth.admin);
   const [addReview, { isLoading, data, error }] = useAddReviewMutation();
   useEffect(() => {
     if (isLoading) {

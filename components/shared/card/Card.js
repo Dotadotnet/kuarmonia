@@ -22,7 +22,7 @@ import { useSelector } from "react-redux";
 
 const Card = ({ tour }) => {
   const sliderRef = useRef(null);
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
   const { status, gallery, members, title, location, price, _id } = tour || {};
   const [
     addToFavorite,
@@ -98,7 +98,7 @@ const Card = ({ tour }) => {
         >
           {status}
         </span>
-        {user?.favorite?.rents.some((rent) => rent?._id === _id) ? (
+        {admin?.favorite?.rents.some((rent) => rent?._id === _id) ? (
           <button
             className="absolute top-4 right-4 p-1.5 border rounded-full border-secondary bg-white hover:bg-primary hover:text-white duration-100 z-50 opacity-0 group-hover:opacity-100 transition-opacity ease-linear delay-100"
             onClick={() => deleteFromFavorite(_id)}

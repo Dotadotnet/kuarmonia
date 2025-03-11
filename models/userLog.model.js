@@ -1,9 +1,9 @@
-// models/userLog.model.js
+// models/adminLog.model.js
 import { Schema, model, models } from 'mongoose';
 
-const userLogSchema = new Schema(
+const adminLogSchema = new Schema(
   {
-    userId: {
+    adminId: {
          type: Schema.Types.ObjectId, 
          ref: 'User', required: false 
         }, 
@@ -15,7 +15,7 @@ const userLogSchema = new Schema(
         type: String, 
         required: false 
     }, // فرض می‌کنیم deviceIp هم وجود دارد
-    userAgent: { 
+    adminAgent: { 
         type: String, 
         required: true 
     },
@@ -63,10 +63,10 @@ const userLogSchema = new Schema(
 );
 
 // ایجاد ایندکس‌های منحصربه‌فرد
-userLogSchema.index({ userId: 1, pageUrl: 1, timestamp: 1 });
-userLogSchema.index({ ipAddress: 1, pageUrl: 1, timestamp: 1 });
-userLogSchema.index({ deviceIp: 1, pageUrl: 1, timestamp: 1 });
+adminLogSchema.index({ adminId: 1, pageUrl: 1, timestamp: 1 });
+adminLogSchema.index({ ipAddress: 1, pageUrl: 1, timestamp: 1 });
+adminLogSchema.index({ deviceIp: 1, pageUrl: 1, timestamp: 1 });
 
-const UserLog = models.UserLog || model('UserLog', userLogSchema);
+const UserLog = models.UserLog || model('UserLog', adminLogSchema);
 
 export default UserLog;

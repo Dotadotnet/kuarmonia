@@ -7,7 +7,7 @@
 >>>>>>> origin/master
 </g>
 <defs>
-<filter id="filter0_d_194_30" x="0" y="0.998047" width="76.1289" height="55.002" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_d_194_30" x="0" y="0.998047" width="76.1289" height="55.002" filterUnits="adminSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
 <feOffset dy="4"/>
@@ -17,7 +17,7 @@
 <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_194_30"/>
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_194_30" result="shape"/>
 </filter>
-<linearGradient id="paint0_linear_194_30" x1="70.1287" y1="3.00002" x2="-0.436174" y2="21.6572" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_194_30" x1="70.1287" y1="3.00002" x2="-0.436174" y2="21.6572" gradientUnits="adminSpaceOnUse">
 <stop stop-color="#148595"/>
 <stop offset="1" stop-color="#6EFB7D"/>
 </linearGradient>

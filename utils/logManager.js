@@ -1,7 +1,7 @@
 // // utils/logManager.js
 // import { collectUserData } from './collectData';
 
-// export const logPageView = (userId) => {
+// export const logPageView = (adminId) => {
 //   const entryTime = Date.now();
 
 //   const handleUnload = (event) => {
@@ -16,7 +16,7 @@
 //     }
 
 //     const data = {
-//       userId: userId || null,
+//       adminId: adminId || null,
 //       pageUrl: window.location.pathname + window.location.search,
 //       interaction: {
 //         type: 'exit',
@@ -35,9 +35,9 @@
 //   };
 // };
 
-// export const logDownload = (userId, element) => {
+// export const logDownload = (adminId, element) => {
 //     const data = {
-//       userId: userId || null,
+//       adminId: adminId || null,
 //       pageUrl: window.location.pathname + window.location.search,
 //       interaction: {
 //         type: 'download',

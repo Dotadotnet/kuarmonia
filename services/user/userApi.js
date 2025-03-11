@@ -1,12 +1,12 @@
 
 const { kuarmoniaApi } = require("../kuarmonia");
 
-const userApi = kuarmoniaApi.injectEndpoints({
+const adminApi = kuarmoniaApi.injectEndpoints({
   endpoints: (builder) => ({
-    // get all users
+    // get all admins
     getUsers: builder.query({
       query: () => ({
-        url: "/users",
+        url: "/admins",
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -16,10 +16,10 @@ const userApi = kuarmoniaApi.injectEndpoints({
       providesTags: ["User"],
     }),
 
-    // get an user
+    // get an admin
     getUser: builder.query({
       query: (id) => ({
-        url: `/users/${id}`,
+        url: `/admins/${id}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -29,10 +29,10 @@ const userApi = kuarmoniaApi.injectEndpoints({
       providesTags: ["User"],
     }),
 
-    // update an user
+    // update an admin
     updateUser: builder.mutation({
       query: ({ id, body }) => ({
-        url: `/users/${id}`,
+        url: `/admins/${id}`,
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -43,10 +43,10 @@ const userApi = kuarmoniaApi.injectEndpoints({
       invalidatesTags: ["User"],
     }),
 
-    // delete an user
+    // delete an admin
     deleteUser: builder.mutation({
       query: (id) => ({
-        url: `/users/${id}`,
+        url: `/admins/${id}`,
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -71,4 +71,4 @@ export const {
   useUpdateUserMutation,
   useGetUserQuery,
   useDeleteUserMutation,
-} = userApi;
+} = adminApi;

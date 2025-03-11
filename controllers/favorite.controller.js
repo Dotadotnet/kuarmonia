@@ -1,28 +1,28 @@
  
 
 import Favorite from "@/models/favorite.model";
-import User from "@/models/user.model";
+import User from "@/models/admin.model";
 
 // add to favorite
 export async function addToFavorite(req) {
   try {
-    const favorite = await Favorite.findOne({ user: req.user._id });
+    const favorite = await Favorite.findOne({ admin: req.admin._id });
     let result = {};
 
     if (favorite) {
       result = await Favorite.findOneAndUpdate(
-        { user: req.user._id },
+        { admin: req.admin._id },
         {
           $push: { rents: req.body.rent },
         }
       );
     } else {
       result = await Favorite.create({
-        user: req.user._id,
+        admin: req.admin._id,
         rents: [req.body.rent],
       });
 
-      await User.findByIdAndUpdate(req.user._id, {
+      await User.findByIdAndUpdate(req.admin._id, {
         $set: {
           favorite: result._id,
         },
@@ -52,7 +52,7 @@ export async function addToFavorite(req) {
 export async function getFavorites() {
   try {
     const favorite = await Favorite.find().populate([
-      "user",
+      "admin",
       {
         path: "rents",
         populate: ["owner"],
@@ -82,9 +82,9 @@ export async function getFavorites() {
 // delete from favorite
 export async function removeFromFavorite(req) {
   try {
-    const user = await User.findById(req.user._id);
+    const admin = await User.findById(req.admin._id);
 
-    const result = await Favorite.findByIdAndUpdate(user.favorite, {
+    const result = await Favorite.findByIdAndUpdate(admin.favorite, {
       $pull: {
         rents: req.query.id,
       },

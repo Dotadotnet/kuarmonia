@@ -3,7 +3,7 @@
 import Modal from "@/components/shared/modal/Modal";
 import { setRent } from "@/features/rent/rentSlice";
 import Panel from "@/layouts/Panel";
-import { useGetUsersQuery } from "@/services/user/userApi";
+import { useGetUsersQuery } from "@/services/admin/adminApi";
 import React, { useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { IoMdPricetag } from "react-icons/io";
@@ -13,10 +13,10 @@ import Image from 'next/image'
 
 const ListSellers = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null); // Add state to track the selected user
+  const [selectedUser, setSelectedUser] = useState(null); // Add state to track the selected admin
   const { isLoading, data, error } = useGetUsersQuery();
-  const users = useMemo(() => data?.data || [], [data]);
-  const sellers = users.filter((user) => user?.rents?.length > 0);
+  const admins = useMemo(() => data?.data || [], [data]);
+  const sellers = admins.filter((admin) => admin?.rents?.length > 0);
   useEffect(() => {
     if (error) {
       toast.error(error?.data?.message, {
@@ -37,9 +37,9 @@ const ListSellers = () => {
     }
   }, [isLoading, data, error]);
 
-  const openModal = (user) => {
+  const openModal = (admin) => {
     setIsOpen(true);
-    setSelectedUser(user); // Set the selected user when opening the modal
+    setSelectedUser(admin); // Set the selected admin when opening the modal
   };
 
   return (
@@ -52,36 +52,36 @@ const ListSellers = () => {
 
       {!isLoading && sellers?.length > 0 && (
         <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
-          {sellers?.map((user) => (
+          {sellers?.map((admin) => (
             <div
-              key={user?._id}
+              key={admin?._id}
               className="flex flex-col gap-y-4 p-4 rounded border border-primary/20 hover:border-primary"
             >
               <article className="flex flex-col gap-y-0.5 items-center">
                 <Image
-                  src={user?.avatar?.url}
-                  alt={user?.avatar?.public_id}
+                  src={admin?.avatar?.url}
+                  alt={admin?.avatar?.public_id}
                   height={50}
                   width={50}
                   className="h-[50px] w-[50px] object-cover rounded-secondary"
                 />
-                <h1 className="text-base">{user?.name}</h1>
-                <p className="text-sm">{user?.email}</p>
-                <p className="text-xs">{user?.address}</p>
+                <h1 className="text-base">{admin?.name}</h1>
+                <p className="text-sm">{admin?.email}</p>
+                <p className="text-xs">{admin?.address}</p>
                 <p className="text-xs mt-1 flex flex-row items-center gap-x-1">
                   Total
                   <span
                     className="border border-teal-900 text-teal-900 bg-teal-100/50 px-1.5 py-0 rounded uppercase"
                     style={{ fontSize: "10px" }}
                   >
-                    {user?.rents?.length} rents
+                    {admin?.rents?.length} rents
                   </span>{" "}
                 </p>
               </article>
               <button
                 type="button"
                 className="text-sm bg-secondary rounded-secondary border border-primary hover:bg-primary hover:border-secondary hover:text-white transition-colors px-4 py-1 mt-auto"
-                onClick={() => openModal(user)}
+                onClick={() => openModal(admin)}
               >
                 View Rents
               </button>

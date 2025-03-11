@@ -38,8 +38,8 @@ const MediaDetails = () => {
     setComments((prevComments) => [
       ...prevComments,
       {
-        userName: newComment.name,
-        userAvatar: '/images/default-avatar.jpg',
+        adminName: newComment.name,
+        adminAvatar: '/images/default-avatar.jpg',
         text: newComment.comment,
         date: new Date().toISOString(),
       },

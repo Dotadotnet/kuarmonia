@@ -1,7 +1,7 @@
 // controllers/Media.controller.js
 import Media from "@/models/media.model";
 import Like from "@/models/like.model";
-import User from "@/models/user.model";
+import User from "@/models/admin.model";
 export async function addMedia(req) {
   try {
     const {
@@ -49,7 +49,7 @@ export async function addMedia(req) {
       media,
       thumbnail,
       category,
-      authorId:req.user._id,
+      authorId:req.admin._id,
       metaTitle,
       metaDescription,
       isFeatured,
@@ -95,16 +95,16 @@ export async function addMedia(req) {
 
 export async function getMedias(req) {
   try {
-    const { page = 1, limit = 7, search = "", userId } = req.query;
+    const { page = 1, limit = 7, search = "", adminId } = req.query;
     const skip = (page - 1) * limit;
-    const user = await User.findById(userId);
-    if (!user) {
+    const admin = await User.findById(adminId);
+    if (!admin) {
       return {
         success: false,
         message: "کاربر پیدا نشد"
       };
     }
-    const isSuperAdmin = user.role === "superAdmin";
+    const isSuperAdmin = admin.role === "superAdmin";
 
     const searchQuery = search
       ? {
@@ -117,7 +117,7 @@ export async function getMedias(req) {
         }
       : { isDeleted: false };
     if (!isSuperAdmin) {
-      searchQuery.authorId = userId;
+      searchQuery.authorId = adminId;
     }
     const result = await Media.find(searchQuery)
       .skip(skip)

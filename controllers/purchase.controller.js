@@ -2,13 +2,13 @@
 
 import Purchase from "@/models/purchase.model";
 import Rent from "@/models/rent.model";
-import User from "@/models/user.model";
+import User from "@/models/admin.model";
 
 // get purchase
 export async function getPurchases() {
   try {
     const purchase = await Purchase.find().populate([
-      "user",
+      "admin",
       {
         path: "rent",
         populate: ["owner"],
@@ -67,7 +67,7 @@ export async function removeFromPurchase(req) {
     const purchase = await Purchase.findByIdAndDelete(req.query.id);
 
     if (purchase) {
-      await User.findByIdAndUpdate(purchase.user, {
+      await User.findByIdAndUpdate(purchase.admin, {
         $pull: {
           purchases: purchase._id,
         },
@@ -75,7 +75,7 @@ export async function removeFromPurchase(req) {
 
       await Rent.findByIdAndUpdate(purchase.rent, {
         $pull: {
-          users: purchase.user,
+          admins: purchase.admin,
         },
       });
 

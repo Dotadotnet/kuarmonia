@@ -1,18 +1,17 @@
 // components/signup/StepSignUpForm.jsx
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSignupMutation } from "@/services/auth/authApi";
+import { useSignupMutation } from "@/services/auth/adminAuthApi";
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
-import AvatarStep from "./steps/AvatarStep";
-import NameStep from "./steps/NameStep";
-import EmailStep from "./steps/EmailStep";
-import PasswordStep from "./steps/PasswordStep";
-import PhoneStepAdmin from "./steps/PhoneStepAdmin";
-import StepIndicator from "./steps/StepIndicator";
+import AvatarStep from "../user/steps/AvatarStep";
+import NameStep from "../user/steps/NameStep";
+import EmailStep from "../user/steps/EmailStep";
+import PasswordStep from "../user/steps/PasswordStep";
+import PhoneStepAdmin from "../user/steps/PhoneStepAdmin";
+import StepIndicator from "../user/steps/StepIndicator";
 import NavigationButton from "@/components/shared/button/NavigationButton";
 import SendButton from "@/components/shared/button/SendButton"
-import axios from "axios";
 const StepSignUpForm = () => {
   const [avatarPreview, setAvatarPreview] = useState(null);
   const { register, setValue, reset, formState: { errors }, trigger, handleSubmit, watch } = useForm({
@@ -22,6 +21,7 @@ const StepSignUpForm = () => {
   const totalSteps = 5;
   const [signup, { isLoading, data, error }] = useSignupMutation();
   const router = useRouter();
+  console.log(data)
 
   const [completedSteps, setCompletedSteps] = useState({});
   const [invalidSteps, setInvalidSteps] = useState({});
@@ -30,7 +30,6 @@ const StepSignUpForm = () => {
 
   useEffect(() => {
     if (data?.success) {
-      console.log(data)
       toast.success(data?.message, { id: "signup" });
       setAvatarPreview(null);
       window.open("/auth/signin-admin", "_self");
@@ -39,6 +38,7 @@ const StepSignUpForm = () => {
     if (!data?.success && data?.message) {
       toast.error(data?.message, { id: "signup" });
     }
+    
     if (isLoading) {
       toast.loading("در حال ثبت‌نام...", { id: "signup" });
     }

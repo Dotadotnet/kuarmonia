@@ -8,19 +8,19 @@ const KeyServices = () => {
       id: 1,
       title: "ازدواج بین المللی",
       icon: <Marriege aria-label="آیکون ازدواج بین المللی" />,
-      href: "/service/1",
+      href: "/",
     },
     {
       id: 2,
       title: "سرمایه گذاری",
       icon: <Investment aria-label="آیکون سرمایه گذاری" />,
-      href: "/service/2",
+      href: "/",
     },
     {
       id: 3,
       title: "اخذ ویزا و اقامت",
       icon: <Passport aria-label="آیکون اخذ ویزا و اقامت" />,
-      href: "/service/3",
+      href: "/",
     },
     {
       id: 4,
@@ -38,7 +38,7 @@ const KeyServices = () => {
       id: 6,
       title: "تفریحی و گردشگری",
       icon: <Tourism />,
-      href: "/service/6",
+      href: "/",
     },
   ];
 

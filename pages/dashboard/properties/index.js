@@ -17,12 +17,12 @@ const Listproperty = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
   const [statusFilter, setStatusFilter] = useState("all");
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
   const { data, isLoading, error, refetch } = useGetPropertiesQuery({
     page: currentPage,
     limit: itemsPerPage,
     status: statusFilter === "all" ? undefined : statusFilter,
-    userId: user?._id,
+    adminId: admin?._id,
   });
 
   const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;

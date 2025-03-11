@@ -13,12 +13,12 @@ import { toast } from "react-hot-toast";
 import Image from 'next/image'
 
 const ListRents = () => {
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
 
   return (
     <Panel>
-      {user?.role === "user" && <UserRows rents={user?.rents} />}
-      {user?.role === "admin" && <AdminRows />}
+      {admin?.role === "admin" && <UserRows rents={admin?.rents} />}
+      {admin?.role === "admin" && <AdminRows />}
     </Panel>
   );
 };
@@ -148,7 +148,7 @@ function UserRows({ rents }) {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
-                    <span className="text-sm">{rent?.users?.length}</span>
+                    <span className="text-sm">{rent?.admins?.length}</span>
                   </td>
                   <td
                     scope="row"
@@ -350,7 +350,7 @@ function AdminRows() {
                           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                         >
                           <span className={"text-sm"}>
-                            {rent?.users?.length}
+                            {rent?.admins?.length}
                           </span>
                         </td>
                         <td

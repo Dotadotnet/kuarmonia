@@ -33,7 +33,7 @@ const AddTradeType = ({
     updateTradeType,
     { isLoading: isUpdating, data: updateData, error: updateError }
   ] = useUpdateTradeTypeMutation();
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
 
   useEffect(() => {
     if (tradeTypeToEdit) {
@@ -84,7 +84,7 @@ const AddTradeType = ({
   ]);
 
   const handleAddOrUpdateType = async (formData) => {
-    formData.authorId = user?._id;
+    formData.authorId = admin?._id;
     if (tradeTypeToEdit) {
       await updateTradeType({ id: typeToEdit._id, ...formData }).unwrap();
     } else {

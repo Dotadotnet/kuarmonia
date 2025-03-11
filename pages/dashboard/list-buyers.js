@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import Modal from "@/components/shared/modal/Modal";
 import { setRent } from "@/features/rent/rentSlice";
 import Panel from "@/layouts/Panel";
-import { useGetUsersQuery } from "@/services/user/userApi";
+import { useGetUsersQuery } from "@/services/admin/adminApi";
 import React, { useEffect, useMemo, useState } from "react";
 import { toast } from "react-hot-toast";
 import { IoMdPricetag } from "react-icons/io";
@@ -13,12 +13,12 @@ import { useDispatch } from "react-redux";
 import Image from 'next/image'
 
 const ListBuyers = () => {
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
 
   return (
     <Panel>
-      {user?.role === "user" && <SellerView rents={user?.rents} />}
-      {user?.role === "admin" && <AdminView />}
+      {admin?.role === "admin" && <SellerView rents={admin?.rents} />}
+      {admin?.role === "admin" && <AdminView />}
     </Panel>
   );
 };
@@ -26,11 +26,11 @@ const ListBuyers = () => {
 function SellerView({ rents }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-  const buyers = rents?.filter((rent) => rent?.users?.length > 0);
+  const buyers = rents?.filter((rent) => rent?.admins?.length > 0);
 
-  const openModal = (user) => {
+  const openModal = (admin) => {
     setIsOpen(true);
-    setSelectedUser(user); // Set the selected user when opening the modal
+    setSelectedUser(admin); // Set the selected admin when opening the modal
   };
 
   return (
@@ -42,28 +42,28 @@ function SellerView({ rents }) {
       )}
 
       <div className="grid lg:grid-cols-4 md:grid-cols-2 gird-cols-1 gap-4">
-        {buyers?.map(({ users }) =>
-          users?.map((user) => (
+        {buyers?.map(({ admins }) =>
+          admins?.map((admin) => (
             <div
-              key={user?._id}
+              key={admin?._id}
               className="flex flex-col gap-y-4 p-4 rounded border border-primary/20 hover:border-primary"
             >
               <article className="flex flex-col gap-y-0.5 items-center">
                 <Image
-                  src={user?.avatar?.url}
-                  alt={user?.avatar?.public_id}
+                  src={admin?.avatar?.url}
+                  alt={admin?.avatar?.public_id}
                   height={50}
                   width={50}
                   className="h-[50px] w-[50px] object-cover rounded-secondary"
                 />
-                <h1 className="text-base">{user?.name}</h1>
-                <p className="text-sm">{user?.email}</p>
-                <p className="text-xs">{user?.address}</p>
+                <h1 className="text-base">{admin?.name}</h1>
+                <p className="text-sm">{admin?.email}</p>
+                <p className="text-xs">{admin?.address}</p>
               </article>
               <button
                 type="button"
                 className="text-sm bg-secondary rounded-secondary border border-primary hover:bg-primary hover:border-secondary hover:text-white transition-colors px-4 py-1 mt-auto"
-                onClick={() => openModal(user)}
+                onClick={() => openModal(admin)}
               >
                 View Rents
               </button>
@@ -118,10 +118,10 @@ function SellerView({ rents }) {
 
 function AdminView() {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null); // Add state to track the selected user
+  const [selectedUser, setSelectedUser] = useState(null); // Add state to track the selected admin
   const { isLoading, data, error } = useGetUsersQuery();
-  const users = useMemo(() => data?.data || [], [data]);
-  const buyers = users.filter((user) => user?.purchases?.length > 0);
+  const admins = useMemo(() => data?.data || [], [data]);
+  const buyers = admins.filter((admin) => admin?.purchases?.length > 0);
 
   useEffect(() => {
     if (error) {
@@ -143,9 +143,9 @@ function AdminView() {
     }
   }, [isLoading, data, error]);
 
-  const openModal = (user) => {
+  const openModal = (admin) => {
     setIsOpen(true);
-    setSelectedUser(user); // Set the selected user when opening the modal
+    setSelectedUser(admin); // Set the selected admin when opening the modal
   };
 
   return (
@@ -158,36 +158,36 @@ function AdminView() {
 
       {!isLoading && buyers?.length > 0 && (
         <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
-          {buyers?.map((user) => (
+          {buyers?.map((admin) => (
             <div
-              key={user?._id}
+              key={admin?._id}
               className="flex flex-col gap-y-4 p-4 rounded border border-primary/20 hover:border-primary"
             >
               <article className="flex flex-col gap-y-0.5 items-center">
                 <Image
-                  src={user?.avatar?.url}
-                  alt={user?.avatar?.public_id}
+                  src={admin?.avatar?.url}
+                  alt={admin?.avatar?.public_id}
                   height={50}
                   width={50}
                   className="h-[50px] w-[50px] object-cover rounded-secondary"
                 />
-                <h1 className="text-base">{user?.name}</h1>
-                <p className="text-sm">{user?.email}</p>
-                <p className="text-xs">{user?.address}</p>
+                <h1 className="text-base">{admin?.name}</h1>
+                <p className="text-sm">{admin?.email}</p>
+                <p className="text-xs">{admin?.address}</p>
                 <p className="text-xs mt-1 flex flex-row items-center gap-x-1">
                   Total
                   <span
                     className="border border-teal-900 text-teal-900 bg-teal-100/50 px-1.5 py-0 rounded uppercase"
                     style={{ fontSize: "10px" }}
                   >
-                    {user?.rents?.length} rents
+                    {admin?.rents?.length} rents
                   </span>{" "}
                 </p>
               </article>
               <button
                 type="button"
                 className="text-sm bg-secondary rounded-secondary border border-primary hover:bg-primary hover:border-secondary hover:text-white transition-colors px-4 py-1 mt-auto"
-                onClick={() => openModal(user)}
+                onClick={() => openModal(admin)}
               >
                 View Rents
               </button>

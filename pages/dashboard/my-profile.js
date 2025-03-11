@@ -1,12 +1,12 @@
 import Button from "@/components/shared/button/Button";
 import Modal from "@/components/shared/modal/Modal";
-import { setUser } from "@/features/user/userSlice";
+import { setAdmin } from "@/features/admin/adminSlice";
 import Panel from "@/layouts/Panel";
 import {
-  useDeleteUserMutation,
-  useGetUserQuery,
-  useUpdateUserMutation
-} from "@/services/user/userApi";
+  useDeleteAdminMutation,
+  useGetAdminQuery,
+  useUpdateAdminMutation
+} from "@/services/auth/adminAuthApi";
 import React, { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
@@ -25,34 +25,34 @@ import { TbDoorEnter } from "react-icons/tb";
 import Image from "next/image";
 
 const MyProfile = () => {
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
   const [avatarPreview, setAvatarPreview] = useState(null);
-  const [updateUser, { isLoading, data, error }] = useUpdateUserMutation();
+  const [updateAdmin, { isLoading, data, error }] = useUpdateAdminMutation();
 
   const defaultValues = useMemo(() => {
     return {
-      name: user?.name,
-      email: user?.email,
-      phone: user?.phone,
-      avatar: user?.avatar,
-      address: user?.address
+      name: admin?.name,
+      email: admin?.email,
+      phone: admin?.phone,
+      avatar: admin?.avatar,
+      address: admin?.address
     };
-  }, [user]);
+  }, [admin]);
   const { register, handleSubmit, reset } = useForm({ defaultValues });
 
   useEffect(() => {
     reset(defaultValues);
 
     if (isLoading) {
-      toast.loading("در حال بروزرسانی اطلاعات...", { id: "updateUser" });
+      toast.loading("در حال بروزرسانی اطلاعات...", { id: "updateAdmin" });
     }
 
     if (data) {
-      toast.success(data?.message, { id: "updateUser" });
+      toast.success(data?.message, { id: "updateAdmin" });
     }
 
     if (error?.data) {
-      toast.error(error?.data?.message, { id: "updateUser" });
+      toast.error(error?.data?.message, { id: "updateAdmin" });
     }
   }, [defaultValues, reset, data, error, isLoading]);
 
@@ -71,7 +71,7 @@ const MyProfile = () => {
     }
   };
 
-  const handleUpdateUser = (data) => {
+  const handleUpdateAdmin = (data) => {
     const formData = new FormData();
 
     formData.append("name", data.name);
@@ -83,7 +83,7 @@ const MyProfile = () => {
       formData.append("avatar", data.avatar[0]);
     }
 
-    updateUser({ id: user?._id, body: formData });
+    updateAdmin({ id: admin?._id, body: formData });
   };
 
   return (
@@ -92,7 +92,7 @@ const MyProfile = () => {
         <form
           action=""
           className="text-sm lg:w-1/2 md:w-3/4 w-full flex flex-col gap-y-4 dark:text-gray-100"
-          onSubmit={handleSubmit(handleUpdateUser)}
+          onSubmit={handleSubmit(handleUpdateAdmin)}
         >
           {/* تصویر پروفایل */}
           <div className="flex flex-col gap-y-2 w-fit">
@@ -181,7 +181,7 @@ const MyProfile = () => {
             بروزرسانی اطلاعات
           </Button>
         </form>
-        <RemoveInformation id={user?._id} />
+        <RemoveInformation id={admin?._id} />
       </Panel>
     </>
   );
@@ -193,41 +193,41 @@ function RemoveInformation({ id }) {
     isLoading: fetching,
     data: fetchData,
     error: fetchError
-  } = useGetUserQuery(id);
-  const user = useMemo(() => fetchData?.data || {}, [fetchData]);
+  } = useGetAdminQuery(id);
+  const admin = useMemo(() => fetchData?.data || {}, [fetchData]);
   const [
-    deleteUser,
+    deleteAdmin,
     { isLoading: deleting, data: deleteData, error: deleteError }
-  ] = useDeleteUserMutation();
+  ] = useDeleteAdminMutation();
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (fetching) {
       toast.loading("در حال بروزرسانی اطلاعات...", {
-        id: "fetchUser"
+        id: "fetchAdmin"
       });
     }
 
     if (fetchData) {
-      toast.success(fetchData?.message, { id: "fetchUser" });
+      toast.success(fetchData?.message, { id: "fetchAdmin" });
     }
 
     if (fetchError?.data) {
-      toast.error(fetchError?.data?.message, { id: "fetchUser" });
+      toast.error(fetchError?.data?.message, { id: "fetchAdmin" });
     }
 
     if (deleting) {
-      toast.loading("در حال حذف کاربر...", { id: "deleteUser" });
+      toast.loading("در حال حذف کاربر...", { id: "deleteAdmin" });
     }
 
     if (deleteData) {
-      toast.success(deleteData?.message, { id: "deleteUser" });
+      toast.success(deleteData?.message, { id: "deleteAdmin" });
       setIsOpen(false);
       window.open("/", "_self");
     }
 
     if (deleteError?.data) {
-      toast.error(deleteError?.data?.message, { id: "deleteUser" });
+      toast.error(deleteError?.data?.message, { id: "deleteAdmin" });
     }
   }, [fetching, fetchData, fetchError, deleting, deleteData, deleteError]);
 
@@ -237,7 +237,7 @@ function RemoveInformation({ id }) {
         type="submit"
         className="py-2 mt-4 lg:w-1/2 md:w-3/4 w-full !bg-red-500 !border-red-600 !hover:bg-red-900/90"
         onClick={() => {
-          dispatch(setUser(user));
+          dispatch(setAdmin(admin));
           setIsOpen(true);
         }}
       >
@@ -248,7 +248,7 @@ function RemoveInformation({ id }) {
         <Modal
           isOpen={isOpen}
           onClose={() => {
-            dispatch(setUser({}));
+            dispatch(setAdmin({}));
             setIsOpen(false);
           }}
           className="lg:w-3/12 md:w-1/2 w-full z-50"
@@ -258,31 +258,31 @@ function RemoveInformation({ id }) {
               <div className="flex flex-col gap-y-1">
                 <div className="flex flex-col gap-y-4">
                   <Image
-                    src={user?.avatar?.url || "/placeholder.png"} // مسیر پیش‌فرض در صورت نبودن تصویر
-                    alt={user?.avatar?.public_id || "User Avatar"}
+                    src={admin?.avatar?.url || "/placeholder.png"} // مسیر پیش‌فرض در صورت نبودن تصویر
+                    alt={admin?.avatar?.public_id || "Admin Avatar"}
                     height={100}
                     width={100}
                     className="h-[100px] w-[100px] rounded object-cover"
                   />
-                  <h1 className="text-2xl">{user.name}</h1>
+                  <h1 className="text-2xl">{admin.name}</h1>
                 </div>
                 <div className="flex flex-col gap-y-1">
-                  <p className="text-xs">{user.email}</p>
-                  <p className="text-xs">{user.phone}</p>
+                  <p className="text-xs">{admin.email}</p>
+                  <p className="text-xs">{admin.phone}</p>
                   <p className="flex flex-row gap-x-1">
                     <span className="bg-purple-100/50 text-purple-900 border border-purple-900 px-1.5 !text-xs rounded-primary uppercase">
-                      {user.role === "superAdmin"
+                      {admin.role === "superAdmin"
                         ? "مدیر کل"
-                        : user.role === "admin"
+                        : admin.role === "admin"
                         ? "مدیر"
-                        : user.role === "user"
+                        : admin.role === "admin"
                         ? "کاربر"
                         : "نامشخص"}
                     </span>
                     <span className="bg-indigo-100/50 text-indigo-900 border border-indigo-900 px-1.5 !text-xs rounded-primary uppercase">
-                      {user.status === "active" ? "فعال" : "غیر فعال"}
+                      {admin.status === "active" ? "فعال" : "غیر فعال"}
                     </span>
-                    {user?.rents?.length > 0 && (
+                    {admin?.rents?.length > 0 && (
                       <span className="bg-cyan-100/50 text-cyan-900 border border-cyan-900 px-1.5 !text-xs rounded-primary uppercase">
                         فروشنده
                       </span>
@@ -305,15 +305,15 @@ function RemoveInformation({ id }) {
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
                   <BiSolidPurchaseTag className="h-5 w-5" /> تعداد{" "}
-                  {user?.purchases?.length} خرید شما حذف خواهد شد!
+                  {admin?.purchases?.length} خرید شما حذف خواهد شد!
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
                   <TbDoorEnter className="h-5 w-5" /> تعداد{" "}
-                  {user?.rents?.length} اجاره شما حذف خواهد شد!
+                  {admin?.rents?.length} اجاره شما حذف خواهد شد!
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
                   <MdOutlineReviews className="h-5 w-5" /> تعداد{" "}
-                  {user?.reviews?.length} نظر شما حذف خواهد شد!
+                  {admin?.reviews?.length} نظر شما حذف خواهد شد!
                 </p>
               </div>
             </article>
@@ -322,7 +322,7 @@ function RemoveInformation({ id }) {
                 type="button"
                 className="flex flex-row items-center gap-x-0.5 bg-red-100/50 border border-red-900 text-red-900 px-2 py-1 rounded uppercase"
                 onClick={() => {
-                  dispatch(setUser({}));
+                  dispatch(setAdmin({}));
                   setIsOpen(false);
                 }}
               >
@@ -331,9 +331,9 @@ function RemoveInformation({ id }) {
               </button>
               <button
                 type="button"
-                disabled={user?.role === "admin"}
+                disabled={admin?.role === "admin"}
                 className="flex flex-row items-center gap-x-0.5 bg-green-100/50 border border-green-900 text-green-900 px-2 py-1 rounded uppercase"
-                onClick={() => deleteUser(id)}
+                onClick={() => deleteAdmin(id)}
               >
                 <AiOutlineDelete className="h-4 w-4" />
                 حذف

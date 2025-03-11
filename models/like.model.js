@@ -7,7 +7,7 @@ connectDB();
 const likeSchema = new Schema(
   {
   
-      userId: {
+      adminId: {
         type: Schema.Types.ObjectId,
         ref: "User",
         required: false,

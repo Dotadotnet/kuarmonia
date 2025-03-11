@@ -6,7 +6,7 @@ import OutsideClick from "../../outsideClick/OutsideClick";
 import { useSelector } from "react-redux";
 
 const MenuItems = ({ isOpen, setIsOpen }) => {
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
   const handleOutsideClick = () => {
     setIsOpen(!isOpen);
   };
@@ -19,7 +19,7 @@ const MenuItems = ({ isOpen, setIsOpen }) => {
     },
   ];
 
-  const userItems = [
+  const adminItems = [
     {
       id: 2,
       name: "ثبت نام",
@@ -38,7 +38,7 @@ const MenuItems = ({ isOpen, setIsOpen }) => {
         <section className="absolute top-full right-0 w-40 mt-2 z-50">
           <div className="w-full h-full bg-secondary dark:bg-gray-700 shadow rounded border border-primary/20 dark:border-blue-500">
             <div className="flex flex-col gap-y-3 py-primary">
-              {Object.keys(user).length > 0 && (
+              {Object.keys(admin).length > 0 && (
                 <>
                   <div className="flex flex-col gap-y-2 px-secondary">
                     {menuItems.map(({ id, name, href }) => (
@@ -59,7 +59,7 @@ const MenuItems = ({ isOpen, setIsOpen }) => {
               )}
               <div className="flex flex-col gap-y-2 px-secondary">
                 {localStorage.getItem("accessToken") &&
-                Object.keys(user).length > 0 ? (
+                Object.keys(admin).length > 0 ? (
                   <button
                     type="button"
                     className="flex justify-between group text-sm"
@@ -74,7 +74,7 @@ const MenuItems = ({ isOpen, setIsOpen }) => {
                     </span>
                   </button>
                 ) : (
-                  userItems.map(({ id, name, href }) => (
+                  adminItems.map(({ id, name, href }) => (
                     <Link
                       key={id}
                       href={href}

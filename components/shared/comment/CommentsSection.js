@@ -31,14 +31,14 @@ const CommentsSection = ({ comments, isLoading, onSubmit }) => {
         <div className="bg-white p-4 rounded-lg shadow dark:bg-gray-700 dark:border dark:border-gray-600" key={index}>
           <div className="flex items-center mb-2">
           <Image
-    src={comment.userAvatar}
+    src={comment.adminAvatar}
     alt="تصویر کاربر"
     width={40}
     height={40}
     className="rounded-full ml-3"
   />
             <div>
-              <h3 className="font-semibold">{comment.userName}</h3>
+              <h3 className="font-semibold">{comment.adminName}</h3>
               <p className="text-sm text-gray-500 dark:text-gray-300">
                 ارسال شده در {new Date(comment.date).toLocaleDateString("fa-IR")}
               </p>
@@ -69,14 +69,14 @@ const CommentsSection = ({ comments, isLoading, onSubmit }) => {
                 <div className="bg-gray-100 p-4 rounded-lg shadow dark:bg-gray-800" key={replyIndex}>
                   <div className="flex items-center mb-2">
                   <Image
-    src={reply.userAvatar}
+    src={reply.adminAvatar}
     alt="تصویر کاربر"
     width={32} 
     height={32} 
     className="rounded-full ml-3"
   />
                     <div>
-                      <h3 className="font-semibold">{reply.userName}</h3>
+                      <h3 className="font-semibold">{reply.adminName}</h3>
                       <p className="text-sm text-gray-500 dark:text-gray-300">
                         ارسال شده در {new Date(reply.date).toLocaleDateString("fa-IR")}
                       </p>

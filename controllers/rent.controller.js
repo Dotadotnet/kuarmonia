@@ -4,7 +4,7 @@ import Favorite from "@/models/favorite.model";
 import Purchase from "@/models/purchase.model";
 import Rent from "@/models/rent.model";
 import Review from "@/models/review.model";
-import User from "@/models/user.model";
+import User from "@/models/admin.model";
 import removePhoto from "@/utils/remove.util";
 
 // add new rent
@@ -22,7 +22,7 @@ export async function addRent(req) {
       ...otherInformation,
       gallery,
       duration: JSON.parse(duration),
-      owner: req.user._id,
+      owner: req.admin._id,
     };
 
     const rent = await Rent.create(rentInformation);
@@ -57,7 +57,7 @@ export async function addRent(req) {
 export async function getRents() {
   try {
     const rents = await Rent.find()
-      .populate(["users", "owner", "reviews"])
+      .populate(["admins", "owner", "reviews"])
       .sort({ updatedAt: -1 });
 
     if (rents) {
@@ -84,7 +84,7 @@ export async function getRents() {
 export async function getRent(req) {
   try {
     const rent = await Rent.findById(req.query.id).populate([
-      "users",
+      "admins",
       {
         path: "owner",
         populate: "rents",
@@ -180,8 +180,8 @@ export async function deleteRent(req) {
         for (let i = 0; i < rent.reviews.length; i++) {
           const review = await Review.findByIdAndDelete(rent.reviews[i]);
 
-          // remove review from user's review array
-          await User.findByIdAndUpdate(review.user, {
+          // remove review from admin's review array
+          await User.findByIdAndUpdate(review.admin, {
             $pull: {
               reviews: review._id,
             },
@@ -189,7 +189,7 @@ export async function deleteRent(req) {
         }
       }
 
-      // remove from all users cart
+      // remove from all admins cart
       await Cart.updateMany(
         {},
         {
@@ -199,7 +199,7 @@ export async function deleteRent(req) {
         }
       );
 
-      // remove from all users favorite list
+      // remove from all admins favorite list
       await Favorite.updateMany(
         {},
         {

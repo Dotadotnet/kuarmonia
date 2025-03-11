@@ -26,7 +26,7 @@ export default async function handler(req, res) {
             });
           }
 
-          authorization("admin", "user")(req, res, async (err) => {
+          authorization("admin", "admin")(req, res, async (err) => {
             if (err) {
               return res.send({
                 success: false,
@@ -56,7 +56,7 @@ export default async function handler(req, res) {
             });
           }
 
-          authorization("admin", "user")(req, res, async (err) => {
+          authorization("admin", "admin")(req, res, async (err) => {
             if (err) {
               return res.send({
                 success: false,

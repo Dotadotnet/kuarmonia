@@ -20,12 +20,12 @@ import { useSelector } from "react-redux";
 import Image from 'next/image'
 
 const ViewFavorites = () => {
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
 
   return (
     <Panel>
-      {user?.role === "user" && <UserRows favorites={user?.favorite} />}
-      {user?.role === "admin" && <AdminRows />}
+      {admin?.role === "admin" && <UserRows favorites={admin?.favorite} />}
+      {admin?.role === "admin" && <AdminRows />}
     </Panel>
   );
 };
@@ -166,7 +166,7 @@ function UserRows({ favorites }) {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
-                    <span className={"text-sm"}>{rent?.users?.length}</span>
+                    <span className={"text-sm"}>{rent?.admins?.length}</span>
                   </td>
                   <td
                     scope="row"
@@ -278,7 +278,7 @@ function AdminRows() {
                 </tr>
               </thead>
               <tbody>
-                {favorites?.map(({ user, rents, _id }) =>
+                {favorites?.map(({ admin, rents, _id }) =>
                   rents?.map((rent) => (
                     <tr
                       key={_id}
@@ -290,8 +290,8 @@ function AdminRows() {
                       >
                         <span className="flex -space-x-4">
                           <Image
-                            src={user?.avatar?.url}
-                            alt={user?.avatar?.public_id}
+                            src={admin?.avatar?.url}
+                            alt={admin?.avatar?.public_id}
                             height={30}
                             width={30}
                             className="h-[30px] w-[30px] rounded-secondary border border-primary object-cover"
@@ -302,19 +302,19 @@ function AdminRows() {
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                       >
-                        <span className="text-sm">{user?.name}</span>
+                        <span className="text-sm">{admin?.name}</span>
                       </td>
                       <td
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                       >
-                        <span className="text-sm">{user?.role}</span>
+                        <span className="text-sm">{admin?.role}</span>
                       </td>
                       <td
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                       >
-                        <span className="text-sm">{user?.status}</span>
+                        <span className="text-sm">{admin?.status}</span>
                       </td>
                       <td
                         scope="row"
@@ -398,7 +398,7 @@ function AdminRows() {
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                       >
-                        <span className={"text-sm"}>{rent?.users?.length}</span>
+                        <span className={"text-sm"}>{rent?.admins?.length}</span>
                       </td>
                       <td
                         scope="row"

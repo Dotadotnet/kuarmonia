@@ -13,7 +13,7 @@ const AddTag = () => {
   const { register, handleSubmit, reset, setValue } = useForm();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
   const [keynotes, setKeynotes] = useState([""]);
 
   const [addTag, { isLoading: isAdding, data: addData, error: addError }] =
@@ -44,7 +44,7 @@ const AddTag = () => {
         value: option
       })),
       keynotes: JSON.stringify(keynotes),
-      authorId: user?._id
+      authorId: admin?._id
     };
     addTag(formData).unwrap();
   };

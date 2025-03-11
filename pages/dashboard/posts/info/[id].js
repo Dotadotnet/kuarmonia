@@ -25,7 +25,7 @@ import Image from 'next/image';
 
 const Info = () => {
   const router = useRouter();
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
@@ -178,9 +178,9 @@ const Info = () => {
     if (fetchData) {
       toast.success(fetchData?.message, { id: "fetchpost" });
       if (
-        (user?.role === "superAdmin" &&
+        (admin?.role === "superAdmin" &&
           fetchData?.data?.publishStatus === "pending") ||
-        (user?.role === "admin" &&
+        (admin?.role === "admin" &&
           fetchData?.data?.publishStatus === "rejected")
       ) {
         setTimeout(() => {
@@ -213,7 +213,7 @@ const Info = () => {
     deleting,
     deleteData,
     deleteError,
-    user?.role
+    admin?.role
   ]);
 
   const handleApprove = () => {
@@ -628,7 +628,7 @@ const Info = () => {
         >
           <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow-[0_4px_6px_rgba(0,0,0,0.1),0_-4px_6px_rgba(0,0,0,0.1)]">
             <div className="flex justify-around items-center">
-              {user?.role === "superAdmin" ? (
+              {admin?.role === "superAdmin" ? (
                 <>
                   <div>
                     <button
@@ -649,7 +649,7 @@ const Info = () => {
                     </button>
                   </div>
                 </>
-              ) : user?.role === "admin" ? (
+              ) : admin?.role === "admin" ? (
                 <div>
                   <button
                     onClick={handleReview}

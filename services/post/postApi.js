@@ -15,8 +15,8 @@ const postApi = kuarmoniaApi.injectEndpoints({
     }),
 
     getPosts: builder.query({
-      query: ({ page = 1, limit = 7, search = "", userId }) => ({
-        url: `/post/?page=${page}&limit=${limit}&search=${search}&userId=${userId}`,
+      query: ({ page = 1, limit = 7, search = "", adminId }) => ({
+        url: `/post/?page=${page}&limit=${limit}&search=${search}&adminId=${adminId}`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

@@ -3,7 +3,7 @@ import baseSchema from "./baseSchema.model";
 
 const commentSchema = new Schema(
   {
-    userId: {
+    adminId: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: [true, "شناسه کاربر الزامی است"],

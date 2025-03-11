@@ -1,28 +1,28 @@
   
 
 import Cart from "@/models/cart.model";
-import User from "@/models/user.model";
+import User from "@/models/admin.model";
 
 // add to cart
 export async function addToCart(req) {
   try {
-    const cart = await Cart.findOne({ user: req.user._id });
+    const cart = await Cart.findOne({ admin: req.admin._id });
     let result = {};
 
     if (cart) {
       result = await Cart.findOneAndUpdate(
-        { user: req.user._id },
+        { admin: req.admin._id },
         {
           $push: { rents: req.body.rent },
         }
       );
     } else {
       result = await Cart.create({
-        user: req.user._id,
+        admin: req.admin._id,
         rents: [req.body.rent],
       });
 
-      await User.findByIdAndUpdate(req.user._id, {
+      await User.findByIdAndUpdate(req.admin._id, {
         $set: {
           cart: result._id,
         },
@@ -52,7 +52,7 @@ export async function addToCart(req) {
 export async function getCart() {
   try {
     const cart = await Cart.find().populate([
-      "user",
+      "admin",
       {
         path: "rents",
         populate: ["owner"],
@@ -82,9 +82,9 @@ export async function getCart() {
 // delete from cart
 export async function removeFromCart(req) {
   try {
-    const user = await User.findById(req.user._id);
+    const admin = await User.findById(req.admin._id);
 
-    const result = await Cart.findByIdAndUpdate(user.cart, {
+    const result = await Cart.findByIdAndUpdate(admin.cart, {
       $pull: {
         rents: req.query.id,
       },

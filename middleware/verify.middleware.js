@@ -1,30 +1,42 @@
-
-
+import cookie from "cookie";
 import jwt from "jsonwebtoken";
-import { promisify } from "util";
 
-export default async function verify(req, res, next) {
+export default function verify(req, res, next) {
   try {
-    const token = req.headers?.authorization?.split(" ")[1];
+
+    if (!req.headers.cookie) {
+      return res.status(401).json({
+        success: false,
+        message: "غیرمجاز، کوکی یافت نشد",
+      });
+    }
+
+    const cookies = cookie.parse(req.headers.cookie || "");
+    const token = cookies.accessToken;
 
     if (!token) {
-      return res.send({
-        acknowledgement: false,
+      return res.status(401).json({
+        success: false,
         message: "غیرمجاز، توکن یافت نشد",
       });
     }
 
-    const decoded = await promisify(jwt.verify)(
-      token,
-      process.env.TOKEN_SECRET
-    );
-    req.user = decoded;
 
-    next();
+    jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
+      if (err) {
+        return res.status(403).json({
+          success: false,
+          message: "غیرمجاز، توکن نامعتبر است",
+        });
+      }
+
+      req.user = decoded;
+      next();
+    });
   } catch (error) {
-    return res.send({
-      acknowledgement: false,
-      message: "غیرمجاز، توکن نامعتبر است",
+    return res.status(500).json({
+      success: false,
+      message: "خطای سرور، لطفاً مجدداً تلاش کنید",
     });
   }
 }

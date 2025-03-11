@@ -14,7 +14,7 @@ const EditTag = ({ id }) => {
   const { register, handleSubmit, reset } = useForm();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
   const { isLoading, data, error } = useGetTagQuery(id, { skip: !isOpen });
   const tag = useMemo(() => data?.data || {}, [data]);
 
@@ -67,7 +67,7 @@ const EditTag = ({ id }) => {
         value: option
       })),
       keynotes: JSON.stringify(keynotes),
-      authorId: user?._id
+      authorId: admin?._id
     };
 
     updateTag(formData).unwrap();

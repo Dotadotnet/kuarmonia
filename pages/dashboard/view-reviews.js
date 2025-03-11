@@ -13,12 +13,12 @@ import { useSelector } from "react-redux";
 import Image from 'next/image'
 
 const ViewReviews = () => {
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
 
   return (
     <Panel>
-      {user?.role === "user" && <UserRows reviews={user?.reviews} />}
-      {user?.role === "admin" && <AdminRows />}
+      {admin?.role === "admin" && <UserRows reviews={admin?.reviews} />}
+      {admin?.role === "admin" && <AdminRows />}
     </Panel>
   );
 };

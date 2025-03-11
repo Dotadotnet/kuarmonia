@@ -4,11 +4,11 @@ import { AiOutlineDelete, AiOutlineLoading3Quarters } from "react-icons/ai";
 import {
   useDeleteUserMutation,
   useGetUserQuery
-} from "@/services/user/userApi";
+} from "@/services/admin/adminApi";
 import { toast } from "react-hot-toast";
 import Modal from "../shared/modal/Modal";
 import { RxCross2 } from "react-icons/rx";
-import { setUser } from "@/features/user/userSlice";
+import { setUser } from "@/features/admin/adminSlice";
 import { useDispatch } from "react-redux";
 import {
   MdFavoriteBorder,
@@ -27,7 +27,7 @@ const DeleteUser = ({ id }) => {
     data: fetchData,
     error: fetchError
   } = useGetUserQuery(id);
-  const user = useMemo(() => fetchData?.data || {}, [fetchData]);
+  const admin = useMemo(() => fetchData?.data || {}, [fetchData]);
   const [
     deleteUser,
     { isLoading: deleting, data: deleteData, error: deleteError }
@@ -70,7 +70,7 @@ const DeleteUser = ({ id }) => {
         disabled={deleting ? true : undefined} // اصلاح شده
         className="cursor-pointer rounded-full border border-red-500/5 bg-red-500/5 p-2 text-red-500 transition-colors hover:border-red-500/10 hover:bg-red-500/10 hover:!opacity-100 group-hover:opacity-70"
         onClick={() => {
-          dispatch(setUser(user));
+          dispatch(setUser(admin));
           setIsOpen(true);
         }}
       >
@@ -91,25 +91,25 @@ const DeleteUser = ({ id }) => {
               <div className="flex flex-col gap-y-1">
                 <div className="flex flex-col gap-y-4">
                   <Image
-                    src={user?.avatar?.url}
-                    alt={user?.avatar?.public_id}
+                    src={admin?.avatar?.url}
+                    alt={admin?.avatar?.public_id}
                     height={100}
                     width={100}
                     className="h-[100px] w-[100px] rounded object-cover"
                   />
-                  <h1 className="text-2xl">{user.name}</h1>
+                  <h1 className="text-2xl">{admin.name}</h1>
                 </div>
                 <div className="flex flex-col gap-y-1">
-                  <p className="text-xs">{user.email}</p>
-                  <p className="text-xs">{user.phone}</p>
+                  <p className="text-xs">{admin.email}</p>
+                  <p className="text-xs">{admin.phone}</p>
                   <p className="flex flex-row gap-x-1">
                     <span className="bg-purple-100/50 text-purple-900 border border-purple-900 px-1.5 !text-xs rounded-primary uppercase">
-                      {user.role}
+                      {admin.role}
                     </span>
                     <span className="bg-indigo-100/50 text-indigo-900 border border-indigo-900 px-1.5 !text-xs rounded-primary uppercase">
-                      {user.status}
+                      {admin.status}
                     </span>
-                    {user?.rents?.length > 0 && (
+                    {admin?.rents?.length > 0 && (
                       <span className="bg-cyan-100/50 text-cyan-900 border border-cyan-900 px-1.5 !text-xs rounded-primary uppercase">
                         فروشنده
                       </span>
@@ -132,15 +132,15 @@ const DeleteUser = ({ id }) => {
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
                   <BiSolidPurchaseTag className="h-5 w-5" />{" "}
-                  {user?.purchases?.length} خرید شما حذف خواهند شد!
+                  {admin?.purchases?.length} خرید شما حذف خواهند شد!
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
-                  <TbDoorEnter className="h-5 w-5" /> {user?.rents?.length}{" "}
+                  <TbDoorEnter className="h-5 w-5" /> {admin?.rents?.length}{" "}
                   اجاره شما حذف خواهند شد!
                 </p>
                 <p className="flex flex-row gap-x-1 items-center">
                   <MdOutlineReviews className="h-5 w-5" />{" "}
-                  {user?.reviews?.length} نظر شما حذف خواهند شد!
+                  {admin?.reviews?.length} نظر شما حذف خواهند شد!
                 </p>
               </div>
             </article>

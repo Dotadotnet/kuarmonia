@@ -26,7 +26,7 @@ const AddSlide = ({ isOpen, onClose, onSuccess, SlideToEdit = null }) => {
   const [url, setUrl] = useState(null);
   const [isFeatured, setIsFeatured] = useState(false);
   const [thumbnail, setThumbnail] = useState(null);
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
 
   useEffect(() => {
     if (SlideToEdit) {
@@ -42,11 +42,11 @@ const AddSlide = ({ isOpen, onClose, onSuccess, SlideToEdit = null }) => {
 
   const defaultValues = useMemo(() => {
     return {
-      name: user?.name,
-      avatar: user?.avatar,
-      id: user?._id
+      name: admin?.name,
+      avatar: admin?.avatar,
+      id: admin?._id
     };
-  }, [user]);
+  }, [admin]);
 
   const handleAddOrUpdateSlide = async (data) => {
     const formData = new FormData();
@@ -54,7 +54,7 @@ const AddSlide = ({ isOpen, onClose, onSuccess, SlideToEdit = null }) => {
     formData.append("description", data.description);
     formData.append("bgImg", thumbnail);
     formData.append("url", data.url);
-    formData.append("authorId", user?._id);
+    formData.append("authorId", admin?._id);
     formData.append("isFeatured", data.isFeatured);
 
     try {

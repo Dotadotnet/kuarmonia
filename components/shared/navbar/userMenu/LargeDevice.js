@@ -15,13 +15,13 @@ import { BiSearch } from "react-icons/bi";
 
 
 const LargeDevice = () => {
-  const user = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth);
 
  const image = new JWT().decodeAccessToken(localStorage.getItem("accessToken")); 
   return (
     <section>
       <div className="flex flex-row gap-x-4">
-        {localStorage.getItem("accessToken") && Object.keys(user).length > 0 ? (
+        {localStorage.getItem("accessToken") && Object.keys(admin).length > 0 ? (
           <Tooltip text="داشبود" txtColor="text-white">
           <button
             className="p-1.5 border  rounded  border-primary/20 dark:border-gray-800"

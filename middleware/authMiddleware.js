@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '@/models/user.model';
+import User from '@/models/admin.model';
 
 export const authMiddleware = async (req, res, next) => {
   try {
@@ -10,15 +10,15 @@ export const authMiddleware = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id);
+    const admin = await User.findById(decoded.id);
 
-    if (!user) {
+    if (!admin) {
       return res.status(404).json({ message: 'کاربر یافت نشد' });
     }
-    if(decoded.role == 'user'){
+    if(decoded.role == 'admin'){
       return res.status(500).json({ message: "شما به این بخش نمی توانید دسترسی داشته باشید" });
     }
-    req.user = user; // اطلاعات کاربر به درخواست اضافه می‌شود
+    req.admin = admin; // اطلاعات کاربر به درخواست اضافه می‌شود
   } catch (error) {
     return res.status(401).json({ message: 'توکن نامعتبر است' });
   }

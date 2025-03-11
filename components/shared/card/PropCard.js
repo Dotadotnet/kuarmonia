@@ -5,14 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   FaBed,
-  FaHome,
-  FaSwimmingPool,
-  FaCar,
-  FaShower,
   FaRegCalendarAlt,
   FaBath
 } from "react-icons/fa";
-import { FaRuler } from "react-icons/fa";
 
 const PropertyCard = ({ property }) => {
   let updatedFinalPrice = property?.finalPrice;

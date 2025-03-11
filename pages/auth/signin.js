@@ -1,8 +1,9 @@
 // Signup.jsx
 import Logo from "@/components/shared/logo/Logo";
-import StepSignUpForm from "./StepSignUpFormUser";
 import ThemeToggle from "@/components/shared/navbar/ThemeToggle/ThemeToggle";
-
+import GoogleLogin from "./user/GoogleLogin";
+import MobileLogin from "./user/MobileLogin";
+import PhoneLogin from "./user/phoneLogin/PhoneLogin";
 const signin = () => {
   return (
     <section
@@ -19,8 +20,16 @@ const signin = () => {
           </div>
           <hr className="w-full" />
         </div>
+        <div className="w-full">
+          <GoogleLogin />
 
-        <StepSignUpForm />
+          <div className="flex items-center my-4 before:flex-1 before:border-t before:border-gray-300 before:mt-0.5 after:flex-1 after:border-t after:border-gray-300 after:mt-0.5">
+            <p className="text-center text-textColor text-sm font-semibold mx-4 mb-0">
+              یا
+            </p>
+          </div>
+          <PhoneLogin />
+        </div>{" "}
         <div className="flex justify-center">
           <ThemeToggle />
         </div>

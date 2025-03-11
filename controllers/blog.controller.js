@@ -1,7 +1,7 @@
 // controllers/blog.controller.js
 import Blog from '@/models/blog.model';
 import Like from '@/models/like.model';
-import User from '@/models/user.model';
+import User from '@/models/admin.model';
 import path from "path";
 
 export async function addBlog(req) {
@@ -104,19 +104,19 @@ export async function addBlog(req) {
 
 export async function getBlogs(req) {
   try {
-    const { page = 1, limit = 7, search = "",userId } = req.query; 
+    const { page = 1, limit = 7, search = "",adminId } = req.query; 
     const skip = (page - 1) * limit;
-    const user = await User.findById(userId);
-    if (!user) {
+    const admin = await User.findById(adminId);
+    if (!admin) {
       return {
         success: false,
         message: "کاربر پیدا نشد",
       };
     }
-    const isSuperAdmin = user.role === 'superAdmin';
+    const isSuperAdmin = admin.role === 'superAdmin';
 
     if (!isSuperAdmin) {
-      searchQuery.authorId = userId;
+      searchQuery.authorId = adminId;
     }
 
     const searchQuery = search

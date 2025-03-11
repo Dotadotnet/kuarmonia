@@ -2,14 +2,14 @@
 
 import Rent from "@/models/rent.model";
 import Review from "@/models/review.model";
-import User from "@/models/user.model";
+import User from "@/models/admin.model";
 
 // add a review
 export const addToReview = async (req) => {
   try {
     const review = await Review.create({
       ...req.body,
-      reviewer: req.user._id,
+      reviewer: req.admin._id,
     });
 
     if (review) {

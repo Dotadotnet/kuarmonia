@@ -1,6 +1,6 @@
 // controllers/property.controller.js
 import Property from "@/models/property.model";
-import User from "@/models/user.model";
+import User from "@/models/admin.model";
 export async function addProperty(req) {
   try {
     const {
@@ -58,17 +58,17 @@ export async function addProperty(req) {
 
 export async function getProperties(req) {
   try {
-    const { page = 1, limit = 7, search = "", userId } = req.query;
+    const { page = 1, limit = 7, search = "", adminId } = req.query;
     const skip = (page - 1) * limit;
-    const user = await User.findById(userId);
-    if (!user) {
+    const admin = await User.findById(adminId);
+    if (!admin) {
       return {
         success: false,
         message: "کاربر پیدا نشد"
       };
     }
 
-    const isSuperAdmin = user.role === "superAdmin";
+    const isSuperAdmin = admin.role === "superAdmin";
 
     const searchQuery = search
       ? {
@@ -81,7 +81,7 @@ export async function getProperties(req) {
         }
       : { isDeleted: false };
     if (!isSuperAdmin) {
-      searchQuery.authorId = userId;
+      searchQuery.authorId = adminId;
     }
     const propertys = await Property.find(searchQuery)
       .skip(skip)

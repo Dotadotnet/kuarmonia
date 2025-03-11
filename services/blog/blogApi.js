@@ -15,8 +15,8 @@ const blogApi = kuarmoniaApi.injectEndpoints({
     }),
 
     getBlogs: builder.query({
-      query: ({ page = 1, limit = 7, search = "", userId }) => ({
-        url: `/blog/?page=${page}&limit=${limit}&search=${search}&userId=${userId}`,
+      query: ({ page = 1, limit = 7, search = "", adminId }) => ({
+        url: `/blog/?page=${page}&limit=${limit}&search=${search}&adminId=${adminId}`,
         method: "GET",
         
       }),

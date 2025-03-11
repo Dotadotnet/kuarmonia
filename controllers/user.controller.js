@@ -3,31 +3,31 @@ import Favorite from "@/models/favorite.model";
 import Purchase from "@/models/purchase.model";
 import Rent from "@/models/rent.model";
 import Review from "@/models/review.model";
-import User from "@/models/user.model";
+import User from "@/models/admin.model";
 import removePhoto from "@/utils/remove.util";
 
 // دریافت تمام کاربران
 export async function getUsers() {
   try {
-    const users = await User.find().populate([
+    const admins = await User.find().populate([
       "rents",
       {
         path: "purchases",
         populate: [
-          "user",
+          "admin",
           {
             path: "rent",
-            populate: ["users", "owner", "reviews"],
+            populate: ["admins", "owner", "reviews"],
           },
         ],
       },
     ]);
 
-    if (users) {
+    if (admins) {
       return {
         success: true,
         message: "کاربران با موفقیت دریافت شدند",
-        data: users,
+        data: admins,
       };
     } else {
       return {
@@ -45,13 +45,13 @@ export async function getUsers() {
 
 export async function getUser(req) {
   try {
-    const user = await User.findById(req.query.id);
+    const admin = await User.findById(req.query.id);
 
-    if (user) {
+    if (admin) {
       return {
         success: true,
         message: "اطلاعات کاربر با موفقیت دریافت شد",
-        data: user,
+        data: admin,
       };
     } else {
       return {
@@ -70,9 +70,9 @@ export async function getUser(req) {
 // بروزرسانی اطلاعات کاربر
 export async function updateUser(req) {
   try {
-    const user = await User.findById(req.query.id);
+    const admin = await User.findById(req.query.id);
 
-    if (!user) {
+    if (!admin) {
       return {
         success: false,
         message: "کاربر پیدا نشد",
@@ -80,7 +80,7 @@ export async function updateUser(req) {
     } else {
       const updatedUser = { ...req.body };
 
-      if (user.role === 'superAdmin') {
+      if (admin.role === 'superAdmin') {
         if (updatedUser.role || updatedUser.status === 'inActive') {
           return {
             success: false,
@@ -91,7 +91,7 @@ export async function updateUser(req) {
 
       // بروزرسانی تصویر کاربر در صورت آپلود فایل جدید
       if (req.file && req.file.path && req.file.filename) {
-        await removePhoto(user.avatar.public_id);
+        await removePhoto(admin.avatar.public_id);
 
         updatedUser.avatar = {
           url: req.file.path,
@@ -99,7 +99,7 @@ export async function updateUser(req) {
         };
       }
 
-      const result = await User.findByIdAndUpdate(user._id, {
+      const result = await User.findByIdAndUpdate(admin._id, {
         $set: updatedUser,
       });
 
@@ -128,9 +128,9 @@ export async function updateUser(req) {
 export async function deleteUser(req) {
   try {
     // ابتدا کاربر را پیدا می‌کنیم
-    const user = await User.findById(req.query.id);
+    const admin = await User.findById(req.query.id);
 
-    if (!user) {
+    if (!admin) {
       return {
         success: false,
         message: "کاربر پیدا نشد",
@@ -138,7 +138,7 @@ export async function deleteUser(req) {
     }
 
     // بررسی نقش superAdmin
-    if (user.role === 'superAdmin') {
+    if (admin.role === 'superAdmin') {
       return {
         success: false,
         message: "حذف کاربر با نقش مدیر کل مجاز نیست",
@@ -148,22 +148,22 @@ export async function deleteUser(req) {
     // اگر کاربر superAdmin نبود، کاربر حذف می‌شود
     await User.findByIdAndDelete(req.query.id);
 
-    await removePhoto(user.avatar.public_id);
+    await removePhoto(admin.avatar.public_id);
 
     // حذف لیست علاقه‌مندی‌های کاربر
-    if (user.favorite) {
-      await Favorite.findByIdAndDelete(user.favorite);
+    if (admin.favorite) {
+      await Favorite.findByIdAndDelete(admin.favorite);
     }
 
     // حذف سبد خرید کاربر
-    if (user.cart) {
-      await Cart.findByIdAndDelete(user.cart);
+    if (admin.cart) {
+      await Cart.findByIdAndDelete(admin.cart);
     }
 
     // حذف کاربر از تمام اجاره‌ها
-    if (user.rents.length > 0) {
-      for (let i = 0; i < user.rents.length; i++) {
-        const rent = await Rent.findByIdAndDelete(user.rents[i]);
+    if (admin.rents.length > 0) {
+      for (let i = 0; i < admin.rents.length; i++) {
+        const rent = await Rent.findByIdAndDelete(admin.rents[i]);
 
         rent.gallery.forEach(async (image) => await removePhoto(image.public_id));
 
@@ -187,9 +187,9 @@ export async function deleteUser(req) {
           }
         );
 
-        rent.users.forEach(async (user) => {
-          const review = await Review.findOne({ reviewer: user });
-          const purchase = await Purchase.findOne({ user: user });
+        rent.admins.forEach(async (admin) => {
+          const review = await Review.findOne({ reviewer: admin });
+          const purchase = await Purchase.findOne({ admin: admin });
 
           if (review) {
             await User.findByIdAndUpdate(review.reviewer, {
@@ -200,7 +200,7 @@ export async function deleteUser(req) {
           }
 
           if (purchase) {
-            await User.findByIdAndUpdate(purchase.user, {
+            await User.findByIdAndUpdate(purchase.admin, {
               $pull: {
                 purchases: purchase?._id,
               },
@@ -217,24 +217,24 @@ export async function deleteUser(req) {
     }
 
     // حذف خریدهای کاربر
-    if (user.purchases.length > 0) {
-      for (let i = 0; i < user.purchases.length; i++) {
-        await Purchase.findByIdAndDelete(user.purchases[i]);
+    if (admin.purchases.length > 0) {
+      for (let i = 0; i < admin.purchases.length; i++) {
+        await Purchase.findByIdAndDelete(admin.purchases[i]);
       }
     }
 
      // حذف بلاگ های کاربر
    
-     if (user.blogs.length > 0) {
-      for (let i = 0; i < user.blogs.length; i++) {
-        await Purchase.findByIdAndUpdate(user.blogs[i], { isDeleted: true });
+     if (admin.blogs.length > 0) {
+      for (let i = 0; i < admin.blogs.length; i++) {
+        await Purchase.findByIdAndUpdate(admin.blogs[i], { isDeleted: true });
       }
     }
 
     // حذف نظرات کاربر
-    if (user.reviews.length > 0) {
-      for (let i = 0; i < user.reviews.length; i++) {
-        await Review.findByIdAndDelete(user.reviews[i]);
+    if (admin.reviews.length > 0) {
+      for (let i = 0; i < admin.reviews.length; i++) {
+        await Review.findByIdAndDelete(admin.reviews[i]);
       }
     }
 

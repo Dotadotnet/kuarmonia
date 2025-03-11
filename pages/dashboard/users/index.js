@@ -1,5 +1,5 @@
 import Table from "@/components/shared/loading/Table";
-import { useGetUsersQuery } from "@/services/user/userApi";
+import { useGetUsersQuery } from "@/services/admin/adminApi";
 import React, { useEffect, useState } from "react";
 import { FiEdit3 } from "react-icons/fi";
 import Modal from "@/components/shared/modal/Modal";
@@ -7,7 +7,7 @@ import UpdateUser from "@/components/dashboard/UpdateUser";
 import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Panel from "@/layouts/Panel";
-import { setUser } from "@/features/user/userSlice";
+import { setUser } from "@/features/admin/adminSlice";
 import DeleteUser from "@/components/dashboard/DeleteUser";
 import StatusIndicator from "@/components/shared/tools/StatusIndicator";
 import Image from "next/image";
@@ -16,7 +16,7 @@ const ListUsers = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, isLoading, error } = useGetUsersQuery();
   const usr = useSelector((state) => state?.auth);
-  const users = useMemo(() => data?.data || [], [data]);
+  const admins = useMemo(() => data?.data || [], [data]);
   const dispatch = useDispatch();
   useEffect(() => {
     if (error?.data) {
@@ -29,19 +29,19 @@ const ListUsers = () => {
       <Panel>
         {/* نمایش داده‌های کاربران */}
 
-        {users &&
-          users.length > 0 &&
-          users.map((user) => (
+        {admins &&
+          admins.length > 0 &&
+          admins.map((admin) => (
             <div
-              key={user._id}
+              key={admin._id}
               className="mt-4 p-1 grid grid-cols-12 rounded-xl cursor-pointer border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white px-2 transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-gray-800 dark:text-slate-100"
             >
               <div className="col-span-11 lg:col-span-3 text-center flex items-center">
-                <StatusIndicator isActive={user.status === "active"} />
+                <StatusIndicator isActive={admin.status === "active"} />
                 <div className="py-2 flex justify-center items-center flex-row gap-x-2 hover:text-white transition-colors rounded-full cursor-pointer ">
-                  <div className="user-container  rounded-full flex justify-center">
+                  <div className="admin-container  rounded-full flex justify-center">
                     <Image
-                      src={user?.avatar?.url}
+                      src={admin?.avatar?.url}
                       alt="avatar"
                       height={600}
                       width={600}
@@ -50,21 +50,21 @@ const ListUsers = () => {
                   </div>
                   <article className="flex-col flex gap-y-2">
                     <span className="line-clamp-1 text-sm lg:text-base dark:text-blue-400 flex-row flex">
-                      <span className=" flex">{user?.name}</span>
+                      <span className=" flex">{admin?.name}</span>
                       <span className=" flex lg:hidden"> &nbsp;- &nbsp; </span>
                       <span className="lg:hidden  flex">
-                      {user?.role === "superAdmin"
+                      {admin?.role === "superAdmin"
                         ? "مدیر کل"
-                        : user?.role === "admin"
+                        : admin?.role === "admin"
                         ? "مدیر"
                         : "کاربر"}                        
                         </span>
                     </span>
                     <span className=" lg:flex hidden ">
-                      {new Date(user.createdAt).toLocaleDateString("fa-IR")}
+                      {new Date(admin.createdAt).toLocaleDateString("fa-IR")}
                     </span>
                     <span className="lg:hidden flex text-xs">
-                    <span className="flex">{user?.email}</span>
+                    <span className="flex">{admin?.email}</span>
 
                     </span>
                   </article>
@@ -75,18 +75,18 @@ const ListUsers = () => {
               <div className="lg:col-span-5 lg:flex hidden gap-2 text-center  justify-center items-center">
               <article className="flex-col flex  gap-y-2">
                   <span className="line-clamp-1 text-sm lg:text-base">
-                    <span className="flex">{user?.email}</span>
+                    <span className="flex">{admin?.email}</span>
                   </span>
                   <span className="flex ">
-                    <span className="">{user?.phone}</span>
+                    <span className="">{admin?.phone}</span>
                   </span>
                 </article>              </div>
               <div className="hidden lg:col-span-3 col-span-5 gap-2 text-center lg:flex justify-center items-center">
                 <article className="flex-col flex gap-y-2">
                   <span className="flex">
-                    {user?.role === "superAdmin"
+                    {admin?.role === "superAdmin"
                       ? "مدیر کل"
-                      : user?.role === "admin"
+                      : admin?.role === "admin"
                       ? "مدیر"
                       : "کاربر"}
                   </span>
@@ -99,13 +99,13 @@ const ListUsers = () => {
                       className="edit-button w-10 h-10"
                       onClick={() => {
                         setIsOpen(true);
-                        dispatch(setUser(user));
+                        dispatch(setUser(admin));
                       }}
                     >
                       <FiEdit3 className="w-5 h-5" />
                     </span>
                     <span className="flex">
-                      <DeleteUser id={user?._id} />
+                      <DeleteUser id={admin?._id} />
                     </span>
                   </article>
                 </div>

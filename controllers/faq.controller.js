@@ -3,8 +3,7 @@ import Favorite from "@/models/favorite.model";
 import Purchase from "@/models/purchase.model";
 import Faqs from "@/models/faqs.model";
 import Review from "@/models/review.model";
-import User from "@/models/user.model";
-import removePhoto from "@/utils/remove.util";
+import User from "@/models/admin.model";
 
 // add new questions
 export async function addFaq(req) {
@@ -17,7 +16,7 @@ export async function addFaq(req) {
       answer,
       category,
       tags: tags, // مطمئن شوید که tags به درستی به آرایه تبدیل می‌شود
-      authorId: req.user._id
+      authorId: req.admin._id
     });
 
     return {
@@ -93,17 +92,7 @@ export async function updateFaqs(req) {
 
     const updatedFaqs = req.body;
 
-    if (req.files && req.files.length > 0) {
-      questions.gallery.forEach(
-        async (gallery) => await removePhoto(gallery?.public_id)
-      );
-
-      updatedFaqs.gallery = req.files.map((file) => ({
-        url: file.path,
-        public_id: file.filename
-      }));
-    }
-
+   
     updatedFaqs.duration = JSON.parse(req.body.duration);
 
     const result = await Faqs.findByIdAndUpdate(questions._id, {
