@@ -11,7 +11,6 @@ const FAQ = () => {
     const { data, isLoading, error, refetch } = useGetFaqsQuery({});
   
     const faqs = useMemo(() => data?.data || [], [data]);
-  console.log(faqs);
   const [expandedIndex, setExpandedIndex] = useState(null);
 
 

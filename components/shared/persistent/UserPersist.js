@@ -12,7 +12,6 @@ const UserPersist = ({ children }) => {
   const { data, isLoading, error } = usePersistUserQuery();
   const user = useMemo(() => data?.data || {}, [data]);
   const dispatch = useDispatch();
-  console.log(user);  
   useEffect(() => {
     if (Object?.keys(user).length > 0) {
       dispatch(addUser(user));

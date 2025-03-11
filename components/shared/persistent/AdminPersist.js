@@ -11,7 +11,6 @@ import { addAdmin } from "@/features/auth/authSlice";
 const AdminPersist = ({ children }) => {
   const { data, isLoading, error } = usePersistAdminQuery();
   const admin = useMemo(() => data?.data || {}, [data]);
-  console.log(admin)
   const dispatch = useDispatch();
   useEffect(() => {
     if (Object?.keys(admin).length > 0) {

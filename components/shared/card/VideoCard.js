@@ -67,8 +67,8 @@ const VideoCard = ({
               - {new Date(createdAt).toLocaleDateString("fa-IR")}
             </span>
             <div className="flex items-center space-x-3">
-              <Image
-                alt={author || "Default alt text"}
+              {/* <Image
+                alt={author ||  "avatar"}
                 title={author}
                 src={avatar}
                 width={36}
@@ -77,14 +77,14 @@ const VideoCard = ({
               />
               {author !== superAdmin?.name && (
                 <Image
-                  alt={superAdmin?.url || "Default alt text"}
+                  alt={superAdmin?.url || "avatar"}
                   title={superAdmin?.name}
                   src={avatar}
                   width={36}
                   height={36} // ارتفاع تصویر
                   className="relative inline-block rounded-full   object-cover object-center hover:z-10"
                 />
-              )}
+              )} */}
             </div>
           </div>
         </div>
