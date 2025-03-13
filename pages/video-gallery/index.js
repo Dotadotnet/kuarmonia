@@ -8,7 +8,6 @@ import Pagination from "@/components/shared/pagination/Pagination";
 import SkeletonCard from "@/components/shared/card/SkeletonCard";
 
 const Video = ({initialData}) => {
-
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
 

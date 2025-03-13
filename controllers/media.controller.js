@@ -199,6 +199,7 @@ export async function getClientMedias(req) {
 
 export async function getMedia(req) {
   try {
+    console.log("dawdawd")
     const result = await Media.findById(req.query.id)
       .populate("authorId", "name avatar.url")
       .populate("category", "title")
