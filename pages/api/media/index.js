@@ -4,7 +4,7 @@ import {
   getMedias,
   getClientMedias
 } from "@/controllers/media.controller";
-import verify from "@/middleware/verify.middleware";
+import verify from "@/middleware/verifyAdmin.middleware";
 import authorization from "@/middleware/authorization.middleware";
 
 export const config = {

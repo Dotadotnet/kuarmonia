@@ -37,7 +37,6 @@ const authApi = kuarmoniaApi.injectEndpoints({
       })
     }),
 
-    // persist user
     persistUser: builder.query({
       query: () => ({
         url: "/user/me",
@@ -48,6 +47,14 @@ const authApi = kuarmoniaApi.injectEndpoints({
       }),
 
       providesTags: ["User", "Cart", "Rent", "Favorite", "Purchase", "Review"]
+    }),
+
+    userLogout: builder.mutation({
+      query: (body) => ({
+        url: "/user/logout",
+        method: "POST",
+        body
+      })
     })
   })
 });
@@ -58,5 +65,6 @@ export const {
   useAddNameMutation,
   useSigninGoogleMutation,
   useForgotPasswordMutation,
-  usePersistUserQuery
+  usePersistUserQuery,
+  useUserLogoutMutation
 } = authApi;

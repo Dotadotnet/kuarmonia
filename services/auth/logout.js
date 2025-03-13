@@ -2,7 +2,6 @@ const { kuarmoniaApi } = require("../kuarmonia");
 
 const authApi = kuarmoniaApi.injectEndpoints({
   endpoints: (builder) => ({
-    // logout
     logout: builder.mutation({
       query: (body) => ({
         url: "/auth/logout",

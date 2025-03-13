@@ -1,11 +1,21 @@
 // import Image from "next/image";
 import Container from "@/components/shared/container/Container";
 import HighlightText from "@/components/shared/highlightText/HighlightText";
-import React from "react";
-import Video from "./Video";
+import React, { useState } from "react";
 import Image from "next/image";
+import VideoCard from "@/components/shared/card/VideoCard"; 
+import Pagination from "@/components/shared/pagination/Pagination";
+import SkeletonCard from "@/components/shared/card/SkeletonCard";
 
-const VideoGallery = () => {
+const Video = ({initialData}) => {
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
+
+  const data = initialData;
+  const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;
+  const medias = data ? data.data : [];
+
   return (
     <section
       className="bg-no-repeat bg-contain bg-center h-full  dark:bg-gray-900 "
@@ -37,7 +47,32 @@ const VideoGallery = () => {
             </p>
           </article>
           <div>
-            <Video />
+            <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {medias.length === 0
+                ? Array.from({ length: 4 }, (_, index) => (
+                    <SkeletonCard key={index} />
+                  ))
+                : medias.map((media) => (
+                    <VideoCard
+                      id={media.id}
+                      key={media?.id}
+                      title={media.title}
+                      slug={media.slug}
+                      description={media.description}
+                      thumbnail={media.thumbnail}
+                      isLoading={false}
+                      author={media?.authorId?.name}
+                      avatar={media?.authorId?.avatar?.url}
+                      category={media?.category?.title}
+                      createdAt={media?.createdAt}
+                    />
+                  ))}
+            </section>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={(page) => setCurrentPage(page)}
+            />{" "}
           </div>
         </div>
       </Container>
@@ -45,4 +80,4 @@ const VideoGallery = () => {
   );
 };
 
-export default VideoGallery;
+export default Video;

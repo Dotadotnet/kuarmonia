@@ -2,7 +2,6 @@ import User from "@/models/user.model";
 import generateAccessToken from "@/utils/jwt.util";
 import Verify from "@/models/verify.model";
 import sendSms from "@/utils/smsService";
-import admin from "@/config/firebaseAdmin";
 
 export async function signInPhone(req) {
   try {
@@ -190,50 +189,30 @@ export async function persistUser(req) {
 
 export async function signInGoogle(req) {
   try {
-    const { idToken } = req.body;
-    if (!idToken) {
-      return {
-        success: false,
-        message: "ورود از طریق گوگل نیاز به توکن دارد."
-      };
-    }
-
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
-    const { uid, email, name, picture } = decodedToken;
-
-    let user = await User.findOne({ googleId: uid });
-
+    const { email, name, image ,googleId } = req.body;
+    console.log(req.body)
+    let user = await User.findOne({ email });
     if (!user) {
       user = new User({
-        googleId: uid,
-        email,
-        name,
-        "avatar.url": picture,
+        email: email,
+        name: name,
+        "avatar.url": image,
         emailVerified: true,
-        userLevel: "verified"
+        userLevel: "verified",
+        googleId
       });
       await user.save();
     }
-
-    const accessToken = generateAccessToken({
+    const accessTokenGenerated = generateAccessToken({
       _id: user._id,
-      phone: user.phone,
-      name: user.name,
-      id: user._id,
-      
+      email: user.email,
+      name: user.name
     });
-    if (accessToken) {
-      return {
-        success: true,
-        message: "تبریک !ورود شما از طریق حساب گوگل انجام شد",
-        accessToken
-      };
-    } else {
-      return {
-        success: false,
-        message: "ورود ناموفق بود"
-      };
-    }
+    return {
+      success: true,
+      message: "تبریک! ورود شما از طریق حساب گوگل انجام شد.",
+      accessToken: accessTokenGenerated
+    };
   } catch (error) {
     return {
       success: false,

@@ -2,15 +2,14 @@ import Tag from '@/models/tag.model';
 
 export async function addTag(req) {
   try {
-    const { title, description, robots,keynotes,authorId
+    const { title, description, robots,keynotes
  } = req.body; 
-console.log(robots)
     const tag = await Tag.create({
       title,
       description,
       robots,
       keywords: JSON.parse(keynotes),
-      authorId
+      authorId:req.admin._id
     });
 
     if (tag) {
@@ -25,7 +24,7 @@ console.log(robots)
       };
     }
   } catch (error) {
-    console.error("Error:", error.message); // چاپ خطا برای مشاهده جزئیات
+    console.error("Error:", error.message); 
     return {
       success: false,
       message: error.message,
@@ -39,7 +38,6 @@ export async function getTags(req) {
   try {
     const { page = 1, limit = 7, search = "" } = req.query; 
     const skip = (page - 1) * limit;
-console.log("search",search)
     const searchQuery = search
       ? { title: { $regex: search, $options: "i" }, isDeleted: false }
       : { isDeleted: false };

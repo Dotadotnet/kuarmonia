@@ -47,6 +47,7 @@ const AddMedia = ({}) => {
   const tagsOptions = tags?.map((tag) => ({
     id: tag._id,
     value: tag.title,
+    title: tag.title,
     description: tag.description
   }));
 
@@ -88,6 +89,7 @@ const AddMedia = ({}) => {
       toast.error(addError?.data?.message, { id: "media" });
     }
   }, [addData, , addError, , isAdding,  reset]);
+
   return (
     <>
       <AddButton onClick={() => setIsOpen(true)} />
@@ -176,6 +178,8 @@ const AddMedia = ({}) => {
                             icon={<TagIcon />}
                             placeholder="چند مورد انتخاب کنید"
                             className={"w-full h-12"}
+                            returnType="id"
+
                           />
                         )}
                       />
@@ -265,6 +269,7 @@ const AddMedia = ({}) => {
                 register={register("media")}
                 title="یک تصویر بند انگشتی انتخاب کنید"
                 maxFiles={1}
+
               />
               {errors.Thumbnail && (
                 <span className="text-red-500">{errors.Thumbnail.message}</span>

@@ -20,7 +20,7 @@ const ListMedia = () => {
   const itemsPerPage = 7;
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const admin = useSelector((state) => state?.auth);
+  const admin = useSelector((state) => state?.auth?.admin);
   const { data, isLoading, error, refetch } = useGetMediasQuery({
     page: currentPage,
     limit: itemsPerPage,

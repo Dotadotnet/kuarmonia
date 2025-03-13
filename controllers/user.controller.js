@@ -6,7 +6,6 @@ import Review from "@/models/review.model";
 import User from "@/models/user.model";
 import removePhoto from "@/utils/remove.util";
 
-// دریافت تمام کاربران
 export async function getUsers() {
   try {
     const users = await User.find().populate([
@@ -67,7 +66,6 @@ export async function getUser(req) {
   }
 }
 
-// بروزرسانی اطلاعات کاربر
 export async function updateUser(req) {
   try {
     const user = await User.findById(req.query.id);
@@ -82,7 +80,6 @@ export async function updateUser(req) {
 
       
 
-      // بروزرسانی تصویر کاربر در صورت آپلود فایل جدید
       if (req.file && req.file.path && req.file.filename) {
         await removePhoto(user.avatar.public_id);
 
@@ -117,10 +114,8 @@ export async function updateUser(req) {
 }
 
 
-// حذف یک کاربر
 export async function deleteUser(req) {
   try {
-    // ابتدا کاربر را پیدا می‌کنیم
     const user = await User.findById(req.query.id);
 
     if (!user) {
@@ -131,22 +126,18 @@ export async function deleteUser(req) {
     }
 
 
-    // اگر کاربر superAdmin نبود، کاربر حذف می‌شود
     await User.findByIdAndDelete(req.query.id);
 
     await removePhoto(user.avatar.public_id);
 
-    // حذف لیست علاقه‌مندی‌های کاربر
     if (user.favorite) {
       await Favorite.findByIdAndDelete(user.favorite);
     }
 
-    // حذف سبد خرید کاربر
     if (user.cart) {
       await Cart.findByIdAndDelete(user.cart);
     }
 
-    // حذف کاربر از تمام اجاره‌ها
     if (user.rents.length > 0) {
       for (let i = 0; i < user.rents.length; i++) {
         const rent = await Rent.findByIdAndDelete(user.rents[i]);
@@ -163,7 +154,6 @@ export async function deleteUser(req) {
           }
         );
 
-        // حذف از لیست علاقه‌مندی‌های تمام کاربران
         await Favorite.updateMany(
           {},
           {
@@ -209,7 +199,6 @@ export async function deleteUser(req) {
       }
     }
 
-     // حذف بلاگ های کاربر
    
      if (user.blogs.length > 0) {
       for (let i = 0; i < user.blogs.length; i++) {
@@ -217,7 +206,6 @@ export async function deleteUser(req) {
       }
     }
 
-    // حذف نظرات کاربر
     if (user.reviews.length > 0) {
       for (let i = 0; i < user.reviews.length; i++) {
         await Review.findByIdAndDelete(user.reviews[i]);

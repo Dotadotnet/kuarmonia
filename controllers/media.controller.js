@@ -195,32 +195,7 @@ export async function getClientMedias(req) {
   }
 }
 
-export async function getMediasForDropDownMenu() {
-  try {
-    const Medias = await Medias.find({
-      isDeleted: false,
-      status: "active"
-    }).select("id title description");
 
-    if (Medias.length > 0) {
-      return {
-        success: true,
-        data: categories,
-        message: "پست ها با موفقیت برای DropDownMenu دریافت شدند"
-      };
-    } else {
-      return {
-        success: false,
-        message: "هیچ پستی فعال برای DropDownMenu یافت نشد"
-      };
-    }
-  } catch (error) {
-    return {
-      success: false,
-      message: error.message
-    };
-  }
-}
 
 export async function getMedia(req) {
   try {

@@ -53,7 +53,7 @@ const MultiSelectDropdown = ({
         onClick={() => setIsOpen((prev) => !prev)}
         className={`inline-flex justify-between items-center px-2 py-2 text-center text-sm font-medium text-gray-700 bg-white dark:!bg-[#0a2d4d] border border-gray-300 dark:border-blue-500 rounded-md shadow-sm focus:outline-none ${className}`}
       >
-        <div className="flex gap-1 w-full h-8 overflow-x-auto scrollbar-hidden whitespace-nowrap">
+        <div className="flex gap-1 w-full  h-8 overflow-x-auto scrollbar-hidden max-w-fit whitespace-nowrap">
           {selectedItems.length > 0 ? (
             selectedItems.map((itemKey) => {
               const item = items.find(

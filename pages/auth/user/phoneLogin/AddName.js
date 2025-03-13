@@ -18,7 +18,7 @@ function AddName({ phone, register, handleSubmit }) {
     if (data?.success) {
       toast.success(data?.message, { id: "signup" });
       setTimeout(() => {
-        router.push("/");  // 🔥 ریدایرکت به صفحه اصلی
+        window.location.href='/' 
       }, 1500); 
     } else if (data && !data?.success) {
       toast.error(data?.message, { id: "signup" });

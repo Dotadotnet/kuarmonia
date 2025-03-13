@@ -1,17 +1,9 @@
 import { Html, Head, Main, NextScript } from "next/document";
-import { useEffect } from "react"; // وارد کردن useEffect از React
 
 export default function Document() {
   return (
     <Html lang="fa">
       <Head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        <title>
-          مهاجرت و ازدواج در ترکیه و کانادا - راهنمای جامع برای تصمیم‌گیری بهتر
-        </title>
-
         <meta
           name="title"
           content="مهاجرت و ازدواج در ترکیه و کانادا - راهنمای جامع برای تصمیم‌گیری بهتر"
@@ -26,8 +18,7 @@ export default function Document() {
         />
 
         <meta name="robots" content="index, follow" />
-        <meta content="text/html; charset=utf-8" />
-        <meta name="language" content="persian" />
+        <meta name="language" content="fa" />
         <meta name="revisit-after" content="7 days" />
         <meta name="author" content="marjan" />
 
@@ -37,10 +28,7 @@ export default function Document() {
           property="og:site_name"
           content="مهاجرت و ازدواج در ترکیه و کانادا"
         />
-        <meta
-          property="og:url"
-          content="https://kuarmonia.com" //
-        />
+        <meta property="og:url" content="https://kuarmonia.com" />
         <meta
           property="og:description"
           content="راهنمای جامع برای مهاجرت و ازدواج در ترکیه و کانادا با نکات کلیدی و خدمات مشاوره."
@@ -53,10 +41,7 @@ export default function Document() {
 
         {/* Twitter Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          property="twitter:url"
-          content="https://x.com/kuarmonia?s=09" //
-        />
+        <meta property="twitter:url" content="https://x.com/kuarmonia?s=09" />
         <meta
           name="twitter:title"
           content="مهاجرت و ازدواج در ترکیه و کانادا"
@@ -70,7 +55,7 @@ export default function Document() {
           content="https://s3-console.kuarmonia.com/main/84a10727-61b7-4199-91bf-12989c4e575a.webp"
         />
 
-        <meta property="pint:url" content="https://pin.it/4MeWds31o" />
+        {/* Pinterest Meta Tags */}
         <meta name="pinterest-rich-pin" content="true" />
         <meta
           name="pinterest:title"
@@ -91,14 +76,14 @@ export default function Document() {
           href="/fonts/vazir/Vazir.woff2"
           as="font"
           type="font/woff2"
-          crossorigin="anonymous"
+          crossOrigin="anonymous"
         />
         <link
           rel="preload"
           href="/fonts/DigiNozha/DigiNozha2Bold.woff2"
           as="font"
           type="font/woff2"
-          crossorigin="anonymous"
+          crossOrigin="anonymous"
         />
         <link rel="canonical" href="https://kuarmonia.com" />
       </Head>

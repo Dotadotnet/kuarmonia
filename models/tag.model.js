@@ -26,7 +26,7 @@ const tagSchema = new Schema(
     },  
     authorId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Admin",
       required: [true, "شناسه نویسنده الزامی است"],
     },
     slug: {

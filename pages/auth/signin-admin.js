@@ -18,7 +18,6 @@ const Signinadmin = () => {
         toast.error(data?.message, { id: "signin" });
       }
       if (data?.accessToken) {
-        localStorage.setItem("accessToken", data?.accessToken);
         window.open("/dashboard", "_self");
       }
       reset();

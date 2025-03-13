@@ -7,21 +7,21 @@ export default async function handler(req, res) {
   switch (method) {
     case "POST":
       try {
-        console.log(req.body);
         const result = await signInGoogle(req);
-        if (result.success ) {
+        if (result.success) {
           const { accessToken } = result;
-
           res.setHeader(
             "Set-Cookie",
             cookie.serialize("accessToken", accessToken, {
               httpOnly: true,
-              secure: process.env.NODE_ENV === "production",
               maxAge: 7 * 24 * 60 * 60,
               path: "/",
-              sameSite: "strict"
+              secure: false,
+              
             })
           );
+          console.log("Set-Cookie Header:", res.getHeader("Set-Cookie"));
+
         }
         res.send(result);
       } catch (error) {

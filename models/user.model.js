@@ -75,7 +75,7 @@ userSchema.pre("save", async function (next) {
   if (this.isNew) {
     this.userId = await getNextSequenceValue("userId");
   }
-  if (!this.phone && !this.googleId) {
+  if (!this.phone && !this.email) {
     return next(
       new Error("کاربر باید حداقل شماره تلفن یا حساب گوگل داشته باشد.")
     );

@@ -54,7 +54,7 @@ function Verify({ otp, setOtp, phone, handleSubmit, signin,setStep }) {
         setStep(3)
       }else{
         setTimeout(() => {
-          router.push("/");  // 🔥 ریدایرکت به صفحه اصلی
+          window.location.href='/' 
         }, 1500);
       }
     }

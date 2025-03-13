@@ -1,12 +1,14 @@
 import admin from "firebase-admin";
 
-if (!admin.apps.length) {
-  const serviceAccount = JSON.parse(process.env.GOOGLE_CLOUD_CREDENTIALS);
-  serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, "\n");
+const serviceAccount = JSON.parse(process.env.GOOGLE_CLOUD_CREDENTIALS|| "{}");
 
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
-}
+// نمایش مقدار در کنسول برای بررسی
+console.log("Service Account:", serviceAccount);
+
+
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 export default admin;

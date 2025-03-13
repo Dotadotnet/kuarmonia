@@ -76,7 +76,6 @@ const authApi = kuarmoniaApi.injectEndpoints({
       invalidatesTags: ["Admin"],
     }),
 
-    // بروزرسانی اطلاعات ادمین
     updateAdmin: builder.mutation({
       query: ({ id, body }) => ({
         url: `/admin/update/${id}`,
@@ -85,6 +84,14 @@ const authApi = kuarmoniaApi.injectEndpoints({
       }),
       invalidatesTags: ["Admin"],
     }),
+
+    adminLogout: builder.mutation({
+      query: (body) => ({
+        url: "/admin/logout",
+        method: "POST",
+        body
+      })
+    })
   }),
 });
 
@@ -97,5 +104,6 @@ export const {
   useGetAdminsQuery,
   useGetAdminQuery,
   useDeleteAdminMutation,
-  useUpdateAdminMutation
+  useUpdateAdminMutation,
+  useAdminLogoutMutation
 } = authApi;

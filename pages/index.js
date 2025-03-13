@@ -11,13 +11,11 @@ import Blogs from "@/components/home/blogs/Blogs";
 import Reviews from "@/components/shared/review/Reviews";
 import Gallery from "@/components/home/gallery/Gallery";
 import NewsLetter from "@/components/home/news-letter/NewsLetter";
-import VideoGallery from "@/components/home/VideoGallery/VideoGallery";
-import { useEffect } from "react";
+import VideoGallery from "@/pages/video-gallery";
 import Properties from "@/components/home/properties/Properties";
 import FAQ from "@/components/detail/FAQ";
 
-export default function Home() {
-
+export default function Home({ initialData }) {
   return (
     <main>
       <Head>
@@ -28,8 +26,9 @@ export default function Home() {
       <Main>
         <Hero />
         <Properties />
-
-        <VideoGallery />
+        
+        <VideoGallery initialData={initialData} />
+        
         <Advantage />
         <Post />
         <Blogs />
@@ -41,9 +40,36 @@ export default function Home() {
         <NewsLetter />
         <FAQ />
       </Main>
-    
-    
     </main>
   );
 }
 
+export async function getServerSideProps() {
+  const page = 1;
+  const limit = 8;
+
+  const apiUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const url = `${apiUrl}/api/media/media?page=${page}&limit=${limit}`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch: ${res.statusText}`);
+    }
+
+    const data = await res.json();
+
+    return {
+      props: {
+        initialData: data || { data: [], total: 0 },
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return {
+      props: {
+        initialData: { data: [], total: 0 },
+      },
+    };
+  }
+}

@@ -213,6 +213,13 @@ blockquote {
     transform: rotate(360deg);
   }
 }
+.element {
+  overflow: hidden; /* اسکرول بار را مخفی می‌کند */
+}
+
+.element::-webkit-scrollbar {
+  display: none; /* مخفی کردن اسکرول بار در مرورگرهای Webkit مانند Chrome و Safari */
+}
 
 .animate-spin-slow {
   animation: spin-slow 30s linear infinite;

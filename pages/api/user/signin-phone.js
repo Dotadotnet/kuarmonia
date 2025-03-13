@@ -7,7 +7,6 @@ export default async function handler(req, res) {
     
     case "POST":
       try {
-        console.log(req.body)
         const result = await signInPhone(req);
 
         res.send(result);

@@ -17,17 +17,6 @@ export default async function handler(req, res) {
           })
         );
 
-        res.setHeader(
-          "Set-Cookie",
-          cookie.serialize("adminToken", "", {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 0,
-            path: "/",
-            sameSite: "strict"
-          })
-        );
-
         res
           .status(200)
           .json({ success: true, message: "خروج موفقیت‌آمیز بود" });

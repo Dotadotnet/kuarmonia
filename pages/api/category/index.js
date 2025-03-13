@@ -1,6 +1,6 @@
 import { addCategory, getCategories, getCategoriesForDropDownMenu, softDeleteCategory } from "@/controllers/category.controller";
 import authorization from "@/middleware/authorization.middleware";
-import verify from "@/middleware/verify.middleware";
+import verify from "@/middleware/verifyAdmin.middleware";
 
 export const config = {
   api: {

@@ -6,16 +6,7 @@ export default async function handler(req, res) {
   switch (method) {
     case "POST":
       try {
-        res.setHeader(
-          "Set-Cookie",
-          cookie.serialize("accessToken", "", {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            maxAge: 0,
-            path: "/",
-            sameSite: "strict"
-          })
-        );
+
 
         res.setHeader(
           "Set-Cookie",
