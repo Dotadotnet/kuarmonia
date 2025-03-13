@@ -5,7 +5,7 @@ import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai';
 import CommentsSection from "@/components/shared/comment/CommentsSection"
 import Main from "@/layouts/Main";
 
-const ProductDetailPage = ({ media, comments }) => {
+const MediaDetailPage = ({ media, comments }) => {
   console.log(media)
   return (
     <>
@@ -130,4 +130,4 @@ export async function getServerSideProps({ params }) {
   }
 }
 
-export default ProductDetailPage;
+export default MediaDetailPage;

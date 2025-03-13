@@ -1,30 +1,19 @@
 import React from "react";
-import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 const VideoCard = ({
-  id,
-  index,
-  slug,
-  title = "عنوان ویدئو",
-  description = "توضیحات کوتاه در مورد ویدئو. معمولاً دو تا سه خط برای خوانایی بهتر.",
-  thumbnail = "https://picsum.photos/360/240",
-  createdAt,
-  superAdmin,
-  author,
-  avatar
+  media
 }) => {
-  const router = useRouter();
   return (
     <Link
-      key={id || index}
-      href={`/media/${id}`}
+      key={media?.id || media?.index}
+      href={`/media/${media?.id}`}
       className="group cursor-pointer flex flex-col gap-y-4 border shadow-lg dark:border-gray-600 rounded h-fit md:h-96 break-inside-avoid bg-white dark:bg-gray-800 transition-color ease-linear delay-100 hover:border-primary dark:hover:border-blue-500 relative "
     >
       <div className="relative w-full w-50 ">
         <Image
-          src={thumbnail?.url}
-          alt={title}
+          src={media?.thumbnail?.url}
+          alt={media?.title}
           width={600}
           height={600}
           className="rounded-t h-full"
@@ -54,36 +43,36 @@ const VideoCard = ({
 
       <article className="flex flex-col gap-y-2.5 px-4 pb-4 h-full justify-between">
         <div>
-          <h2 className="text-lg line-clamp-1">{title}</h2>
-          <p className="text-sm line-clamp-2">{description}</p>
+          <h2 className="text-lg line-clamp-1">{media?.title}</h2>
+          <p className="text-sm line-clamp-2">{media?.description}</p>
         </div>
         <div className="mt-auto flex flex-col gap-y-2.5">
           <div className="text-xs border border-secondary transition-colors ease-linear delay-100 group-hover:border-primary dark:group-hover:border-blue-500 px-1  py-0.5 rounded-primary text-slate-500 flex items-center justify-between relative">
             <span>
-              {new Date(createdAt).toLocaleDateString("fa-IR", {
+              {new Date(media?.createdAt).toLocaleDateString("fa-IR", {
                 weekday: "long"
               })}{" "}
-              - {new Date(createdAt).toLocaleDateString("fa-IR")}
+              - {new Date(media?.createdAt).toLocaleDateString("fa-IR")}
             </span>
             <div className="flex items-center space-x-3">
-              {/* <Image
-                alt={author ||  "avatar"}
-                title={author}
-                src={avatar}
+              <Image
+                alt={media?.authorId?.name ||  "avatar"}
+                title={media?.authorId?.name}
+                src={media?.authorId?.avatar?.url}
                 width={36}
                 height={36}
                 className="relative inline-block rounded-full   object-cover object-center hover:z-10"
               />
-              {author !== superAdmin?.name && (
+              {media?.author !== media?.superAdmin?.name && (
                 <Image
-                  alt={superAdmin?.url || "avatar"}
-                  title={superAdmin?.name}
-                  src={avatar}
+                  alt={media?.superAdmin?.url || "avatar"}
+                  title={media?.superAdmin?.name}
+                  src={media?.avatar}
                   width={36}
                   height={36} // ارتفاع تصویر
                   className="relative inline-block rounded-full   object-cover object-center hover:z-10"
                 />
-              )} */}
+              )} 
             </div>
           </div>
         </div>

@@ -53,17 +53,7 @@ const Video = ({initialData}) => {
                   ))
                 : medias.map((media) => (
                     <VideoCard
-                      id={media.id}
-                      key={media?.id}
-                      title={media.title}
-                      slug={media.slug}
-                      description={media.description}
-                      thumbnail={media.thumbnail}
-                      isLoading={false}
-                      author={media?.authorId?.name}
-                      avatar={media?.authorId?.avatar?.url}
-                      category={media?.category?.title}
-                      createdAt={media?.createdAt}
+                    media={media}
                     />
                   ))}
             </section>
