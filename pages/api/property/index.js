@@ -4,6 +4,8 @@ import {
   getProperties,
   getClientProperties
 } from "@/controllers/property.controller";
+import verifyAdmin from "@/middleware/verifyAdmin.middleware";
+import authorization from "@/middleware/authorization.middleware";
 
 export const config = {
   api: {
@@ -28,8 +30,24 @@ export default async function handler(req, res) {
         }
 
         try {
-          const result = await addProperty(req);
-          res.status(200).json(result);
+          verifyAdmin(req, res, async (err) => {
+            if (err) {
+              return res.send({
+                success: false,
+                error: err.message
+              });
+            }
+            authorization("superAdmin", "admin")(req, res, async (err) => {
+              if (err) {
+                return res.send({
+                  success: false,
+                  error: err.message
+                });
+              }
+              const result = await addProperty(req);
+              res.status(200).json(result);
+            });
+          });
         } catch (AddPropertyError) {
           console.error("addProperty Error: ", AddPropertyError.message);
           res.status(500).json({
@@ -42,23 +60,19 @@ export default async function handler(req, res) {
     case "GET":
       try {
         if (req.query.type === "sale") {
-
           const saleTypes = await getSaleTypes(req);
           return res.status(200).json(saleTypes);
         }
 
         if (req.query.type === "trade") {
-
           const tradeTypes = await getTradeTypes(req);
           return res.status(200).json(tradeTypes);
         }
         if (req.query.type === "type") {
-
           const tradeTypes = await getpropertyType(req);
           return res.status(200).json(tradeTypes);
         }
         if (req.query.type === "client") {
-
           const propries = await getClientProperties(req);
           return res.status(200).json(propries);
         }

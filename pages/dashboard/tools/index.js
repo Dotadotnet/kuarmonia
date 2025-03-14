@@ -150,7 +150,7 @@ const Listpost = () => {
                   <article className="flex-col flex gap-y-2  ">
                     <span className="line-clamp-1 text-base ">
                       <span className="hidden lg:flex">
-                        {post?.authorId?.name}
+                        {post?.creator?.name}
                       </span>
                       <span className="flex lg:hidden text-right text-sm">
                         {post.title}

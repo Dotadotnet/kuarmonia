@@ -2,17 +2,17 @@ import React, { useState, useEffect, useMemo } from "react";
 import Panel from "@/layouts/Panel";
 import {
   useGetTradeTypesQuery,
-  useUpdateTradeTypeMutation
+  useRemoveTradeTypeMutation
 } from "@/services/tradeType/tradeTypeApi";
-import AddTradeType from "./add";
-import DeleteModal from "@/components/shared/modal/DeleteModal";
+import Add from "./add";
 import { toast } from "react-hot-toast";
 import StatusIndicator from "@/components/shared/tools/StatusIndicator";
-import AddButton from "@/components/shared/button/AddButton";
 import SkeletonItem from "@/components/shared/skeleton/SkeletonItem";
 import { FiEdit3, FiTrash } from "react-icons/fi";
 import Pagination from "@/components/shared/pagination/Pagination";
 import Image from "next/image";
+import Search from "@/components/shared/search";
+import DeleteModal from "@/components/shared/modal/DeleteModal";
 
 const ListTradeType = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,143 +26,45 @@ const ListTradeType = () => {
     search: searchTerm
   });
   const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;
-  const [updateTradeType] = useUpdateTradeTypeMutation();
-  const tradeTypes = useMemo(
-    () => (Array.isArray(data?.data) ? data.data : []),
-    [data]
-  );
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-  const [selectedTradeType, setSelectedTradeType] = useState(null);
-
-  const openAddModal = () => setIsAddModalOpen(true);
-  const closeAddModal = () => setIsAddModalOpen(false);
-
-  const openEditModal = (tradeType) => {
-    setSelectedTradeType(tradeType);
-    setIsEditModalOpen(true);
-  };
-  const closeEditModal = () => {
-    setSelectedTradeType(null);
-    setIsEditModalOpen(false);
-  };
-
-  const openDeleteModal = (tradeType) => {
-    setSelectedTradeType(tradeType);
-    setIsDeleteModalOpen(true);
-  };
-  const closeDeleteModal = () => {
-    setSelectedTradeType(null);
-    setIsDeleteModalOpen(false);
-  };
-
-  const openInfoModal = (tradeType) => {
-    setSelectedTradeType(tradeType);
-    setIsInfoModalOpen(true);
-  };
-  const closeInfoModal = () => {
-    setSelectedTradeType(null);
-    setIsInfoModalOpen(false);
-  };
-
-  const handleDelete = async () => {
-    const tradeTypeToDelete = selectedTradeType;
-    try {
-      const response = await updateTradeType({
-        id: tradeTypeToDelete._id,
-        isDeleted: true
-      }).unwrap();
-      closeDeleteModal();
-
-      if (response.success) {
-        toast.success(response.message);
-        refetch();
-      } else {
-        toast.error(response.message);
-      }
-    } catch (error) {
-      toast.error(error.message || "خطا در حذف دسته‌بندی");
-      console.error("Error deleting tradeType", error);
-    }
-  };
-
+  const tradeTypes = useMemo(() => data?.data || [], [data]);
+  const [
+    removeTradeType,
+    { isLoading: isRemoving, data: removeData, error: removeError }
+  ] = useRemoveTradeTypeMutation();
   useEffect(() => {
-    if (isLoading) {
-      toast.loading("در حال دریافت دسته بندی...", { id: "tradeType-loading" });
+    if (isLoading ) {
+      toast.loading("در حال دریافت ...", { id: "type-loading" });
     }
 
-    if (data && !isLoading) {
-      toast.dismiss("tradeType-loading");
+    if (data && data?.success) {
+      toast.success(data?.message, "type-loading");
     }
-
     if (error?.data) {
-      toast.error(error?.data?.message, { id: "tradeType-loading" });
+      toast.error(error?.data?.message, { id: "type-loading" });
     }
-  }, [data, error, isLoading]);
-  const onStatusFilterChange = (status) => {
-    setStatusFilter(status);
-    setCurrentPage(1);
-    refetch();
-  };
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-    setCurrentPage(1);
-  };
+
+    if (isRemoving) {
+      toast.loading("در حال دریافت دسته بندی...", { id: "type-removing" });
+    }
+
+    if (removeData && removeData?.success) {
+      toast.success(removeData?.message, "type-removing");
+    }
+
+    if (removeData && !removeData?.success && !isRemoving) {
+      toast.error(removeData?.message, { id: "type-removing" });
+    }
+
+    if (removeError?.data) {
+      toast.error(removeError?.data?.message, { id: "type-removing" });
+    }
+  }, [data, error, isLoading, removeData, removeError, isRemoving]);
+
   return (
     <>
       <Panel>
-        {/* دکمه افزودن دسته‌بندی */}
-        <AddButton onClick={openAddModal} />
-        <div className="mt-6 md:flex md:flex-row-reverse md:items-center md:justify-between ">
-          <div className="inline-flex overflow-hidden bg-white border rounded-lg   dark:!bg-[#0a2d4d]    dark:border-blue-500 rtl:flex-row">
-            <button
-              className="px-5 py-2 bg-gray-100 dark:bg-[#0a2d4d] text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-blue-500 dark:hover:bg-gray-700 focus:bg-gray-300 dark:focus:bg-gray-700"
-              onClick={() => onStatusFilterChange("all")}
-            >
-              همه
-            </button>
-            <button
-              className="px-5 py-2 bg-gray-100 dark:bg-[#0a2d4d] text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100 border-l dark:border-blue-500 dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
-              onClick={() => onStatusFilterChange("active")}
-            >
-              فعال
-            </button>
-            <button
-              className="px-5 py-2 bg-gray-100 dark:bg-[#0a2d4d] text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm  dark:text-gray-300 hover:bg-gray-100  dark:focus:bg-gray-700 dark:hover:bg-gray-700 focus:bg-gray-300"
-              onClick={() => onStatusFilterChange("inactive")}
-            >
-              غیر فعال
-            </button>
-          </div>
-
-          <div className="relative flex items-center mt-4 md:mt-0">
-            <span className="absolute">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-5 h-5 mx-3 text-gray-400 dark:text-gray-600"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                />
-              </svg>
-            </span>
-            <input
-              type="text"
-              placeholder="Search"
-              className="block w-full py-1.5 pr-5 text-gray-700 bg-white border border-gray-200 rounded-lg md:w-80 placeholder-gray-400/70 pl-11 rtl:pr-11 rtl:pl-5 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-          </div>
-        </div>
+        <Search searchTerm={searchTerm} />
+        <Add />
         {/* نمایش داده‌های تگ‌ها */}
         <div className="mt-8 w-full grid grid-cols-12 text-slate-400 px-4 ">
           <div className="col-span-11 lg:col-span-3  text-sm">
@@ -195,7 +97,7 @@ const ListTradeType = () => {
                 <StatusIndicator isActive={tradeType.status === "active"} />
                 <div className="py-2 flex justify-center items-center gap-x-2 text-right">
                   <Image
-                    src={tradeType?.authorId?.avatar.url}
+                    src={tradeType?.creator?.avatar.url}
                     alt={``}
                     height={100}
                     width={100}
@@ -204,7 +106,7 @@ const ListTradeType = () => {
                   <article className="flex-col flex gap-y-2  ">
                     <span className="line-clamp-1 text-base ">
                       <span className="hidden lg:flex ">
-                        {tradeType?.authorId?.name}
+                        {tradeType?.creator?.name}
                       </span>
                       <span className=" lg:hidden ">{tradeType?.title}</span>
                     </span>
@@ -253,12 +155,11 @@ const ListTradeType = () => {
                   >
                     <FiEdit3 className="w-5 h-5" />
                   </span>
-                  <span
-                    className="delete-button"
-                    onClick={() => openDeleteModal(tradeType)}
-                  >
-                    <FiTrash className="w-5 h-5" />
-                  </span>
+                  <DeleteModal
+                    message="آیا از حذف نوع معامله اطمینان دارید؟"
+                    isLoading={isRemoving}
+                    onDelete={() => removeTradeType(tradeType?._id)}
+                  />
                 </article>
               </div>
             </div>
@@ -271,46 +172,6 @@ const ListTradeType = () => {
           totalPages={totalPages}
           onPageChange={(page) => setCurrentPage(page)}
         />
-
-        {/* مودال حذف */}
-        {isDeleteModalOpen && (
-          <DeleteModal
-            isOpen={isDeleteModalOpen}
-            onDelete={handleDelete}
-            onClose={closeDeleteModal}
-            message={`آیا مطمئن هستید که می‌خواهید دسته‌بندی "${selectedTradeType?.title}" را حذف کنید؟`} // نمایش پیام به‌روز شده
-          />
-        )}
-
-        {/* مودال ویرایش */}
-        {isEditModalOpen && (
-          <AddTradeType
-            isOpen={isEditModalOpen}
-            onClose={closeEditModal}
-            onSuccess={refetch}
-            tradeTypeToEdit={selectedTradeType}
-          />
-        )}
-
-        {/* مودال جزئیات */}
-        {isInfoModalOpen && (
-          <Modal
-            isOpen={isInfoModalOpen}
-            onClose={closeInfoModal}
-            className="lg:w-1/3 md:w-1/2 w-full z-50"
-          >
-            <Info tradeType={selectedTradeType} onClose={closeInfoModal} />
-          </Modal>
-        )}
-
-        {/* مودال افزودن */}
-        {isAddModalOpen && (
-          <AddTradeType
-            isOpen={isAddModalOpen}
-            onClose={closeAddModal}
-            onSuccess={refetch}
-          />
-        )}
       </Panel>
     </>
   );

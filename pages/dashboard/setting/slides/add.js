@@ -54,7 +54,7 @@ const AddSlide = ({ isOpen, onClose, onSuccess, SlideToEdit = null }) => {
     formData.append("description", data.description);
     formData.append("bgImg", thumbnail);
     formData.append("url", data.url);
-    formData.append("authorId", admin?._id);
+    formData.append("creator", admin?._id);
     formData.append("isFeatured", data.isFeatured);
 
     try {

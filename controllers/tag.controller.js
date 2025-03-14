@@ -9,7 +9,7 @@ export async function addTag(req) {
       description,
       robots,
       keywords: JSON.parse(keynotes),
-      authorId:req.admin._id
+      creator:req.admin._id
     });
 
     if (tag) {
@@ -45,7 +45,7 @@ export async function getTags(req) {
       const tags = await Tag.find(searchQuery)
       .skip(skip)
       .limit(Number(limit))
-      .populate('authorId', 'name avatar.url') 
+      .populate('creator', 'name avatar.url') 
       .select('_id tagId title description createdAt status robots keywords ');
   
 

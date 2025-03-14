@@ -91,7 +91,7 @@ const mediaSchema = new Schema(
       enum: ["index, follow", "noindex, nofollow", "index, nofollow", "noindex, follow"],
       default: "index, follow",
     },
-    authorId: {
+    creator: {
       type: Schema.Types.ObjectId,
       ref: "Admin",
       required: [true, "شناسه نویسنده الزامی است"],

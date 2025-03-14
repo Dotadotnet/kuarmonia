@@ -208,7 +208,7 @@ const ListSlide = () => {
                     <span className="line-clamp-1 max-h-[1.6em] text-base ">
                       <span className="    text-sm">{slide?.title}</span>
                     </span>
-                    <span className="   ">{slide?.authorId?.name}</span>
+                    <span className="   ">{slide?.creator?.name}</span>
                   </article>
                 </div>
               </div>

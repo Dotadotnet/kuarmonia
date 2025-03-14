@@ -7,45 +7,48 @@ const tradeTypeApi = kuarmoniaApi.injectEndpoints({
         url: "/tradeType/",
         method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
         },
-        body,
+        body
       }),
-      invalidatesTags: [
-        "User",
-        "Property",
-        "TradeType",
-      ],
+      invalidatesTags: ["Admin", "Property", "TradeType"]
     }),
 
     GetTradeTypes: builder.query({
       query: ({ page = 1, limit = 7, search = "" } = {}) => ({
         url: `/tradeType/?page=${page}&limit=${limit}&search=${search}`,
-        method: "GET",
+        method: "GET"
       }),
-      providesTags: ["TradeType"],
+      providesTags: ["TradeType"]
     }),
 
     GetAllTradeTypes: builder.query({
       query: () => ({
         url: `/tradeType/`,
         method: "GET",
-        params: { type: "all" }, 
-
+        params: { type: "all" }
       }),
-      providesTags: ["TradeType"],
+      providesTags: ["TradeType"]
     }),
 
+    removeTradeType: builder.mutation({
+      query: (id) => ({
+        url: `/tradeType/${id}`,
+        method: "DELETE"
+      }),
+
+      invalidatesTags: ["TradeType", "Admin"]
+    }),
 
     updateTradeType: builder.mutation({
       query: ({ id, ...formData }) => ({
         url: `/tradeType/${id}`,
         method: "PATCH",
-        body: formData,
+        body: formData
       }),
-      invalidatesTags: ["TradeType"],
-    }),
-  }),
+      invalidatesTags: ["TradeType"]
+    })
+  })
 });
 
 export const {
@@ -53,4 +56,5 @@ export const {
   useGetTradeTypesQuery,
   useGetAllTradeTypesQuery,
   useUpdateTradeTypeMutation,
+  useRemoveTradeTypeMutation
 } = tradeTypeApi;

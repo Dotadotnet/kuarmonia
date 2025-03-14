@@ -1,15 +1,49 @@
-import { updateTradeType } from "@/controllers/tradeType.controller";
+import { updateTradeType ,removeTradeType } from "@/controllers/tradeType.controller";
+import authorization from "@/middleware/authorization.middleware";
+import verifyAdmin from "@/middleware/verifyAdmin.middleware";
 
 export const config = {
   api: {
     bodyParser: true,
-    externalResolver: true,
-  },
+    externalResolver: true
+  }
 };
 
 export default async function handler(req, res) {
   const { method } = req;
   switch (method) {
+    case "DELETE":
+      try {
+        verifyAdmin(req, res, async (err) => {
+          if (err) {
+            return res.send({
+              success: false,
+              error: err.message
+            });
+          }
+
+          authorization("superAdmin", "admin")(req, res, async (err) => {
+
+            if (err) {
+              return res.send({
+                success: false,
+                error: err.message
+              });
+            }
+          });
+
+          const result = await removeTradeType(req);
+
+          res.send(result);
+        });
+      } catch (error) {
+        res.send({
+          success: false,
+          message: error.message
+        });
+      }
+      break;
+
     case "PATCH":
       try {
         const result = await updateTradeType(req);

@@ -58,7 +58,7 @@ const Blogs = () => {
                   description={blog?.description}
                   thumbnailPreview={blog?.featuredImage?.url}
                   publishDate={blog?.publishDate}
-                  authorId={blog?.authorId}
+                  creator={blog?.creator}
                   superAdmin={superAdmin}
                   isLoading={isLoading}
                 />

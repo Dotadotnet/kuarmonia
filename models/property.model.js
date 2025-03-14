@@ -212,7 +212,7 @@ const propertySchema = new Schema(
       enum: ["active", "inactive"],
       default: "active"
     },
-    authorId: {
+    creator: {
       type: Schema.Types.ObjectId,
       ref: "Admin",
       required: [true, "شناسه نویسنده الزامی است"]

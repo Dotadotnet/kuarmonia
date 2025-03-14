@@ -16,7 +16,7 @@ export async function addFaq(req) {
       answer,
       category,
       tags: tags, // مطمئن شوید که tags به درستی به آرایه تبدیل می‌شود
-      authorId: req.admin._id
+      creator: req.admin._id
     });
 
     return {
@@ -35,7 +35,7 @@ export async function addFaq(req) {
 export async function getFaqs() {
   try {
     const faqs = await Faqs.find({ isDeleted: false })
-      .populate("authorId", "name avatar.url")
+      .populate("creator", "name avatar.url")
       .populate("tags","title keywords")
       .populate("category","title")
       .sort({ updatedAt: -1 });

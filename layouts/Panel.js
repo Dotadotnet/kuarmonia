@@ -9,7 +9,7 @@ import { MdFavoriteBorder, MdOutlineRateReview } from "react-icons/md";
 import { AiOutlineUserSwitch } from "react-icons/ai";
 import { TbUserEdit, TbUserShare } from "react-icons/tb";
 import { BsCartCheck, BsPostcardHeart } from "react-icons/bs";
-import { FaBlog, FaListUl } from "react-icons/fa";
+import { FaBlog, FaCogs, FaConciergeBell, FaGifts, FaGlassMartiniAlt, FaHotel, FaListUl, FaTrophy, FaWrench } from "react-icons/fa";
 import { BsTags } from "react-icons/bs";
 import { PiCreditCardLight, PiCubeTransparent } from "react-icons/pi";
 import { FiUsers } from "react-icons/fi";
@@ -78,6 +78,61 @@ const Panel = ({ children }) => {
         }
       ]
     },
+    {
+      name: "مراسمات",
+      icon: <FaGlassMartiniAlt  className="w-5 h-5" />,
+      allowedRoles: ["admin", "superAdmin"],
+      subRoutes: [
+        {
+          name: "لیست",
+          path: "/dashboard/venues",
+          icon: <FaList className="w-5 h-5" />,
+          allowedRoles: ["admin", "superAdmin", "operator"]
+        },
+        {
+          name: "نوع مکان مراسمات",
+          path: "/dashboard/venue-type",
+          icon: <FaHotel  className="w-5 h-5" />,
+          allowedRoles: ["admin", "superAdmin"]
+        },
+        {
+          name: "نوع مراسم",
+          path: "/dashboard/ceremony-type",
+          icon: <FaExchangeAlt className="w-5 h-5" />,
+          allowedRoles: ["admin", "superAdmin"]
+        },
+        {
+          name: "خدمات مراسم",
+          path: "/dashboard/venue-services",
+          icon: <FaConciergeBell className="w-5 h-5" />,
+          allowedRoles: ["admin", "superAdmin"]
+        },
+        {
+          name: "امکانات مراسم",
+          path: "/dashboard/venue-aminities",
+          icon: <FaCogs className="w-5 h-5" />,
+          allowedRoles: ["admin", "superAdmin"]
+        },
+        {
+          name: "تنظیمات مراسم",
+          path: "/dashboard/venue-setting",
+          icon: <FaWrench className="w-5 h-5" />,
+          allowedRoles: ["admin", "superAdmin"]
+        },        
+        {
+          name: "جشن‌ها",
+          path: "/dashboard/venue-events",
+          icon: <FaGifts className="w-5 h-5" />,
+          allowedRoles: ["admin", "superAdmin"]
+        },
+        {
+          name: "جوایز و استانداردها",
+          path: "/dashboard/venue-awards",
+          icon: <FaTrophy className="w-5 h-5" />,
+          allowedRoles: ["admin", "superAdmin"]
+        }
+      ]
+    },    
     {
       name: "رسانه",
       path: "/dashboard/media",

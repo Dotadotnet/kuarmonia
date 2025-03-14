@@ -119,7 +119,7 @@ const Add = () => {
     formData.append("isFeatured", data.isFeatured);
     formData.append("readTime", data.readTime);
     formData.append("publishDate", new Date().toISOString().split("T")[0]);
-    formData.append("authorId", admin?._id);
+    formData.append("creator", admin?._id);
     data.tags.forEach((tag) => {
       formData.append("tags[]", tag.id);
     });

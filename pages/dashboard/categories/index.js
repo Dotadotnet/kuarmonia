@@ -100,7 +100,7 @@ const ListCategory = () => {
                 <StatusIndicator isActive={category.status === "active"} />
                 <div className="py-2 flex justify-center items-center gap-x-2 text-right">
                   <Image
-                    src={category?.authorId?.avatar.url}
+                    src={category?.creator?.avatar.url}
                     alt={``}
                     height={100}
                     width={100}
@@ -109,7 +109,7 @@ const ListCategory = () => {
                   <article className="flex-col flex gap-y-2  ">
                     <span className="line-clamp-1 text-base ">
                       <span className="hidden lg:flex ">
-                        {category?.authorId?.name}
+                        {category?.creator?.name}
                       </span>
                       <span className=" lg:hidden ">{category?.title}</span>
                     </span>

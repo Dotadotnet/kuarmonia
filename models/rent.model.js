@@ -90,7 +90,11 @@ const rentSchema = new Schema(
         ref: "User",
       },
     ],
-
+    creator: {
+      type: Schema.Types.ObjectId,
+      ref: "Admin",
+      required: [true, "شناسه نویسنده الزامی است"]
+    },
     reviews: [
       {
         type: Schema.Types.ObjectId,

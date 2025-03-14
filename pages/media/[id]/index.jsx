@@ -37,7 +37,7 @@ const MediaDetailPage = ({ media, comments }) => {
                     <div className="flex items-start ">
                       <div className="flex h-11 w-11 rounded-full overflow-hidden">
                         <Image
-                          src={media?.authorId?.avatar?.url}
+                          src={media?.creator?.avatar?.url}
                           alt="avatar"
                           width={50}
                           height={50}
@@ -47,7 +47,7 @@ const MediaDetailPage = ({ media, comments }) => {
                     </div>
                     <div className="flex flex-col mr-3 ">
                       <div className="text-black dark:text-white text-md flex items-center">
-                        {media?.authorId?.name}
+                        {media?.creator?.name}
                       </div>
                       <div className="text-black/[0.7] dark:text-white/[0.7] text-sm">
                         {new Date(media?.createdAt).toLocaleDateString("fa-IR", {

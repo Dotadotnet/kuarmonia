@@ -13,7 +13,7 @@ export async function addBlog(req) {
       publishDate,
       tags,
       category,
-      authorId,
+      creator,
       socialLinks,
       metaTitle,
       metaDescription,
@@ -52,7 +52,7 @@ export async function addBlog(req) {
       tags,
       category,
       featuredImage,
-      authorId,
+      creator,
       socialLinks: parsedSocialLinks,
       metaTitle,
       metaDescription,
@@ -116,7 +116,7 @@ export async function getBlogs(req) {
     const isSuperAdmin = admin.role === 'superAdmin';
 
     if (!isSuperAdmin) {
-      searchQuery.authorId = adminId;
+      searchQuery.creator = adminId;
     }
 
     const searchQuery = search
@@ -132,7 +132,7 @@ export async function getBlogs(req) {
     const blogs = await Blog.find(searchQuery)
     .skip(skip)
     .limit(Number(limit))
-    .populate('authorId', 'name avatar.url') 
+    .populate('creator', 'name avatar.url') 
     .select('_id blogId title createdAt views likes dislikes status likeCount dislikeCount featuredImage.url');
 
 
@@ -175,7 +175,7 @@ export async function getClientBlogs(req) {
     const blogs = await Blog.find(filter)
     .skip(skip)
     .limit(Number(limit))
-    .populate('authorId', 'name avatar.url') 
+    .populate('creator', 'name avatar.url') 
     .select('_id blogId title description createdAt views likes dislikes status isFeatured featuredImage.url visibility publishStatus publishDate');
 
     const total = await Blog.countDocuments({ isDeleted: false });
@@ -234,7 +234,7 @@ export async function getBlog(req) {
   try {
 
     const blog = await Blog.findById(req.query.id)
-    .populate('authorId', 'name avatar.url') 
+    .populate('creator', 'name avatar.url') 
     .populate('category', 'title')
     .populate('tags', 'title') 
     .select('_id blogId title description slug canonicalUrl content createdAt views likes dislikes status isFeatured featuredImage.url metaTitle metaDescription metaKeywords visibility publishStatus publishDate');
@@ -265,7 +265,7 @@ export async function updateBlog(req) {
   const { id } = req.query;
   console.log("id",id)
   try {
-    const { title, description, content, publishDate, tags, category, featuredImage, authorId, isDeleted ,publishStatus} = req.body || {};
+    const { title, description, content, publishDate, tags, category, featuredImage, creator, isDeleted ,publishStatus} = req.body || {};
     console.log("publishStatus",publishStatus)
 
     const updateFields = {};
@@ -276,14 +276,14 @@ export async function updateBlog(req) {
     if (tags !== undefined) updateFields.tags = tags;
     if (category !== undefined) updateFields.category = category;
     if (featuredImage !== undefined) updateFields.featuredImage = featuredImage;
-    if (authorId !== undefined) updateFields.authorId = authorId;
+    if (creator !== undefined) updateFields.creator = creator;
     if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
      if (publishStatus !== undefined) updateFields.publishStatus = publishStatus;
 
     const blog = await Blog.findByIdAndUpdate(id, updateFields, { new: true })
       .populate('tags')  
       .populate('category')  
-      .populate('authorId');  
+      .populate('creator');  
     if (blog) {
       return {
         success: true,

@@ -59,10 +59,10 @@ const AddFaq = ({}) => {
     const requestData = {
       question: data.question,
       answer: data.answer,
-      category: data.category,  // اطمینان حاصل کنید که category به درستی انتخاب شده است
-      tags: data.tags,  // فرض می‌کنیم که این یک آرایه است
+      category: data.category,  
+      tags: data.tags, 
     };
-    addFaq(requestData);  // ارسال به API به جای ارسال به صورت FormData
+    addFaq(requestData);  
   };
   
 

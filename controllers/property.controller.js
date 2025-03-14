@@ -1,6 +1,6 @@
 // controllers/property.controller.js
 import Property from "@/models/property.model";
-import User from "@/models/admin.model";
+import Admin from "@/models/admin.model";
 export async function addProperty(req) {
   try {
     const {
@@ -13,7 +13,7 @@ export async function addProperty(req) {
     } = req.body;
     let thumbnail = null;
     let gallery = [];
-    
+    console.log(req.uploadedFiles)
     // پردازش تصاویر
     if (req.uploadedFiles["thumbnail"]?.length) {
       thumbnail = {
@@ -37,6 +37,7 @@ export async function addProperty(req) {
       tags: JSON.parse(tags),
       variants: JSON.parse(variants),
       amenities: JSON.parse(amenities),
+      creator:req.admin._id,
       thumbnail,
       gallery
     });
@@ -60,7 +61,7 @@ export async function getProperties(req) {
   try {
     const { page = 1, limit = 7, search = "", adminId } = req.query;
     const skip = (page - 1) * limit;
-    const admin = await User.findById(adminId);
+    const admin = await Admin.findById(adminId);
     if (!admin) {
       return {
         success: false,
@@ -81,25 +82,25 @@ export async function getProperties(req) {
         }
       : { isDeleted: false };
     if (!isSuperAdmin) {
-      searchQuery.authorId = adminId;
+      searchQuery.creator = adminId;
     }
-    const propertys = await Property.find(searchQuery)
+    const properties = await Property.find(searchQuery)
       .skip(skip)
       .limit(Number(limit))
-      .populate("authorId", "name avatar.url")
-      .populate("type", "title featrues")
+      .populate("creator", "name avatar.url")
+      .populate("type", "title amenities")
       .populate("tradeType", "title priceFields")
       .populate("saleType", "title ")
       .select(
-        "_id propertyId title createdAt  views likes dislikes status likeCount dislikeCount thumbnail "
+        "_id propertyId title createdAt amenities views likes dislikes status likeCount dislikeCount thumbnail "
       );
-
+console.log(properties)
     const total = await Property.countDocuments(searchQuery);
 
-    if (propertys.length > 0) {
+    if (properties.length > 0) {
       return {
         success: true,
-        data: propertys,
+        data: properties,
         total,
         message: "املاک با موفقیت دریافت شد"
       };
@@ -123,7 +124,7 @@ export async function getProperties(req) {
 export async function getClientProperties() {
   try {
     const properties = await Property.find()
-      .populate("authorId", "name avatar.url")
+      .populate("creator", "name avatar.url")
       .populate("category", "title")
       .populate("tags", "title")
       .populate("saleType", "title")
@@ -159,7 +160,7 @@ export async function getClientProperties() {
 export async function getProperty(req) {
   try {
     const property = await Property.findById(req.query.id)
-      .populate("authorId", "name avatar.url")
+      .populate("creator", "name avatar.url")
       .populate("category", "title")
       .populate("tradeType", "title priceFileds")
       .populate("saleType", "title")
@@ -196,7 +197,7 @@ export async function updateProperty(req) {
       tags,
       category,
       featuredImage,
-      authorId,
+      creator,
       isDeleted,
       publishStatus
     } = req.body || {};
@@ -210,7 +211,7 @@ export async function updateProperty(req) {
     // if (tags !== undefined) updateFields.tags = tags;
     // if (category !== undefined) updateFields.category = category;
     // // if (featuredImage !== undefined) updateFields.featuredImage = featuredImage;
-    // if (authorId !== undefined) updateFields.authorId = authorId;
+    // if (creator !== undefined) updateFields.creator = creator;
     // if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
     if (publishStatus !== undefined) updateFields.publishStatus = publishStatus;
 
@@ -219,7 +220,7 @@ export async function updateProperty(req) {
     })
       .populate("tags")
       .populate("category")
-      .populate("authorId");
+      .populate("creator");
     if (property) {
       return {
         success: true,

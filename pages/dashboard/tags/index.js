@@ -88,7 +88,7 @@ const ListTag = () => {
                 <StatusIndicator isActive={tag.status === "active"} />
                 <div className="py-2 flex justify-center items-center gap-x-2 text-right">
                   <Image
-                    src={tag?.authorId?.avatar?.url || "/placeholder.png"} // تصویر پیش‌فرض در صورت نبودن URL
+                    src={tag?.creator?.avatar?.url || "/placeholder.png"} // تصویر پیش‌فرض در صورت نبودن URL
                     alt="Description of the image"
                     height={100}
                     width={100}
@@ -97,7 +97,7 @@ const ListTag = () => {
                   <article className="flex-col flex gap-y-2  ">
                     <span className="line-clamp-1 text-base ">
                       <span className="hidden lg:flex ">
-                        {tag?.authorId?.name}
+                        {tag?.creator?.name}
                       </span>
                       <span className=" lg:hidden ">{tag?.title}</span>
                     </span>

@@ -179,10 +179,10 @@ const blogSchema = new Schema(
       ref: "Category",
       required: [true, "دسته‌بندی پست الزامی است"],
     },
-    authorId: {
+    creator: {
       type: Schema.Types.ObjectId,
       ref: "Admin",
-      required: [true, "شناسه نویسنده الزامی است"],
+      required: [true, "شناسه نویسنده الزامی است"]
     },
     bookmarkedBy: [
       {

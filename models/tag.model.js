@@ -24,10 +24,10 @@ const tagSchema = new Schema(
       default: [],
       trim:true
     },  
-    authorId: {
+    creator: {
       type: Schema.Types.ObjectId,
       ref: "Admin",
-      required: [true, "شناسه نویسنده الزامی است"],
+      required: [true, "شناسه نویسنده الزامی است"]
     },
     slug: {
       type: String,

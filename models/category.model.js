@@ -46,10 +46,10 @@ const categorySchema = new Schema(
       type: Number,
       unique: true,
     },
-    authorId: {
+    creator: {
       type: Schema.Types.ObjectId,
       ref: "Admin",
-      required: [true, "شناسه نویسنده الزامی است"],
+      required: [true, "شناسه نویسنده الزامی است"]
     },
     ...baseSchema.obj
   },

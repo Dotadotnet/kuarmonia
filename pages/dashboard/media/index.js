@@ -117,7 +117,7 @@ const ListMedia = () => {
                     <span className="line-clamp-1 max-h-[1.6em] text-base ">
                       <span className="    text-sm">{media?.title}</span>
                     </span>
-                    <span className="   ">{media?.authorId?.name}</span>
+                    <span className="   ">{media?.creator?.name}</span>
                   </article>
                 </div>
               </div>

@@ -3,11 +3,12 @@ import SaleType from "@/models/saleType.model";
 // Add a new type
 export async function addSaleType(req) {
   try {
-    const { title, description, authorId } = req.body;
+    const { title, description } = req.body;
+    console.log(req.body)
     const type = await SaleType.create({
       title,
       description,
-      authorId
+      creator:req.admin._id
     });
     if (type) {
       return {
@@ -39,7 +40,7 @@ export async function getSaleTypes(req) {
     const types = await SaleType.find(searchQuery)
       .skip(skip)
       .limit(Number(limit))
-      .populate("authorId", "name avatar.url")
+      .populate("creator", "name avatar.url")
       .select("_id typeId title description slug createdAt status ");
 
 
@@ -90,6 +91,38 @@ export async function updateSaleType(req) {
       return {
         success: false,
         message: "نوع ملک پیدا نشد"
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message
+    };
+  }
+}
+
+
+
+
+
+export async function removeSaleType(req) {
+  try {
+    const type = await SaleType.findByIdAndUpdate(
+      req.query.id,
+      { isDeleted: true },
+      { new: true }
+    );
+
+    if (type) {
+      return {
+        success: true,
+        message: "نوع فروش  با موفقیت حذف شد",
+        data: type
+      };
+    } else {
+      return {
+        success: false,
+        message: "نوع فروش پیدا نشد"
       };
     }
   } catch (error) {

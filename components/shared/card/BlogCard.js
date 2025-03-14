@@ -21,7 +21,7 @@ const BlogCard = ({
   description,
   thumbnailPreview,
   publishDate,
-  authorId,
+  creator,
   superAdmin,
   isLoading,
   slug
@@ -149,7 +149,7 @@ const BlogCard = ({
 
     {/* عکس نویسنده */}
     <div className="flex items-center">
-      {isLoading || !authorId ? (
+      {isLoading || !creator ? (
         <div className="dark:!border-gray-600 text-center rounded-full flex justify-center">
           <SkeletonImage
             height={30}
@@ -161,18 +161,18 @@ const BlogCard = ({
       ) : (
         <div className="text-center rounded-full flex justify-center">
           <Image
-            alt={authorId?.name}
-            title={authorId?.name}
-            src={authorId?.avatar?.url}
+            alt={creator?.name}
+            title={creator?.name}
+            src={creator?.avatar?.url}
             width={36}
             height={36}
             className="relative inline-block rounded-full object-cover object-center hover:z-10"
           />
-          {authorId?.name !== superAdmin?.name && (
+          {creator?.name !== superAdmin?.name && (
             <Image
-              alt={authorId?.name}
-              title={authorId?.name}
-              src={authorId?.avatar?.url}
+              alt={creator?.name}
+              title={creator?.name}
+              src={creator?.avatar?.url}
               width={36}
               height={36}
               className="relative inline-block rounded-full object-cover object-center hover:z-10"

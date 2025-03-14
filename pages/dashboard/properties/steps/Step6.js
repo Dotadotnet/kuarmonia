@@ -110,6 +110,9 @@ const Step6 = ({ register, errors, control ,setCitizenshipStatus}) => {
             </span>
           )}
         </div>
+        <div className="flex flex-col items-start gap-y-2 w-full ">
+
+   
         <StatusSwitch
           label={"آیا این ملک ویژه است؟"}
           id="isFeatured"
@@ -147,6 +150,7 @@ const Step6 = ({ register, errors, control ,setCitizenshipStatus}) => {
           onChange={()=>setCitizenshipStatus("goldenVisa")}
           defaultChecked={false}
         />
+      </div>
       </div>
     </>
   );

@@ -49,7 +49,7 @@ export async function addMedia(req) {
       media,
       thumbnail,
       category,
-      authorId:req.admin._id,
+      creator:req.admin._id,
       metaTitle,
       metaDescription,
       isFeatured,
@@ -117,12 +117,12 @@ export async function getMedias(req) {
         }
       : { isDeleted: false };
     if (!isSuperAdmin) {
-      searchQuery.authorId = adminId;
+      searchQuery.creator = adminId;
     }
     const result = await Media.find(searchQuery)
       .skip(skip)
       .limit(Number(limit))
-      .populate("authorId", "name avatar.url")
+      .populate("creator", "name avatar.url")
       .populate("tags", "title")
       .select(
         "_id mediaId thumbnail media title description category tags createdAt views likes dislikes status likeCount dislikeCount "
@@ -164,10 +164,10 @@ export async function getClientMedias(req) {
     const result = await Media.find(filter)
       .skip(skip)
       .limit(Number(limit))
-      .populate("authorId", "name avatar.url")
+      .populate("creator", "name avatar.url")
       .populate("category", "title")
       .select(
-        "_id mediaId title description createdAt category views likes dislikes status isFeatured thumbnail visibility slug authorId publishDate"
+        "_id mediaId title description createdAt category views likes dislikes status isFeatured thumbnail visibility slug creator publishDate"
       );
     const total = await Media.countDocuments({ isDeleted: false });
     if (result.length > 0) {
@@ -201,7 +201,7 @@ export async function getMedia(req) {
   try {
     console.log("dawdawd")
     const result = await Media.findById(req.query.id)
-      .populate("authorId", "name avatar.url")
+      .populate("creator", "name avatar.url")
       .populate("category", "title")
       .populate("tags", "title")
       .select(

@@ -67,7 +67,7 @@ const EditTag = ({ id }) => {
         value: option
       })),
       keynotes: JSON.stringify(keynotes),
-      authorId: admin?._id
+      creator: admin?._id
     };
 
     updateTag(formData).unwrap();

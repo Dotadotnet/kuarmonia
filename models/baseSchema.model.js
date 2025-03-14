@@ -5,28 +5,26 @@ const baseSchema = new Schema(
     status: {
       type: String,
       enum: ["active", "inactive"],
-      default: "active",
+      default: "active"
     },
     isDeleted: {
       type: Boolean,
-      default: false,
+      default: false
     },
     createdAt: {
       type: Date,
-      default: Date.now,
+      default: Date.now
     },
     updatedAt: {
       type: Date,
-      default: Date.now,
+      default: Date.now
     },
     deletedAt: {
-      type: Date,
+      type: Date
     },
+
   },
   { timestamps: true }
 );
-
-
-
 
 export default baseSchema;

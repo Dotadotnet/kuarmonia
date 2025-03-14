@@ -31,8 +31,8 @@ const BlogContent = () => {
             featureImage={fetchData?.data?.featuredImage?.url}
             isLoading={fetching}
             publishDate={fetchData?.data?.publishDate}
-            author={fetchData?.data?.authorId?.name}
-            avatar={fetchData?.data?.authorId?.avatar?.url}
+            author={fetchData?.data?.creator?.name}
+            avatar={fetchData?.data?.creator?.avatar?.url}
             selectedTags={fetchData?.data?.tags}
           />
 

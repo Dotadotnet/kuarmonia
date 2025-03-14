@@ -2,7 +2,7 @@ import Slide from "@/models/slide.model";
 import path from "path";
 export async function addSlide(req) {
   try {
-    const { title, description, url, authorId, isFeatured } = req.body;
+    const { title, description, url, creator, isFeatured } = req.body;
     let bgImg = null;
 
 
@@ -34,7 +34,7 @@ export async function addSlide(req) {
         description,
         bgImg,
         url,
-        authorId,
+        creator,
         isFeatured
       });
 
@@ -68,9 +68,9 @@ export async function getSlides(req) {
     const slides = await Slide.find(searchQuery)
       .skip(skip)
       .limit(Number(limit))
-      .populate("authorId", "name")
+      .populate("creator", "name")
       .select(
-        "_id slideId authorId title bgImg  description  createdAt status "
+        "_id slideId creator title bgImg  description  createdAt status "
       );
     const total = await Slide.countDocuments(searchQuery);
     if (slides.length > 0) {

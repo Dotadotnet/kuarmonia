@@ -54,10 +54,10 @@ const SlideSchema = new Schema(
       min: [0, "تعداد بازدید نمی‌تواند منفی باشد"],
     },
 
-    authorId: {
+    creator: {
       type: Schema.Types.ObjectId,
       ref: "Admin",
-      required: [true, "شناسه نویسنده الزامی است"],
+      required: [true, "شناسه نویسنده الزامی است"]
     },
     ...baseSchema.obj,
   },

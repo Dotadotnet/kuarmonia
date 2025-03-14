@@ -42,8 +42,8 @@ const Posts = () => {
           thumbnailPreview={post.featuredImage}
           publishDate={post.publishDate}
           isLoading={isLoading}
-          author={post?.authorId?.name}
-          avatar={post?.authorId?.avatar?.url}
+          author={post?.creator?.name}
+          avatar={post?.creator?.avatar?.url}
           superAdmin={superAdmin}
           category={post?.category?.title}
           />

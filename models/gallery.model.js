@@ -65,6 +65,11 @@ const gallerySchema = new Schema(
         },
       ],
     },
+    creator: {
+      type: Schema.Types.ObjectId,
+      ref: "Admin",
+      required: [true, "شناسه نویسنده الزامی است"]
+    },
     ...baseSchema.obj
   },
   { timestamps: true }

@@ -12,7 +12,7 @@ export async function addPost(req) {
       publishDate,
       tags,
       category,
-      authorId,
+      creator,
       socialLinks,
       metaTitle,
       metaDescription,
@@ -79,7 +79,7 @@ export async function addPost(req) {
       category,
       featuredImage,
       gallery,
-      authorId,
+      creator,
       socialLinks: parsedSocialLinks,
       metaTitle,
       metaDescription,
@@ -156,12 +156,12 @@ export async function getPosts(req) {
       }
     : { isDeleted: false };
     if (!isSuperAdmin) {
-      searchQuery.authorId = adminId;
+      searchQuery.creator = adminId;
     }
     const posts = await Post.find(searchQuery)
     .skip(skip)
     .limit(Number(limit))
-    .populate('authorId', 'name avatar.url') 
+    .populate('creator', 'name avatar.url') 
     .select('_id postId title createdAt  views likes dislikes status likeCount dislikeCount featuredImage');
 
 
@@ -204,7 +204,7 @@ export async function getClientPosts(req) {
     const posts = await Post.find(filter)
     .skip(skip)
     .limit(Number(limit))
-    .populate('authorId', 'name avatar.url') 
+    .populate('creator', 'name avatar.url') 
     .populate('category', 'title') 
     .select('_id postId title description createdAt category views likes dislikes status isFeatured featuredImage visibility slug publishStatus publishDate');
     const total = await Post.countDocuments({ isDeleted: false });
@@ -262,7 +262,7 @@ export async function getPost(req) {
   try {
 
     const post = await Post.findById(req.query.id)
-    .populate('authorId', 'name avatar.url') 
+    .populate('creator', 'name avatar.url') 
     .populate('category', 'title')
     .populate('tags', 'title') 
     .select('_id postId title description slug canonicalUrl content createdAt views likes dislikes status isFeatured gallery featuredImage metaTitle metaDescription metaKeywords visibility publishStatus publishDate');
@@ -292,7 +292,7 @@ export async function getPost(req) {
 export async function updatePost(req) {
   const { id } = req.query;
   try {
-    const { title, description, content, publishDate, tags, category, featuredImage, authorId, isDeleted ,publishStatus} = req.body || {};
+    const { title, description, content, publishDate, tags, category, featuredImage, creator, isDeleted ,publishStatus} = req.body || {};
     console.log("publishStatus",publishStatus)
 
     const updateFields = {};
@@ -303,14 +303,14 @@ export async function updatePost(req) {
     // if (tags !== undefined) updateFields.tags = tags;
     // if (category !== undefined) updateFields.category = category;
     // // if (featuredImage !== undefined) updateFields.featuredImage = featuredImage;
-    // if (authorId !== undefined) updateFields.authorId = authorId;
+    // if (creator !== undefined) updateFields.creator = creator;
     // if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
      if (publishStatus !== undefined) updateFields.publishStatus = publishStatus;
 
     const post = await Post.findByIdAndUpdate(id, updateFields, { new: true })
       .populate('tags')  
       .populate('category')  
-      .populate('authorId');  
+      .populate('creator');  
     if (post) {
       return {
         success: true,

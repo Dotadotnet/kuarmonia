@@ -1,8 +1,9 @@
 import {
   addTradeType,
   getTradeTypes,
-  getAllTradeTypes
 } from "@/controllers/tradeType.controller";
+import authorization from "@/middleware/authorization.middleware";
+import verifyAdmin from "@/middleware/verifyAdmin.middleware";
 
 export const config = {
   api: {
@@ -14,8 +15,25 @@ export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
       try {
-        const result = await addTradeType(req);
-        res.status(200).json(result);
+        verifyAdmin(req, res, async (err) => {
+          if (err) {
+            console.log(req.body);
+            return res.send({
+              success: false,
+              error: err.message
+            });
+          }
+          authorization("superAdmin", "admin")(req, res, async (err) => {
+            if (err) {
+              return res.send({
+                success: false,
+                error: err.message
+              });
+            }
+            const result = await addTradeType(req);
+            res.status(200).json(result);
+          });
+        });
       } catch (error) {
         return res.status(500).json({
           success: false,
@@ -26,15 +44,8 @@ export default async function handler(req, res) {
 
     case "GET":
       try {
-        // بررسی که اگر نوع جستجو "all" باشد، تمامی نوع‌ها را باز می‌گرداند
-        if (req.query.type === "all") {
-          const result = await getAllTradeTypes(req);
-          return res.status(200).json(result);  // باید نتیجه را ارسال کنید
-        }
-
-        // در غیر این صورت، داده‌های صفحه‌بندی شده را دریافت کنید
         const result = await getTradeTypes(req);
-        return res.status(200).json(result);  // ارسال نتیجه به کلاینت
+        return res.status(200).json(result);
       } catch (error) {
         return res.status(500).json({
           success: false,

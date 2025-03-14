@@ -3,12 +3,11 @@ import TradeType from "@/models/tradeType.model";
 // Add a new tradeTradeType
 export async function addTradeType(req) {
   try {
-    const { title, description, authorId,priceFields } = req.body;
-    console.log(title, description, authorId,priceFields);
+    const { title, description,priceFields } = req.body;
     const tradeType = await TradeType.create({
       title,
       description,
-      authorId,
+      creator:req.admin._id,
       priceFields: priceFields || [],
     });
     if (tradeType) {
@@ -41,7 +40,7 @@ export async function getTradeTypes(req) {
     const tradeTypes = await TradeType.find(searchQuery)
       .skip(skip)
       .limit(Number(limit))
-      .populate("authorId", "name avatar.url")
+      .populate("creator", "name avatar.url")
       .select("_id tradeTypeId priceFields title description slug createdAt status ");
 
 
@@ -71,7 +70,7 @@ export async function getAllTradeTypes(req) {
   try {
  
     const tradeTypes = await TradeType.find()
-      .populate("authorId", "name avatar.url")
+      .populate("creator", "name avatar.url")
       .select("_id tradeTypeId priceFields title description slug createdAt status ");
 
 
@@ -118,6 +117,33 @@ export async function updateTradeType(req) {
       return {
         success: false,
         message: " نوع معامله پیدا نشد"
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message
+    };
+  }
+}
+export async function removeTradeType(req) {
+  try {
+    const type = await TradeType.findByIdAndUpdate(
+      req.query.id,
+      { isDeleted: true },
+      { new: true }
+    );
+
+    if (type) {
+      return {
+        success: true,
+        message: "نوع معامله با موفقیت حذف شد",
+        data: type
+      };
+    } else {
+      return {
+        success: false,
+        message: "نوع معامله پیدا نشد"
       };
     }
   } catch (error) {

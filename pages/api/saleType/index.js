@@ -1,42 +1,59 @@
 import { addSaleType, getSaleTypes } from "@/controllers/saleType.controller";
+import authorization from "@/middleware/authorization.middleware";
+import verifyAdmin from "@/middleware/verifyAdmin.middleware";
 
 export const config = {
   api: {
-    bodyParser: true,  
-  },
+    bodyParser: true
+  }
 };
 
 export default async function handler(req, res) {
   switch (req.method) {
     case "POST":
       try {
-        const result = await addSaleType(req);
-        res.status(200).json(result);
+        verifyAdmin(req, res, async (err) => {
+          if (err) {
+            return res.send({
+              success: false,
+              error: err.message
+            });
+          }
+          authorization("superAdmin", "admin")(req, res, async (err) => {
+            if (err) {
+              return res.send({
+                success: false,
+                error: err.message
+              });
+            }
+            const result = await addSaleType(req);
+            res.status(200).json(result);
+          });
+        });
       } catch (error) {
         return res.status(500).json({
           success: false,
-          message: error.message,
+          message: error.message
         });
       }
       break;
 
     case "GET":
       try {
-  
         const result = await getSaleTypes(req);
         return res.status(200).json(result);
       } catch (error) {
         return res.status(500).json({
           success: false,
-          error: error.message,
+          error: error.message
         });
       }
       break;
-      
+
     default:
       return res.status(405).json({
         success: false,
-        message: "Method not allowed",
+        message: "Method not allowed"
       });
   }
 }

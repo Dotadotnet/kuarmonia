@@ -7,7 +7,7 @@ export async function addCategory(req) {
     const category = await Category.create({
       title,
       description,
-      authorId: req.admin._id
+      creator: req.admin._id
     });
     if (category) {
       return {
@@ -40,7 +40,7 @@ export async function getCategories(req) {
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(Number(limit))
-      .populate("authorId", "name avatar.url")
+      .populate("creator", "name avatar.url")
       .select("_id categoryId title description slug createdAt status ");
     console.log(categories);
     const total = await Category.countDocuments(searchQuery);

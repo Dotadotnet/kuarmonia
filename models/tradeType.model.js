@@ -26,10 +26,10 @@ const tradeTypeSchema = new Schema({
     type: Number,
     unique: true,
   },
-  authorId: {
+  creator: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: [true, "شناسه نویسنده الزامی است"],
+    ref: "Admin",
+    required: [true, "شناسه نویسنده الزامی است"]
   },
   description: { type: String, required: true },
   priceFields: {

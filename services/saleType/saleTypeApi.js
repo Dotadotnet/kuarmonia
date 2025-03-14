@@ -12,7 +12,7 @@ const saleTypeApi = kuarmoniaApi.injectEndpoints({
         body,
       }),
       invalidatesTags: [
-        "User",
+        "Admin",
         "Property",
         "SaleType",
       ],
@@ -26,7 +26,14 @@ const saleTypeApi = kuarmoniaApi.injectEndpoints({
       providesTags: ["SaleType"],
     }),
 
+    removeSaleType: builder.mutation({
+      query: (id) => ({
+        url: `/saleType/${id}`,
+        method: "DELETE"
+      }),
 
+      invalidatesTags: ["SaleType", "Admin"]
+    }),
 
     updateSaleType: builder.mutation({
       query: ({ id, ...formData }) => ({
@@ -43,4 +50,6 @@ export const {
   useAddSaleTypeMutation,
   useGetSaleTypesQuery,
   useUpdateSaleTypeMutation,
+    useRemoveSaleTypeMutation
+  
 } = saleTypeApi;

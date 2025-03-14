@@ -3,13 +3,12 @@ import PropertyType from "@/models/propertyType.model";
 // Add a new type
 export async function addType(req) {
   try {
-    const { title, description, authorId ,features} = req.body;
-console.log(title, description, authorId,features);
+    const { title, description, amenities } = req.body;
     const type = await PropertyType.create({
       title,
       description,
-      authorId,
-      features
+      creator: req.admin._id,
+      amenities
     });
     if (type) {
       return {
@@ -41,10 +40,9 @@ export async function getTypes(req) {
     const types = await PropertyType.find(searchQuery)
       .skip(skip)
       .limit(Number(limit))
-      .populate("authorId", "name avatar.url")
-      .select("_id typeId title description features slug createdAt status ");
-
-
+      .populate("creator", "name avatar.url")
+      .select("_id typeId title description amenities slug createdAt status ");
+    console.log(types);
     const total = await PropertyType.countDocuments(searchQuery);
     if (types.length > 0) {
       return {
@@ -67,13 +65,11 @@ export async function getTypes(req) {
   }
 }
 
-
-
 export async function updateType(req) {
   try {
     const { id } = req.query;
 
-    const { title, description, status,features, isDeleted } = req.body || {};
+    const { title, description, status, features, isDeleted } = req.body || {};
     const updateFields = {};
     if (title !== undefined) updateFields.title = title;
     if (description !== undefined) updateFields.description = description;
@@ -81,7 +77,9 @@ export async function updateType(req) {
     if (status !== undefined) updateFields.status = status;
     if (isDeleted !== undefined) updateFields.isDeleted = isDeleted;
 
-    const type = await PropertyType.findByIdAndUpdate(id, updateFields, { new: true });
+    const type = await PropertyType.findByIdAndUpdate(id, updateFields, {
+      new: true
+    });
 
     if (type) {
       return {
@@ -93,6 +91,34 @@ export async function updateType(req) {
       return {
         success: false,
         message: "نوع ملک پیدا نشد"
+      };
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message
+    };
+  }
+}
+
+export async function removeType(req) {
+  try {
+    const type = await PropertyType.findByIdAndUpdate(
+      req.query.id,
+      { isDeleted: true },
+      { new: true }
+    );
+
+    if (type) {
+      return {
+        success: true,
+        message: "دسته‌بندی با موفقیت حذف شد",
+        data: type
+      };
+    } else {
+      return {
+        success: false,
+        message: "دسته‌بندی پیدا نشد"
       };
     }
   } catch (error) {

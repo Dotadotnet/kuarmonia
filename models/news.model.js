@@ -18,11 +18,11 @@ const newsSchema = new Schema(
       required: [true, "محتوای خبر الزامی است"],
       minlength: [20, "محتوای خبر باید حداقل ۲۰ کاراکتر باشد"],
     },
-    author: { 
-      type: mongoose.Schema.Types.ObjectId,
-       ref: 'User', required: true
-       },
-       tags: [String],
+    creator: {
+      type: Schema.Types.ObjectId,
+      ref: "Admin",
+      required: [true, "شناسه نویسنده الزامی است"]
+    },
 
     category: {
       type: Schema.Types.ObjectId,

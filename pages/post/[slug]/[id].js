@@ -39,8 +39,8 @@ const PostContent = () => {
             comment={[]}
             isLoading={fetching}
             selectedTags={fetchData?.data?.tags}
-            author={fetchData?.data?.authorId?.name}
-            avatar={fetchData?.data?.authorId?.avatar?.url}
+            author={fetchData?.data?.creator?.name}
+            avatar={fetchData?.data?.creator?.avatar?.url}
           />
 
         </div>

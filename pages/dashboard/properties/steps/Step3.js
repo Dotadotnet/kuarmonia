@@ -18,11 +18,14 @@ const Step3 = ({ register, errors, control }) => {
   // وقتی که نوع ملک تغییر می‌کند، ویژگی‌های آن را تنظیم می‌کنیم
   useEffect(() => {
     if (selectedProperty) {
-      // یافتن ویژگی‌های ملک بر اساس نوع ملک انتخاب شده
       const selectedType = propertyTypes.find(
         (type) => type.title === selectedProperty
       );
-      setAvailableFeatures(selectedType?.features || []);
+
+      setAvailableFeatures({
+        amenities: selectedType?.amenities || [],
+        description: selectedType?.description || ""
+      });
     }
   }, [selectedProperty, propertyTypes]);
 
@@ -39,7 +42,9 @@ const Step3 = ({ register, errors, control }) => {
           })}
         />
         {errors.bedrooms && (
-          <span className="text-red-500 text-sm">{errors.bedrooms.message}</span>
+          <span className="text-red-500 text-sm">
+            {errors.bedrooms.message}
+          </span>
         )}
       </label>
 
@@ -90,24 +95,26 @@ const Step3 = ({ register, errors, control }) => {
       </label>
 
       {/* امکانات ملک */}
-      {availableFeatures.length > 0 && (
+      {availableFeatures?.amenities?.length > 0 && (
         <div className="mt-4">
           <h3 className="text-lg">امکانات</h3>
+
           <div className="grid grid-cols-2 gap-3 mt-2">
-            {availableFeatures.map((feature, index) => (
+            {availableFeatures.amenities.map((feature, index) => (
               <Controller
                 key={index}
                 control={control}
-                name={`amenities[${index}]`} 
+                name={`amenities[${index}]`}
                 render={({ field: { onChange, value } }) => (
                   <StatusSwitch
                     label={feature}
                     id={feature}
                     register={register}
+                    description={availableFeatures.description} // ارسال description
                     defaultChecked={value?.hasAmenity || false}
                     onChange={(e) => {
                       onChange({
-                        title: feature, 
+                        title: feature,
                         hasAmenity: e.target.checked
                       });
                     }}

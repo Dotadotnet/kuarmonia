@@ -44,7 +44,7 @@ const AddTag = () => {
         value: option
       })),
       keynotes: JSON.stringify(keynotes),
-      authorId: admin?._id
+      creator: admin?._id
     };
     addTag(formData).unwrap();
   };

@@ -5,12 +5,12 @@ import LoadingIndicator from "@/components/shared/loading/LoadingIndicator";
 
 const Main = ({ children }) => {
   return (
-    <>
+    <div>
       <LoadingIndicator />
       {children}
       <Navbar />
       <Footer />
-    </>
+    </div>
   );
 };
 

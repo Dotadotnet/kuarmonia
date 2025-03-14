@@ -6,13 +6,11 @@ const typeApi = kuarmoniaApi.injectEndpoints({
       query: (body) => ({
         url: "/type/",
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+   
         body,
       }),
       invalidatesTags: [
-        "User",
+        "Admin",
         "Property",
         "Type",
       ],
@@ -26,7 +24,15 @@ const typeApi = kuarmoniaApi.injectEndpoints({
       providesTags: ["Type"],
     }),
 
+    removeType: builder.mutation({
+      query: (id) => ({
+        url: `/type/${id}`,
+        method: "DELETE",
 
+      }),
+
+      invalidatesTags: ["Type", "Admin"],
+    }),
 
     updateType: builder.mutation({
       query: ({ id, ...formData }) => ({
@@ -43,4 +49,5 @@ export const {
   useAddTypeMutation,
   useGetTypesQuery,
   useUpdateTypeMutation,
+  useRemoveTypeMutation
 } = typeApi;

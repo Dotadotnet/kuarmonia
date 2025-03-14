@@ -59,7 +59,7 @@ const Sidebar = ({ routes }) => {
         {routes.map((route, index) => (
           <div key={index}>
             <div
-              className="flex flex-row gap-x-2 items-center px-4 py-2 cursor-pointer justify-between hover:text-white dark:hover:bg-blue-500 transition-colors rounded text-sm"
+              className="flex flex-row gap-x-2 items-center px-4 py-2 cursor-pointer justify-between hover:text-white link-hover transition-colors rounded text-sm"
               onClick={() => handleRouteClick(route, index)}
             >
               <span className="flex flex-row gap-x-2 items-center">

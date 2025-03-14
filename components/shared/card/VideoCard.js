@@ -56,9 +56,9 @@ const VideoCard = ({
             </span>
             <div className="flex items-center space-x-3">
               <Image
-                alt={media?.authorId?.name ||  "avatar"}
-                title={media?.authorId?.name}
-                src={media?.authorId?.avatar?.url}
+                alt={media?.creator?.name ||  "avatar"}
+                title={media?.creator?.name}
+                src={media?.creator?.avatar?.url}
                 width={36}
                 height={36}
                 className="relative inline-block rounded-full   object-cover object-center hover:z-10"

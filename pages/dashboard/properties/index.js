@@ -17,66 +17,39 @@ const Listproperty = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
   const [statusFilter, setStatusFilter] = useState("all");
-  const admin = useSelector((state) => state?.auth);
-  const { data, isLoading, error, refetch } = useGetPropertiesQuery({
+   const admin = useSelector((state) => state?.auth?.admin);
+   const router=useRouter();
+  const { data, isLoading, error } = useGetPropertiesQuery({
     page: currentPage,
     limit: itemsPerPage,
     status: statusFilter === "all" ? undefined : statusFilter,
     adminId: admin?._id,
   });
+  const properties = useMemo(() => data?.data || [], [data]);
 
-  const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;
+ const totalPages = data ? Math.ceil(data.total / itemsPerPage) : 1;
 
-  const router = useRouter();
 
-  const handlePageChange = (newPage) => {
-    console.log("Current Page:", newPage);
-    setCurrentPage(newPage);
-  };
-
-  useEffect(() => {
-    if (isLoading) {
-      toast.loading("در حال دریافت بلاگ...", { id: "fetch-property" });
-    }
-
-    if (data) {
-      toast.success(data?.message, { id: "fetch-property" });
-    }
-
-    if (error?.data) {
-      toast.error(error?.data?.message, { id: "fetch-property" });
-    }
-  }, [data, error, isLoading]);
   const handleAddItem = () => {
     router.push("/dashboard/properties/add");
   };
 
-  const onStatusFilterChange = (status) => {
-    setStatusFilter(status);
-    setCurrentPage(1); // بازنشانی صفحه به صفحه اول بعد از تغییر فیلتر
-    refetch();
-  };
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-    setCurrentPage(1);
-  };
   return (
     <>
       <Panel>
-        {/* نمایش داده‌های بلاگ‌ها */}
         <AddButton onClick={handleAddItem} />
 
        
 
-        {!data?.data || data?.data.length === 0 || isLoading ? (
+        {!properties || properties.length === 0 || isLoading ? (
           <>
             {[1].map((i) => (
               <SkeletonItem key={i} repeat={5} />
             ))}
           </>
         ) : (
-          data?.data?.length > 0 &&
-          data?.data?.map((property) => (
+          properties?.length > 0 &&
+          properties?.map((property) => (
             <div
               key={property.id}
               className="mt-4 grid grid-cols-12 rounded-xl cursor-pointer border border-gray-200 gap-2 dark:border-white/10 dark:bg-slate-800 bg-white px-2  transition-all dark:hover:border-slate-700 hover:border-slate-100 hover:bg-green-100 dark:hover:bg-slate-700 dark:text-white"
